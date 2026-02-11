@@ -103,12 +103,11 @@
     /* ── 100% achievement FX ── */
     .fx-vignette {
       position: absolute; inset: 0; z-index: 4; pointer-events: none;
-      box-shadow: inset 0 0 120px 40px rgba(255,215,0,.0);
       animation: fxVignettePulse 4s ease-in-out infinite;
     }
     @keyframes fxVignettePulse {
-      0%, 100% { box-shadow: inset 0 0 100px 30px rgba(255,215,0,.0); }
-      50%      { box-shadow: inset 0 0 150px 60px rgba(255,215,0,.15); }
+      0%, 100% { box-shadow: inset 0 0 120px 40px rgba(255,200,0,.0); }
+      50%      { box-shadow: inset 0 0 200px 80px rgba(255,200,0,.35); }
     }
 
     .fx-shimmer {
@@ -118,23 +117,24 @@
       content: '';
       position: absolute;
       top: -50%; left: -50%;
-      width: 40%; height: 200%;
-      background: linear-gradient(105deg, transparent 30%, rgba(255,215,0,.12) 45%, rgba(255,250,205,.18) 50%, rgba(255,215,0,.12) 55%, transparent 70%);
-      animation: fxShimmerSweep 6s ease-in-out infinite;
+      width: 50%; height: 200%;
+      background: linear-gradient(105deg, transparent 25%, rgba(255,215,0,.25) 42%, rgba(255,250,205,.4) 50%, rgba(255,215,0,.25) 58%, transparent 75%);
+      animation: fxShimmerSweep 5s ease-in-out infinite;
     }
     @keyframes fxShimmerSweep {
-      0%   { transform: translateX(-20%) rotate(15deg); }
-      100% { transform: translateX(320%) rotate(15deg); }
+      0%   { transform: translateX(-20%) rotate(15deg); opacity: 0; }
+      15%  { opacity: 1; }
+      75%  { opacity: 1; }
+      100% { transform: translateX(320%) rotate(15deg); opacity: 0; }
     }
 
     .fx-glow {
       position: absolute; inset: 0; z-index: 0; pointer-events: none;
-      background: radial-gradient(ellipse at 50% 50%, rgba(255,215,0,.0) 0%, transparent 70%);
       animation: fxGlowPulse 5s ease-in-out infinite;
     }
     @keyframes fxGlowPulse {
-      0%, 100% { background: radial-gradient(ellipse at 50% 50%, rgba(255,215,0,.0) 0%, transparent 70%); }
-      50%      { background: radial-gradient(ellipse at 50% 50%, rgba(255,215,0,.1) 0%, transparent 70%); }
+      0%, 100% { background: radial-gradient(ellipse at 50% 50%, rgba(255,200,0,.0) 0%, transparent 70%); }
+      50%      { background: radial-gradient(ellipse at 50% 50%, rgba(255,200,0,.25) 0%, transparent 70%); }
     }
 
     .fx-rays {
@@ -143,15 +143,15 @@
       left: -50%; top: -50%;
       background: conic-gradient(
         from 0deg at 50% 50%,
-        transparent 0deg, rgba(255,215,0,.06) 10deg, transparent 20deg,
-        transparent 40deg, rgba(255,215,0,.06) 50deg, transparent 60deg,
-        transparent 80deg, rgba(255,215,0,.06) 90deg, transparent 100deg,
-        transparent 120deg, rgba(255,215,0,.06) 130deg, transparent 140deg,
-        transparent 160deg, rgba(255,215,0,.06) 170deg, transparent 180deg,
-        transparent 200deg, rgba(255,215,0,.06) 210deg, transparent 220deg,
-        transparent 240deg, rgba(255,215,0,.06) 250deg, transparent 260deg,
-        transparent 280deg, rgba(255,215,0,.06) 290deg, transparent 300deg,
-        transparent 320deg, rgba(255,215,0,.06) 330deg, transparent 340deg,
+        transparent 0deg, rgba(255,215,0,.15) 10deg, transparent 20deg,
+        transparent 40deg, rgba(255,215,0,.15) 50deg, transparent 60deg,
+        transparent 80deg, rgba(255,215,0,.15) 90deg, transparent 100deg,
+        transparent 120deg, rgba(255,215,0,.15) 130deg, transparent 140deg,
+        transparent 160deg, rgba(255,215,0,.15) 170deg, transparent 180deg,
+        transparent 200deg, rgba(255,215,0,.15) 210deg, transparent 220deg,
+        transparent 240deg, rgba(255,215,0,.15) 250deg, transparent 260deg,
+        transparent 280deg, rgba(255,215,0,.15) 290deg, transparent 300deg,
+        transparent 320deg, rgba(255,215,0,.15) 330deg, transparent 340deg,
         transparent 360deg
       );
       animation: fxRaysSpin 30s linear infinite;
