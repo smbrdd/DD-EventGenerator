@@ -303,6 +303,42 @@
     })
     .catch(function() { showError(); });
 
+  // ── Style defaults ──
+  var STYLE_DEFAULTS = {
+    title:             { fontSize: 94, colorType: 'gradient', color1: '#F43D46', color2: '#FD4D26', opacity: 100 },
+    subtitle:          { fontSize: 27, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70 },
+    preCountdownText:  { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60 },
+    postCountdownText: { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60 },
+    progressLabel:     { fontSize: 22, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70 },
+    optionalText:      { fontSize: 26, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 75 }
+  };
+
+  function safeParse(str) {
+    if (!str) return null;
+    try { return JSON.parse(str); } catch(e) { return null; }
+  }
+
+  function applyTextStyle(elementId, styleJson, defaultKey) {
+    var el = document.getElementById(elementId);
+    if (!el) return;
+    var d = STYLE_DEFAULTS[defaultKey];
+    var s = safeParse(styleJson) || d;
+    el.style.fontSize = (s.fontSize || d.fontSize) + 'px';
+    var op = s.opacity !== undefined && s.opacity !== '' ? s.opacity : d.opacity;
+    el.style.opacity = op / 100;
+    if ((s.colorType || d.colorType) === 'gradient') {
+      el.style.background = 'linear-gradient(135deg, ' + (s.color1 || d.color1) + ', ' + (s.color2 || d.color2) + ')';
+      el.style.webkitBackgroundClip = 'text';
+      el.style.webkitTextFillColor = 'transparent';
+      el.style.color = '';
+    } else {
+      el.style.background = '';
+      el.style.webkitBackgroundClip = '';
+      el.style.webkitTextFillColor = '';
+      el.style.color = s.color1 || d.color1;
+    }
+  }
+
   function showError() {
     document.getElementById('errorState').classList.remove('hidden');
   }
@@ -379,6 +415,14 @@
       txt.textContent = ev.optionalText;
       txt.classList.remove('hidden');
     }
+
+    // Apply text styles
+    applyTextStyle('title', ev.titleStyle, 'title');
+    applyTextStyle('subtitle', ev.subtitleStyle, 'subtitle');
+    applyTextStyle('preCountdownText', ev.preCountdownStyle, 'preCountdownText');
+    applyTextStyle('postCountdownText', ev.postCountdownStyle, 'postCountdownText');
+    applyTextStyle('progressLabel', ev.progressLabelStyle, 'progressLabel');
+    applyTextStyle('optionalText', ev.optionalTextStyle, 'optionalText');
 
     frame.classList.remove('hidden');
   }

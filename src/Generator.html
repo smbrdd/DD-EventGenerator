@@ -116,7 +116,7 @@
 
     .form-group { margin-bottom: 1.2rem; }
 
-    .form-group label {
+    .form-group > label {
       display: block;
       font-size: .85rem;
       font-weight: 500;
@@ -266,6 +266,88 @@
       margin-top: 1.5rem;
     }
 
+    /* ── Style controls row ── */
+    .style-row {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-top: .5rem;
+      padding: .6rem .8rem;
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      flex-wrap: wrap;
+    }
+
+    .style-row .sr-label {
+      font-size: .7rem;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      min-width: fit-content;
+    }
+
+    .style-row .sr-sep {
+      width: 1px;
+      height: 20px;
+      background: #30363d;
+    }
+
+    .style-row input[type="number"] {
+      width: 58px;
+      padding: .25rem .4rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 5px;
+      color: #e1e4e8;
+      font-size: .8rem;
+      font-family: inherit;
+    }
+
+    .style-row select {
+      padding: .25rem .4rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 5px;
+      color: #e1e4e8;
+      font-size: .8rem;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .style-row input[type="color"] {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #30363d;
+      border-radius: 5px;
+      cursor: pointer;
+      background: none;
+      padding: 1px;
+    }
+
+    .style-row input[type="range"] {
+      width: 70px;
+      -webkit-appearance: none;
+      height: 4px;
+      background: #30363d;
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .style-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px; height: 14px;
+      background: #667eea;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .style-row .sr-opacity-val {
+      font-size: .75rem;
+      color: #8b949e;
+      min-width: 28px;
+    }
+
     /* ── Empty state ── */
     .empty-state {
       text-align: center;
@@ -361,11 +443,43 @@
     <div class="form-group">
       <label for="title">Titre</label>
       <input type="text" id="title" placeholder="Nom de l'événement">
+      <div class="style-row" data-field="title">
+        <span class="sr-label">Taille</span>
+        <input type="number" class="sr-size" value="94" min="8" max="300">
+        <span class="sr-label">px</span>
+        <div class="sr-sep"></div>
+        <select class="sr-color-type" onchange="toggleColor2(this)">
+          <option value="gradient">Gradient</option>
+          <option value="solid">Uni</option>
+        </select>
+        <input type="color" class="sr-color1" value="#F43D46">
+        <input type="color" class="sr-color2" value="#FD4D26">
+        <div class="sr-sep"></div>
+        <span class="sr-label">Opacité</span>
+        <input type="range" class="sr-opacity" min="0" max="100" value="100" oninput="this.nextElementSibling.textContent=this.value+'%'">
+        <span class="sr-opacity-val">100%</span>
+      </div>
     </div>
 
     <div class="form-group">
       <label for="subtitle">Sous-titre</label>
       <input type="text" id="subtitle" placeholder="Description courte">
+      <div class="style-row" data-field="subtitle">
+        <span class="sr-label">Taille</span>
+        <input type="number" class="sr-size" value="27" min="8" max="200">
+        <span class="sr-label">px</span>
+        <div class="sr-sep"></div>
+        <select class="sr-color-type" onchange="toggleColor2(this)">
+          <option value="solid">Uni</option>
+          <option value="gradient">Gradient</option>
+        </select>
+        <input type="color" class="sr-color1" value="#ffffff">
+        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
+        <div class="sr-sep"></div>
+        <span class="sr-label">Opacité</span>
+        <input type="range" class="sr-opacity" min="0" max="100" value="70" oninput="this.nextElementSibling.textContent=this.value+'%'">
+        <span class="sr-opacity-val">70%</span>
+      </div>
     </div>
 
     <div class="form-group">
@@ -422,18 +536,66 @@
     </div>
 
     <div class="form-group">
-      <label for="progressLabel">Libellé de la barre d'avancement</label>
-      <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
-    </div>
-
-    <div class="form-group">
       <label for="preCountdownText">Texte au-dessus du compte à rebours</label>
       <input type="text" id="preCountdownText" placeholder="Ex: COMING SOON">
+      <div class="style-row" data-field="preCountdownText">
+        <span class="sr-label">Taille</span>
+        <input type="number" class="sr-size" value="21" min="8" max="200">
+        <span class="sr-label">px</span>
+        <div class="sr-sep"></div>
+        <select class="sr-color-type" onchange="toggleColor2(this)">
+          <option value="solid">Uni</option>
+          <option value="gradient">Gradient</option>
+        </select>
+        <input type="color" class="sr-color1" value="#ffffff">
+        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
+        <div class="sr-sep"></div>
+        <span class="sr-label">Opacité</span>
+        <input type="range" class="sr-opacity" min="0" max="100" value="60" oninput="this.nextElementSibling.textContent=this.value+'%'">
+        <span class="sr-opacity-val">60%</span>
+      </div>
     </div>
 
     <div class="form-group">
       <label for="postCountdownText">Texte sous le compte à rebours (majuscules)</label>
       <input type="text" id="postCountdownText" placeholder="Ex: DUE DATE 15 MARCH">
+      <div class="style-row" data-field="postCountdownText">
+        <span class="sr-label">Taille</span>
+        <input type="number" class="sr-size" value="21" min="8" max="200">
+        <span class="sr-label">px</span>
+        <div class="sr-sep"></div>
+        <select class="sr-color-type" onchange="toggleColor2(this)">
+          <option value="solid">Uni</option>
+          <option value="gradient">Gradient</option>
+        </select>
+        <input type="color" class="sr-color1" value="#ffffff">
+        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
+        <div class="sr-sep"></div>
+        <span class="sr-label">Opacité</span>
+        <input type="range" class="sr-opacity" min="0" max="100" value="60" oninput="this.nextElementSibling.textContent=this.value+'%'">
+        <span class="sr-opacity-val">60%</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="progressLabel">Libellé de la barre d'avancement</label>
+      <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
+      <div class="style-row" data-field="progressLabel">
+        <span class="sr-label">Taille</span>
+        <input type="number" class="sr-size" value="22" min="8" max="200">
+        <span class="sr-label">px</span>
+        <div class="sr-sep"></div>
+        <select class="sr-color-type" onchange="toggleColor2(this)">
+          <option value="solid">Uni</option>
+          <option value="gradient">Gradient</option>
+        </select>
+        <input type="color" class="sr-color1" value="#ffffff">
+        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
+        <div class="sr-sep"></div>
+        <span class="sr-label">Opacité</span>
+        <input type="range" class="sr-opacity" min="0" max="100" value="70" oninput="this.nextElementSibling.textContent=this.value+'%'">
+        <span class="sr-opacity-val">70%</span>
+      </div>
     </div>
 
     <div class="form-group">
@@ -456,6 +618,22 @@
     <div class="form-group">
       <label for="optionalText">Texte optionnel</label>
       <textarea id="optionalText" placeholder="Informations complémentaires…"></textarea>
+      <div class="style-row" data-field="optionalText">
+        <span class="sr-label">Taille</span>
+        <input type="number" class="sr-size" value="26" min="8" max="200">
+        <span class="sr-label">px</span>
+        <div class="sr-sep"></div>
+        <select class="sr-color-type" onchange="toggleColor2(this)">
+          <option value="solid">Uni</option>
+          <option value="gradient">Gradient</option>
+        </select>
+        <input type="color" class="sr-color1" value="#ffffff">
+        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
+        <div class="sr-sep"></div>
+        <span class="sr-label">Opacité</span>
+        <input type="range" class="sr-opacity" min="0" max="100" value="75" oninput="this.nextElementSibling.textContent=this.value+'%'">
+        <span class="sr-opacity-val">75%</span>
+      </div>
     </div>
 
     <div class="form-actions">
@@ -467,15 +645,65 @@
 
 <script>
   var WEB_APP_URL = '<?= webAppUrl ?>';
-  // URL publique GitHub Pages — à configurer après déploiement GitHub
   var PUBLIC_PAGE_URL = '<?= webAppUrl.replace(/\/exec$/, "") ?>/exec';
   var GITHUB_PAGES_URL = localStorage.getItem('githubPagesUrl') || 'https://smbrdd.github.io/DD-EventGenerator';
   var imageBase64 = null;
   var imageFilename = null;
 
+  // ── Style defaults (per field) ──
+  var STYLE_DEFAULTS = {
+    title:             { fontSize: 94, colorType: 'gradient', color1: '#F43D46', color2: '#FD4D26', opacity: 100 },
+    subtitle:          { fontSize: 27, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70 },
+    preCountdownText:  { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60 },
+    postCountdownText: { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60 },
+    progressLabel:     { fontSize: 22, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70 },
+    optionalText:      { fontSize: 26, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 75 }
+  };
+  var STYLE_FIELDS = Object.keys(STYLE_DEFAULTS);
+
+  // ── Style helpers ──
+  function toggleColor2(selectEl) {
+    var row = selectEl.closest('.style-row');
+    var c2 = row.querySelector('.sr-color2');
+    c2.style.display = (selectEl.value === 'gradient') ? '' : 'none';
+  }
+
+  function getFieldStyle(field) {
+    var row = document.querySelector('.style-row[data-field="' + field + '"]');
+    if (!row) return STYLE_DEFAULTS[field];
+    return {
+      fontSize:  parseInt(row.querySelector('.sr-size').value, 10) || STYLE_DEFAULTS[field].fontSize,
+      colorType: row.querySelector('.sr-color-type').value,
+      color1:    row.querySelector('.sr-color1').value,
+      color2:    row.querySelector('.sr-color2').value,
+      opacity:   parseInt(row.querySelector('.sr-opacity').value, 10)
+    };
+  }
+
+  function setFieldStyle(field, style) {
+    var d = STYLE_DEFAULTS[field];
+    var s = style || d;
+    var row = document.querySelector('.style-row[data-field="' + field + '"]');
+    if (!row) return;
+    row.querySelector('.sr-size').value = s.fontSize || d.fontSize;
+    var sel = row.querySelector('.sr-color-type');
+    sel.value = s.colorType || d.colorType;
+    row.querySelector('.sr-color1').value = s.color1 || d.color1;
+    row.querySelector('.sr-color2').value = s.color2 || d.color2;
+    var op = s.opacity !== undefined && s.opacity !== '' ? s.opacity : d.opacity;
+    row.querySelector('.sr-opacity').value = op;
+    row.querySelector('.sr-opacity-val').textContent = op + '%';
+    toggleColor2(sel);
+  }
+
+  function resetAllStyles() {
+    STYLE_FIELDS.forEach(function(f) { setFieldStyle(f, null); });
+  }
+
   // ── Init ──
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('ghPagesUrl').value = GITHUB_PAGES_URL;
+    resetAllStyles();
     loadEvents();
   });
 
@@ -606,7 +834,13 @@
         showDays: document.getElementById('showDays').checked,
         showHours: document.getElementById('showHours').checked,
         showMinutes: document.getElementById('showMinutes').checked,
-        showSeconds: document.getElementById('showSeconds').checked
+        showSeconds: document.getElementById('showSeconds').checked,
+        titleStyle: JSON.stringify(getFieldStyle('title')),
+        subtitleStyle: JSON.stringify(getFieldStyle('subtitle')),
+        preCountdownStyle: JSON.stringify(getFieldStyle('preCountdownText')),
+        postCountdownStyle: JSON.stringify(getFieldStyle('postCountdownText')),
+        progressLabelStyle: JSON.stringify(getFieldStyle('progressLabel')),
+        optionalTextStyle: JSON.stringify(getFieldStyle('optionalText'))
       };
 
       google.script.run
@@ -663,10 +897,18 @@
         document.getElementById('showHours').checked = String(ev.showHours) !== 'false';
         document.getElementById('showMinutes').checked = String(ev.showMinutes) !== 'false';
         document.getElementById('showSeconds').checked = String(ev.showSeconds) !== 'false';
+
+        // Restore styles
+        setFieldStyle('title', safeParse(ev.titleStyle));
+        setFieldStyle('subtitle', safeParse(ev.subtitleStyle));
+        setFieldStyle('preCountdownText', safeParse(ev.preCountdownStyle));
+        setFieldStyle('postCountdownText', safeParse(ev.postCountdownStyle));
+        setFieldStyle('progressLabel', safeParse(ev.progressLabelStyle));
+        setFieldStyle('optionalText', safeParse(ev.optionalTextStyle));
+
         selectFormat(ev.format || 'landscape');
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
-        // Show existing image
         if (ev.backgroundImageId) {
           var imgUrl = 'https://drive.google.com/uc?export=view&id=' + ev.backgroundImageId;
           dropZone.innerHTML = '<img src="' + imgUrl + '" class="preview" alt="Aperçu"><p style="margin-top:.5rem;color:#8b949e;font-size:.8rem;">Image actuelle</p>';
@@ -722,12 +964,12 @@
     document.getElementById('showHours').checked = true;
     document.getElementById('showMinutes').checked = true;
     document.getElementById('showSeconds').checked = true;
+    resetAllStyles();
     selectFormat('landscape');
     dropZone.innerHTML = '<p>Glissez une image ici ou cliquez pour sélectionner</p><input type="file" id="imageInput" accept="image/*">';
     imageBase64 = null;
     imageFilename = null;
 
-    // Re-bind file input
     var newInput = document.getElementById('imageInput');
     newInput.addEventListener('change', function() {
       if (this.files.length) handleFile(this.files[0]);
@@ -744,6 +986,11 @@
   }
 
   // ── Helpers ──
+  function safeParse(str) {
+    if (!str) return null;
+    try { return JSON.parse(str); } catch(e) { return null; }
+  }
+
   function showLoading(show) {
     document.getElementById('loading').classList.toggle('active', show);
   }
