@@ -128,16 +128,19 @@
     .fx-shimmer { display: none; }
 
     .fx-glow {
-      position: absolute; inset: -30%; z-index: 0; pointer-events: none;
-      width: 160%; height: 160%;
-      background: radial-gradient(ellipse at 50% 50%, rgba(255,160,0,.8) 0%, rgba(255,190,0,.35) 35%, transparent 65%);
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: blur(25px) brightness(1.8) saturate(1.3);
+      mix-blend-mode: screen;
       animation: fxGlowPulse 6s ease-in-out infinite;
       animation-delay: 2s;
     }
     @keyframes fxGlowPulse {
-      0%   { opacity: 0.1; transform: scale(0.85); }
-      50%  { opacity: 0.85; transform: scale(1.1); }
-      100% { opacity: 0.1; transform: scale(0.85); }
+      0%   { opacity: 0; }
+      50%  { opacity: 0.7; }
+      100% { opacity: 0; }
     }
 
     .fx-rays {
@@ -474,11 +477,15 @@
   function startAchievementFX() {
     var frame = document.querySelector('.page-frame');
     var bg = frame.querySelector('.bg');
-    // Glow juste après l'image de fond (sous les gradients)
+    // Bloom glow : copie l'image de fond, floutée en mode screen
     var glow = document.createElement('div');
     glow.className = 'fx-glow';
-    if (bg && bg.nextSibling) { bg.parentNode.insertBefore(glow, bg.nextSibling); }
-    else { frame.insertBefore(glow, frame.firstChild); }
+    if (bg) {
+      var bgStyle = window.getComputedStyle(bg);
+      glow.style.backgroundImage = bgStyle.backgroundImage;
+      glow.style.backgroundPosition = bgStyle.backgroundPosition;
+      bg.parentNode.insertBefore(glow, bg.nextSibling);
+    } else { frame.insertBefore(glow, frame.firstChild); }
     // God rays
     var rays = document.createElement('div');
     rays.className = 'fx-rays';
