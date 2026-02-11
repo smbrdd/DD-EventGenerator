@@ -19,6 +19,85 @@
       max-width: 960px;
       margin: 0 auto;
       padding: 2rem 1.5rem;
+      transition: max-width .3s;
+    }
+
+    .container.with-preview {
+      max-width: 1600px;
+    }
+
+    .edit-layout {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .edit-layout .form-section {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ── Preview panel ── */
+    .preview-panel {
+      display: none;
+      width: 480px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 1rem;
+    }
+
+    .preview-panel.active {
+      display: block;
+    }
+
+    .preview-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .7rem 1rem;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .preview-header span {
+      font-size: .85rem;
+      font-weight: 600;
+      color: #c9d1d9;
+    }
+
+    .preview-header .preview-actions {
+      display: flex;
+      gap: .4rem;
+    }
+
+    .preview-iframe-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    .preview-iframe-wrap.portrait {
+      aspect-ratio: 9 / 16;
+      max-height: 700px;
+    }
+
+    .preview-iframe-wrap iframe {
+      width: 1920px;
+      height: 1080px;
+      border: none;
+      transform-origin: top left;
+    }
+
+    .preview-iframe-wrap.portrait iframe {
+      width: 1080px;
+      height: 1920px;
     }
 
     header {
@@ -445,7 +524,8 @@
   <!-- Events list -->
   <div class="events-list" id="eventsList"></div>
 
-  <!-- Form -->
+  <!-- Form + Preview layout -->
+  <div class="edit-layout">
   <div class="form-section">
     <h2 id="formTitle">Nouvel événement</h2>
 
@@ -667,6 +747,24 @@
       <button class="btn btn-secondary" onclick="resetForm()">Annuler</button>
     </div>
   </div>
+
+  <!-- Preview panel -->
+  <div class="preview-panel" id="previewPanel">
+    <div class="preview-card">
+      <div class="preview-header">
+        <span>Aperçu</span>
+        <div class="preview-actions">
+          <button class="btn btn-secondary btn-small" onclick="refreshPreview()">↻ Rafraîchir</button>
+          <button class="btn btn-secondary btn-small" onclick="window.open(previewCurrentUrl, '_blank')">↗ Ouvrir</button>
+        </div>
+      </div>
+      <div class="preview-iframe-wrap" id="previewWrap">
+        <iframe id="previewIframe" sandbox="allow-scripts allow-same-origin"></iframe>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /edit-layout -->
 </div>
 
 <script>
@@ -732,6 +830,57 @@
   function resetAllStyles() {
     STYLE_FIELDS.forEach(function(f) { setFieldStyle(f, null); });
   }
+
+  // ── Preview ──
+  var previewCurrentUrl = '';
+
+  function showPreview(eventId) {
+    if (!GITHUB_PAGES_URL || !eventId) { hidePreview(); return; }
+    previewCurrentUrl = getPublicUrl(eventId);
+    var panel = document.getElementById('previewPanel');
+    var wrap = document.getElementById('previewWrap');
+    var iframe = document.getElementById('previewIframe');
+    var fmt = document.getElementById('format').value || 'landscape';
+
+    wrap.classList.toggle('portrait', fmt === 'portrait');
+    panel.classList.add('active');
+    document.querySelector('.container').classList.add('with-preview');
+
+    iframe.src = previewCurrentUrl;
+    scalePreviewIframe();
+  }
+
+  function hidePreview() {
+    document.getElementById('previewPanel').classList.remove('active');
+    document.querySelector('.container').classList.remove('with-preview');
+    document.getElementById('previewIframe').src = 'about:blank';
+    previewCurrentUrl = '';
+  }
+
+  function refreshPreview() {
+    var iframe = document.getElementById('previewIframe');
+    if (previewCurrentUrl) {
+      iframe.src = 'about:blank';
+      setTimeout(function() { iframe.src = previewCurrentUrl; }, 100);
+    }
+  }
+
+  function scalePreviewIframe() {
+    var wrap = document.getElementById('previewWrap');
+    var iframe = document.getElementById('previewIframe');
+    var isPortrait = wrap.classList.contains('portrait');
+    var srcW = isPortrait ? 1080 : 1920;
+    var wrapW = wrap.clientWidth;
+    var scale = wrapW / srcW;
+    iframe.style.transform = 'scale(' + scale + ')';
+    wrap.style.height = (isPortrait ? 1920 : 1080) * scale + 'px';
+  }
+
+  window.addEventListener('resize', function() {
+    if (document.getElementById('previewPanel').classList.contains('active')) {
+      scalePreviewIframe();
+    }
+  });
 
   // ── Init ──
   document.addEventListener('DOMContentLoaded', function() {
@@ -880,8 +1029,13 @@
         .withSuccessHandler(function() {
           showLoading(false);
           toast('Événement enregistré !');
-          resetForm();
           loadEvents();
+          // Si on éditait, rafraîchir le preview au lieu de fermer
+          if (id && previewCurrentUrl) {
+            setTimeout(refreshPreview, 500);
+          } else {
+            resetForm();
+          }
         })
         .withFailureHandler(function(err) {
           showLoading(false);
@@ -943,13 +1097,14 @@
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
         if (ev.backgroundImageId) {
-          var imgUrl = 'https://drive.google.com/uc?export=view&id=' + ev.backgroundImageId;
+          var imgUrl = 'https://lh3.googleusercontent.com/d/' + ev.backgroundImageId;
           dropZone.innerHTML = '<img src="' + imgUrl + '" class="preview" alt="Aperçu"><p style="margin-top:.5rem;color:#8b949e;font-size:.8rem;">Image actuelle</p>';
         }
 
         imageBase64 = null;
         imageFilename = null;
 
+        showPreview(ev.id);
         document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
       })
       .withFailureHandler(function(err) {
@@ -978,6 +1133,7 @@
 
   // ── Reset form ──
   function resetForm() {
+    hidePreview();
     document.getElementById('eventId').value = '';
     document.getElementById('currentImageId').value = '';
     document.getElementById('title').value = '';
