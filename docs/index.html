@@ -100,6 +100,70 @@
       to { opacity: 1; }
     }
 
+    /* ── 100% achievement FX ── */
+    .fx-vignette {
+      position: absolute; inset: 0; z-index: 4; pointer-events: none;
+      box-shadow: inset 0 0 120px 40px rgba(255,215,0,.0);
+      animation: fxVignettePulse 4s ease-in-out infinite;
+    }
+    @keyframes fxVignettePulse {
+      0%, 100% { box-shadow: inset 0 0 100px 30px rgba(255,215,0,.0); }
+      50%      { box-shadow: inset 0 0 150px 60px rgba(255,215,0,.15); }
+    }
+
+    .fx-shimmer {
+      position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden;
+    }
+    .fx-shimmer::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 40%; height: 200%;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,215,0,.12) 45%, rgba(255,250,205,.18) 50%, rgba(255,215,0,.12) 55%, transparent 70%);
+      animation: fxShimmerSweep 6s ease-in-out infinite;
+    }
+    @keyframes fxShimmerSweep {
+      0%   { transform: translateX(-20%) rotate(15deg); }
+      100% { transform: translateX(320%) rotate(15deg); }
+    }
+
+    .fx-glow {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse at 50% 50%, rgba(255,215,0,.0) 0%, transparent 70%);
+      animation: fxGlowPulse 5s ease-in-out infinite;
+    }
+    @keyframes fxGlowPulse {
+      0%, 100% { background: radial-gradient(ellipse at 50% 50%, rgba(255,215,0,.0) 0%, transparent 70%); }
+      50%      { background: radial-gradient(ellipse at 50% 50%, rgba(255,215,0,.1) 0%, transparent 70%); }
+    }
+
+    .fx-rays {
+      position: absolute; inset: -50%; z-index: 0; pointer-events: none;
+      width: 200%; height: 200%;
+      left: -50%; top: -50%;
+      background: conic-gradient(
+        from 0deg at 50% 50%,
+        transparent 0deg, rgba(255,215,0,.06) 10deg, transparent 20deg,
+        transparent 40deg, rgba(255,215,0,.06) 50deg, transparent 60deg,
+        transparent 80deg, rgba(255,215,0,.06) 90deg, transparent 100deg,
+        transparent 120deg, rgba(255,215,0,.06) 130deg, transparent 140deg,
+        transparent 160deg, rgba(255,215,0,.06) 170deg, transparent 180deg,
+        transparent 200deg, rgba(255,215,0,.06) 210deg, transparent 220deg,
+        transparent 240deg, rgba(255,215,0,.06) 250deg, transparent 260deg,
+        transparent 280deg, rgba(255,215,0,.06) 290deg, transparent 300deg,
+        transparent 320deg, rgba(255,215,0,.06) 330deg, transparent 340deg,
+        transparent 360deg
+      );
+      animation: fxRaysSpin 30s linear infinite;
+      opacity: 0;
+      transition: opacity 2s;
+    }
+    .fx-rays.active { opacity: 1; }
+    @keyframes fxRaysSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
     /* ── Title (gradient #F43D46 -> #FD4D26) ── */
     .title {
       font-size: clamp(3.4rem, 10vw, 5.9rem);
@@ -494,7 +558,7 @@
         document.getElementById('progressBar').style.width = progress + '%';
         document.getElementById('progressText').textContent = progress + '%';
       }, 300);
-      if (progress >= 100) setTimeout(startConfetti, 500);
+      if (progress >= 100) setTimeout(function() { startAchievementFX(); startConfetti(); }, 500);
     }
 
     // Optional text
@@ -597,6 +661,27 @@
   }
 
   // ── Gold confetti for 100% ──
+  function startAchievementFX() {
+    var frame = document.querySelector('.page-frame');
+    // God rays (behind content, inside page-frame)
+    var rays = document.createElement('div');
+    rays.className = 'fx-rays';
+    frame.insertBefore(rays, frame.firstChild);
+    setTimeout(function() { rays.classList.add('active'); }, 100);
+    // Glow on bg
+    var glow = document.createElement('div');
+    glow.className = 'fx-glow';
+    frame.insertBefore(glow, frame.children[1]);
+    // Vignette
+    var vig = document.createElement('div');
+    vig.className = 'fx-vignette';
+    frame.appendChild(vig);
+    // Shimmer
+    var shim = document.createElement('div');
+    shim.className = 'fx-shimmer';
+    frame.appendChild(shim);
+  }
+
   function startConfetti() {
     var canvas = document.createElement('canvas');
     canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
