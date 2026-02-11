@@ -59,6 +59,7 @@
       background-size: cover;
       background-position: center;
       z-index: 1;
+      mix-blend-mode: screen;
     }
 
     .portrait .bg-gradient-overlay {
@@ -408,6 +409,8 @@
       gOverlay.classList.remove('hidden');
       var gOp = ev.gradientOpacity !== undefined && ev.gradientOpacity !== '' ? ev.gradientOpacity : 50;
       gOverlay.style.opacity = gOp / 100;
+      // Amplify gradient brightness: at 100% → brightness(2.5) for stronger screen effect
+      gOverlay.style.filter = 'brightness(' + (1 + (gOp / 100) * 1.5) + ')';
     }
 
     // Pre-countdown text
