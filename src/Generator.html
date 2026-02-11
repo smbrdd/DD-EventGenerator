@@ -348,6 +348,26 @@
       min-width: 28px;
     }
 
+    .style-row .sr-uppercase {
+      padding: .2rem .5rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 5px;
+      color: #8b949e;
+      font-size: .75rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      line-height: 1;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+
+    .style-row .sr-uppercase.active {
+      background: #667eea;
+      color: #fff;
+      border-color: #667eea;
+    }
+
     /* ── Empty state ── */
     .empty-state {
       text-align: center;
@@ -447,6 +467,7 @@
         <span class="sr-label">Taille</span>
         <input type="number" class="sr-size" value="94" min="8" max="300">
         <span class="sr-label">px</span>
+        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
         <div class="sr-sep"></div>
         <select class="sr-color-type" onchange="toggleColor2(this)">
           <option value="gradient">Gradient</option>
@@ -468,6 +489,7 @@
         <span class="sr-label">Taille</span>
         <input type="number" class="sr-size" value="27" min="8" max="200">
         <span class="sr-label">px</span>
+        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
         <div class="sr-sep"></div>
         <select class="sr-color-type" onchange="toggleColor2(this)">
           <option value="solid">Uni</option>
@@ -542,6 +564,7 @@
         <span class="sr-label">Taille</span>
         <input type="number" class="sr-size" value="21" min="8" max="200">
         <span class="sr-label">px</span>
+        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
         <div class="sr-sep"></div>
         <select class="sr-color-type" onchange="toggleColor2(this)">
           <option value="solid">Uni</option>
@@ -563,6 +586,7 @@
         <span class="sr-label">Taille</span>
         <input type="number" class="sr-size" value="21" min="8" max="200">
         <span class="sr-label">px</span>
+        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
         <div class="sr-sep"></div>
         <select class="sr-color-type" onchange="toggleColor2(this)">
           <option value="solid">Uni</option>
@@ -584,6 +608,7 @@
         <span class="sr-label">Taille</span>
         <input type="number" class="sr-size" value="22" min="8" max="200">
         <span class="sr-label">px</span>
+        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
         <div class="sr-sep"></div>
         <select class="sr-color-type" onchange="toggleColor2(this)">
           <option value="solid">Uni</option>
@@ -622,6 +647,7 @@
         <span class="sr-label">Taille</span>
         <input type="number" class="sr-size" value="26" min="8" max="200">
         <span class="sr-label">px</span>
+        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
         <div class="sr-sep"></div>
         <select class="sr-color-type" onchange="toggleColor2(this)">
           <option value="solid">Uni</option>
@@ -652,12 +678,12 @@
 
   // ── Style defaults (per field) ──
   var STYLE_DEFAULTS = {
-    title:             { fontSize: 94, colorType: 'gradient', color1: '#F43D46', color2: '#FD4D26', opacity: 100 },
-    subtitle:          { fontSize: 27, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70 },
-    preCountdownText:  { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60 },
-    postCountdownText: { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60 },
-    progressLabel:     { fontSize: 22, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70 },
-    optionalText:      { fontSize: 26, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 75 }
+    title:             { fontSize: 94, colorType: 'gradient', color1: '#F43D46', color2: '#FD4D26', opacity: 100, uppercase: false },
+    subtitle:          { fontSize: 27, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true },
+    preCountdownText:  { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true },
+    postCountdownText: { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true },
+    progressLabel:     { fontSize: 22, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true },
+    optionalText:      { fontSize: 26, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 75,  uppercase: false }
   };
   var STYLE_FIELDS = Object.keys(STYLE_DEFAULTS);
 
@@ -668,6 +694,10 @@
     c2.style.display = (selectEl.value === 'gradient') ? '' : 'none';
   }
 
+  function toggleUppercase(btn) {
+    btn.classList.toggle('active');
+  }
+
   function getFieldStyle(field) {
     var row = document.querySelector('.style-row[data-field="' + field + '"]');
     if (!row) return STYLE_DEFAULTS[field];
@@ -676,7 +706,8 @@
       colorType: row.querySelector('.sr-color-type').value,
       color1:    row.querySelector('.sr-color1').value,
       color2:    row.querySelector('.sr-color2').value,
-      opacity:   parseInt(row.querySelector('.sr-opacity').value, 10)
+      opacity:   parseInt(row.querySelector('.sr-opacity').value, 10),
+      uppercase: row.querySelector('.sr-uppercase').classList.contains('active')
     };
   }
 
@@ -693,6 +724,8 @@
     var op = s.opacity !== undefined && s.opacity !== '' ? s.opacity : d.opacity;
     row.querySelector('.sr-opacity').value = op;
     row.querySelector('.sr-opacity-val').textContent = op + '%';
+    var uc = s.uppercase !== undefined ? s.uppercase : (d.uppercase || false);
+    row.querySelector('.sr-uppercase').classList.toggle('active', uc);
     toggleColor2(sel);
   }
 
