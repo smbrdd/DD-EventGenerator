@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base target="_top">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #0a0a0a;
+      color: #fff;
+    }
+
+    /* ── Format dimensions ── */
+    .page-frame {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .page-frame.landscape {
+      max-width: 1920px;
+      max-height: 1080px;
+      aspect-ratio: 16 / 9;
+    }
+
+    .page-frame.portrait {
+      max-width: 1080px;
+      max-height: 1920px;
+      aspect-ratio: 9 / 16;
+    }
+
+    /* ── Background ── */
+    .bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 0;
+      filter: brightness(.45) saturate(1.1);
+    }
+
+    .bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,.3) 0%,
+        rgba(0,0,0,.6) 50%,
+        rgba(0,0,0,.8) 100%
+      );
+      z-index: 1;
+    }
+
+    /* ── Content ── */
+    .content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 720px;
+      width: 100%;
+      padding: 2rem 1.5rem;
+      animation: fadeUp .8s ease-out;
+    }
+
+    /* Portrait adjustments */
+    .portrait .content {
+      max-width: 520px;
+      padding: 2rem 1rem;
+    }
+
+    .portrait .title {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+    }
+
+    .portrait .countdown {
+      gap: .8rem;
+    }
+
+    .portrait .countdown-item {
+      min-width: 70px;
+      padding: .8rem 1rem;
+    }
+
+    .portrait .countdown-item .number {
+      font-size: 1.8rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.7);
+      margin-bottom: .5rem;
+    }
+
+    .title {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,.8) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ── Countdown ── */
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .countdown-item {
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 1rem 1.2rem;
+      min-width: 80px;
+    }
+
+    .countdown-item .number {
+      display: block;
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: .25rem;
+    }
+
+    .countdown-item .label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(255,255,255,.6);
+    }
+
+    .countdown-passed {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.7);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── Progress bar ── */
+    .progress-section {
+      margin-bottom: 2rem;
+    }
+
+    .progress-label {
+      font-size: .85rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.7);
+      margin-bottom: .6rem;
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(255,255,255,.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      width: 0%;
+      transition: width 1.5s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .progress-value {
+      font-size: .85rem;
+      font-weight: 600;
+      margin-top: .4rem;
+      color: rgba(255,255,255,.8);
+    }
+
+    /* ── Optional text ── */
+    .optional-text {
+      font-size: .95rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(255,255,255,.75);
+      max-width: 580px;
+      margin: 0 auto;
+      white-space: pre-line;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .countdown { gap: .6rem; }
+      .countdown-item { min-width: 65px; padding: .75rem .8rem; }
+      .countdown-item .number { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<? var bgUrl = event.backgroundImageId ? 'https://drive.google.com/uc?export=view&id=' + event.backgroundImageId : ''; ?>
+<? var fmt = event.format || 'landscape'; ?>
+
+<div class="page-frame <?= fmt ?>">
+
+<div class="bg" style="<? if (bgUrl) { ?>background-image: url('<?= bgUrl ?>');<?  } else { ?>background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);<?  } ?>"></div>
+<div class="bg-overlay"></div>
+
+<div class="content">
+
+  <? if (event.subtitle) { ?>
+    <p class="subtitle"><?= event.subtitle ?></p>
+  <? } ?>
+
+  <h1 class="title"><?= event.title ?></h1>
+
+  <? if (event.eventDate) { ?>
+    <div class="countdown" id="countdown">
+      <div class="countdown-item"><span class="number" id="days">--</span><span class="label">Jours</span></div>
+      <div class="countdown-item"><span class="number" id="hours">--</span><span class="label">Heures</span></div>
+      <div class="countdown-item"><span class="number" id="minutes">--</span><span class="label">Minutes</span></div>
+      <div class="countdown-item"><span class="number" id="seconds">--</span><span class="label">Secondes</span></div>
+    </div>
+    <div class="countdown-passed" id="countdownPassed" style="display:none;">L'événement a commencé !</div>
+  <? } ?>
+
+  <? if (parseInt(event.progress) > 0) { ?>
+    <div class="progress-section">
+      <p class="progress-label">Avancement du projet</p>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <p class="progress-value" id="progressText">0%</p>
+    </div>
+  <? } ?>
+
+  <? if (event.optionalText) { ?>
+    <p class="optional-text"><?= event.optionalText ?></p>
+  <? } ?>
+
+</div>
+
+</div><!-- .page-frame -->
+
+<script>
+  // ── Countdown ──
+  (function() {
+    var dateStr = '<?= event.eventDate ?>';
+    if (!dateStr) return;
+
+    var target = new Date(dateStr + 'T00:00:00');
+    var countdownEl = document.getElementById('countdown');
+    var passedEl = document.getElementById('countdownPassed');
+    var daysEl = document.getElementById('days');
+    var hoursEl = document.getElementById('hours');
+    var minutesEl = document.getElementById('minutes');
+    var secondsEl = document.getElementById('seconds');
+
+    function update() {
+      var now = new Date();
+      var diff = target - now;
+
+      if (diff <= 0) {
+        if (countdownEl) countdownEl.style.display = 'none';
+        if (passedEl) passedEl.style.display = 'block';
+        return;
+      }
+
+      var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      var h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      var s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      if (daysEl) daysEl.textContent = d;
+      if (hoursEl) hoursEl.textContent = String(h).padStart(2, '0');
+      if (minutesEl) minutesEl.textContent = String(m).padStart(2, '0');
+      if (secondsEl) secondsEl.textContent = String(s).padStart(2, '0');
+    }
+
+    update();
+    setInterval(update, 1000);
+  })();
+
+  // ── Progress bar animation ──
+  (function() {
+    var progress = parseInt('<?= event.progress ?>', 10) || 0;
+    var bar = document.getElementById('progressBar');
+    var text = document.getElementById('progressText');
+    if (!bar) return;
+
+    setTimeout(function() {
+      bar.style.width = progress + '%';
+      if (text) text.textContent = progress + '%';
+    }, 300);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base target="_top">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f1117;
+      color: #e1e4e8;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: .3rem;
+    }
+
+    header p {
+      color: #8b949e;
+      font-size: .9rem;
+    }
+
+    /* ── Cards list ── */
+    .events-list {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .event-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: border-color .2s;
+    }
+
+    .event-card:hover { border-color: #667eea; }
+
+    .event-card .thumb {
+      width: 60px; height: 60px;
+      border-radius: 8px;
+      background-size: cover;
+      background-position: center;
+      background-color: #21262d;
+      flex-shrink: 0;
+    }
+
+    .event-card .info { flex: 1; min-width: 0; }
+    .event-card .info h3 { font-size: 1rem; font-weight: 600; margin-bottom: .15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event-card .info span { color: #8b949e; font-size: .8rem; }
+
+    .event-card .actions { display: flex; gap: .5rem; flex-shrink: 0; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: .8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity .2s;
+      font-family: inherit;
+    }
+
+    .btn:hover { opacity: .85; }
+
+    .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+    .btn-secondary { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+    .btn-danger { background: #da3633; color: #fff; }
+    .btn-small { padding: .4rem .7rem; font-size: .75rem; }
+    .btn-copy { background: #238636; color: #fff; }
+
+    /* ── Form ── */
+    .form-section {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 2rem;
+    }
+
+    .form-section h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .form-group { margin-bottom: 1.2rem; }
+
+    .form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 500;
+      color: #c9d1d9;
+      margin-bottom: .4rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="date"],
+    .form-group input[type="number"],
+    .form-group textarea {
+      width: 100%;
+      padding: .65rem .9rem;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      color: #e1e4e8;
+      font-size: .9rem;
+      font-family: inherit;
+      transition: border-color .2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    /* Slider */
+    .slider-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .slider-wrapper input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 6px;
+      background: #30363d;
+      border-radius: 3px;
+      outline: none;
+    }
+
+    .slider-wrapper input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .slider-value {
+      min-width: 40px;
+      text-align: center;
+      font-weight: 600;
+      font-size: .95rem;
+    }
+
+    /* Format selector */
+    .format-selector {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .format-option {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      padding: 1rem;
+      background: #0d1117;
+      border: 2px solid #30363d;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+
+    .format-option:hover { border-color: #484f58; }
+    .format-option.selected { border-color: #667eea; background: rgba(102, 126, 234, .06); }
+
+    .format-option span { font-size: .85rem; font-weight: 600; color: #c9d1d9; }
+    .format-option small { font-size: .7rem; color: #8b949e; }
+
+    .format-preview {
+      border: 2px solid #484f58;
+      border-radius: 4px;
+      background: #21262d;
+    }
+
+    .format-preview.landscape { width: 64px; height: 36px; }
+    .format-preview.portrait { width: 36px; height: 64px; }
+
+    /* Drop zone */
+    .drop-zone {
+      border: 2px dashed #30363d;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+
+    .drop-zone.dragover {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, .05);
+    }
+
+    .drop-zone p { color: #8b949e; font-size: .85rem; }
+    .drop-zone input { display: none; }
+
+    .drop-zone .preview {
+      max-height: 180px;
+      border-radius: 8px;
+      margin-top: .5rem;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: .8rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #8b949e;
+    }
+
+    .empty-state p { font-size: .95rem; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #238636;
+      color: #fff;
+      padding: .7rem 1.2rem;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .3s, transform .3s;
+      z-index: 999;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ── Loading ── */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 17, 23, .7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loading-overlay.active { display: flex; }
+
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid #30363d;
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loading"><div class="spinner"></div></div>
+<div class="toast" id="toast"></div>
+
+<div class="container">
+  <header>
+    <h1>DD-EventGenerator</h1>
+    <p>Générateur de pages événements</p>
+  </header>
+
+  <!-- GitHub Pages URL config -->
+  <div class="form-section" style="margin-bottom:1.5rem;padding:1.2rem 1.5rem;">
+    <div class="form-group" style="margin-bottom:0;">
+      <label for="ghPagesUrl">URL GitHub Pages (pour les liens publics sans bandeau Google)</label>
+      <div style="display:flex;gap:.5rem;">
+        <input type="text" id="ghPagesUrl" placeholder="https://votre-user.github.io/dd-events" style="flex:1;">
+        <button class="btn btn-primary btn-small" onclick="saveGhUrl()">Sauver</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Events list -->
+  <div class="events-list" id="eventsList"></div>
+
+  <!-- Form -->
+  <div class="form-section">
+    <h2 id="formTitle">Nouvel événement</h2>
+
+    <input type="hidden" id="eventId">
+    <input type="hidden" id="currentImageId">
+
+    <div class="form-group">
+      <label>Image de fond</label>
+      <div class="drop-zone" id="dropZone">
+        <p>Glissez une image ici ou cliquez pour sélectionner</p>
+        <input type="file" id="imageInput" accept="image/*">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="title">Titre</label>
+      <input type="text" id="title" placeholder="Nom de l'événement">
+    </div>
+
+    <div class="form-group">
+      <label for="subtitle">Sous-titre</label>
+      <input type="text" id="subtitle" placeholder="Description courte">
+    </div>
+
+    <div class="form-group">
+      <label for="eventDate">Date de l'événement</label>
+      <input type="date" id="eventDate">
+    </div>
+
+    <div class="form-group">
+      <label>Avancement du projet</label>
+      <div class="slider-wrapper">
+        <input type="range" id="progress" min="0" max="100" value="0">
+        <span class="slider-value" id="progressValue">0%</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Format de la page</label>
+      <div class="format-selector">
+        <label class="format-option selected" id="formatLandscape" onclick="selectFormat('landscape')">
+          <div class="format-preview landscape"></div>
+          <span>1920 x 1080</span>
+          <small>Paysage</small>
+        </label>
+        <label class="format-option" id="formatPortrait" onclick="selectFormat('portrait')">
+          <div class="format-preview portrait"></div>
+          <span>1080 x 1920</span>
+          <small>Portrait</small>
+        </label>
+      </div>
+      <input type="hidden" id="format" value="landscape">
+    </div>
+
+    <div class="form-group">
+      <label for="optionalText">Texte optionnel</label>
+      <textarea id="optionalText" placeholder="Informations complémentaires…"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="saveEvent()">Enregistrer</button>
+      <button class="btn btn-secondary" onclick="resetForm()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var WEB_APP_URL = '<?= webAppUrl ?>';
+  // URL publique GitHub Pages — à configurer après déploiement GitHub
+  var PUBLIC_PAGE_URL = '<?= webAppUrl.replace(/\/exec$/, "") ?>/exec';
+  var GITHUB_PAGES_URL = localStorage.getItem('githubPagesUrl') || '';
+  var imageBase64 = null;
+  var imageFilename = null;
+
+  // ── Init ──
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('ghPagesUrl').value = GITHUB_PAGES_URL;
+    loadEvents();
+  });
+
+  function saveGhUrl() {
+    var url = document.getElementById('ghPagesUrl').value.trim().replace(/\/+$/, '');
+    localStorage.setItem('githubPagesUrl', url);
+    GITHUB_PAGES_URL = url;
+    toast(url ? 'URL GitHub Pages sauvegardée !' : 'URL GitHub Pages supprimée');
+    loadEvents();
+  }
+
+  function getPublicUrl(eventId) {
+    if (GITHUB_PAGES_URL) {
+      return GITHUB_PAGES_URL + '?id=' + eventId;
+    }
+    return WEB_APP_URL + '?id=' + eventId;
+  }
+
+  // ── Slider ──
+  document.getElementById('progress').addEventListener('input', function() {
+    document.getElementById('progressValue').textContent = this.value + '%';
+  });
+
+  // ── Drop zone ──
+  var dropZone = document.getElementById('dropZone');
+  var imageInput = document.getElementById('imageInput');
+
+  dropZone.addEventListener('click', function() { imageInput.click(); });
+  dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('dragover'); });
+  dropZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  imageInput.addEventListener('change', function() {
+    if (this.files.length) handleFile(this.files[0]);
+  });
+
+  // ── Format selector ──
+  function selectFormat(fmt) {
+    document.getElementById('format').value = fmt;
+    document.getElementById('formatLandscape').classList.toggle('selected', fmt === 'landscape');
+    document.getElementById('formatPortrait').classList.toggle('selected', fmt === 'portrait');
+  }
+
+  function handleFile(file) {
+    if (!file.type.startsWith('image/')) { toast('Veuillez sélectionner une image', true); return; }
+    imageFilename = file.name;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var base64Full = e.target.result;
+      imageBase64 = base64Full.split(',')[1];
+      dropZone.innerHTML = '<img src="' + base64Full + '" class="preview" alt="Aperçu"><p style="margin-top:.5rem;color:#8b949e;font-size:.8rem;">' + file.name + '</p>';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── Load events ──
+  function loadEvents() {
+    showLoading(true);
+    google.script.run
+      .withSuccessHandler(function(events) {
+        renderEvents(events);
+        showLoading(false);
+      })
+      .withFailureHandler(function(err) {
+        console.error(err);
+        showLoading(false);
+        toast('Erreur lors du chargement', true);
+      })
+      .getEvents();
+  }
+
+  function renderEvents(events) {
+    var container = document.getElementById('eventsList');
+    if (!events || !events.length) {
+      container.innerHTML = '<div class="empty-state"><p>Aucun événement. Créez-en un ci-dessous.</p></div>';
+      return;
+    }
+    var html = '';
+    events.forEach(function(ev) {
+      var thumbStyle = ev.backgroundImageId
+        ? 'background-image:url(https://drive.google.com/uc?export=view&id=' + ev.backgroundImageId + ')'
+        : '';
+      var publicUrl = getPublicUrl(ev.id);
+      html += '<div class="event-card">'
+        + '<div class="thumb" style="' + thumbStyle + '"></div>'
+        + '<div class="info">'
+        + '<h3>' + escapeHtml(ev.title) + '</h3>'
+        + '<span>' + (ev.eventDate || 'Pas de date') + ' — ' + (ev.progress || 0) + '% — ' + (ev.format === 'portrait' ? '1080x1920' : '1920x1080') + '</span>'
+        + '</div>'
+        + '<div class="actions">'
+        + '<button class="btn btn-copy btn-small" onclick="copyUrl(\'' + publicUrl + '\')">Copier URL</button>'
+        + '<button class="btn btn-secondary btn-small" onclick="editEvent(\'' + ev.id + '\')">Éditer</button>'
+        + '<button class="btn btn-danger btn-small" onclick="confirmDelete(\'' + ev.id + '\')">Suppr.</button>'
+        + '</div>'
+        + '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  // ── Save ──
+  function saveEvent() {
+    var title = document.getElementById('title').value.trim();
+    if (!title) { toast('Le titre est requis', true); return; }
+
+    showLoading(true);
+    var id = document.getElementById('eventId').value;
+    var currentImageId = document.getElementById('currentImageId').value;
+
+    function doSave(bgId) {
+      var data = {
+        id: id || null,
+        title: title,
+        subtitle: document.getElementById('subtitle').value.trim(),
+        eventDate: document.getElementById('eventDate').value,
+        progress: parseInt(document.getElementById('progress').value, 10),
+        optionalText: document.getElementById('optionalText').value.trim(),
+        backgroundImageId: bgId || currentImageId || '',
+        format: document.getElementById('format').value
+      };
+
+      google.script.run
+        .withSuccessHandler(function() {
+          showLoading(false);
+          toast('Événement enregistré !');
+          resetForm();
+          loadEvents();
+        })
+        .withFailureHandler(function(err) {
+          showLoading(false);
+          toast('Erreur: ' + err.message, true);
+        })
+        .createOrUpdateEvent(data);
+    }
+
+    if (imageBase64) {
+      google.script.run
+        .withSuccessHandler(function(fileId) {
+          doSave(fileId);
+        })
+        .withFailureHandler(function(err) {
+          showLoading(false);
+          toast('Erreur upload image: ' + err.message, true);
+        })
+        .uploadImage(imageBase64, imageFilename, currentImageId);
+    } else {
+      doSave(null);
+    }
+  }
+
+  // ── Edit ──
+  function editEvent(id) {
+    showLoading(true);
+    google.script.run
+      .withSuccessHandler(function(ev) {
+        showLoading(false);
+        if (!ev) { toast('Événement introuvable', true); return; }
+        document.getElementById('eventId').value = ev.id;
+        document.getElementById('currentImageId').value = ev.backgroundImageId || '';
+        document.getElementById('title').value = ev.title;
+        document.getElementById('subtitle').value = ev.subtitle;
+        document.getElementById('eventDate').value = ev.eventDate;
+        document.getElementById('progress').value = ev.progress || 0;
+        document.getElementById('progressValue').textContent = (ev.progress || 0) + '%';
+        document.getElementById('optionalText').value = ev.optionalText;
+        selectFormat(ev.format || 'landscape');
+        document.getElementById('formTitle').textContent = 'Modifier l\'événement';
+
+        // Show existing image
+        if (ev.backgroundImageId) {
+          var imgUrl = 'https://drive.google.com/uc?export=view&id=' + ev.backgroundImageId;
+          dropZone.innerHTML = '<img src="' + imgUrl + '" class="preview" alt="Aperçu"><p style="margin-top:.5rem;color:#8b949e;font-size:.8rem;">Image actuelle</p>';
+        }
+
+        imageBase64 = null;
+        imageFilename = null;
+
+        document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+      })
+      .withFailureHandler(function(err) {
+        showLoading(false);
+        toast('Erreur: ' + err.message, true);
+      })
+      .getEvent(id);
+  }
+
+  // ── Delete ──
+  function confirmDelete(id) {
+    if (!confirm('Supprimer cet événement ?')) return;
+    showLoading(true);
+    google.script.run
+      .withSuccessHandler(function() {
+        showLoading(false);
+        toast('Événement supprimé');
+        loadEvents();
+      })
+      .withFailureHandler(function(err) {
+        showLoading(false);
+        toast('Erreur: ' + err.message, true);
+      })
+      .deleteEvent(id);
+  }
+
+  // ── Reset form ──
+  function resetForm() {
+    document.getElementById('eventId').value = '';
+    document.getElementById('currentImageId').value = '';
+    document.getElementById('title').value = '';
+    document.getElementById('subtitle').value = '';
+    document.getElementById('eventDate').value = '';
+    document.getElementById('progress').value = 0;
+    document.getElementById('progressValue').textContent = '0%';
+    document.getElementById('optionalText').value = '';
+    document.getElementById('formTitle').textContent = 'Nouvel événement';
+    selectFormat('landscape');
+    dropZone.innerHTML = '<p>Glissez une image ici ou cliquez pour sélectionner</p><input type="file" id="imageInput" accept="image/*">';
+    imageBase64 = null;
+    imageFilename = null;
+
+    // Re-bind file input
+    var newInput = document.getElementById('imageInput');
+    newInput.addEventListener('change', function() {
+      if (this.files.length) handleFile(this.files[0]);
+    });
+  }
+
+  // ── Copy URL ──
+  function copyUrl(url) {
+    navigator.clipboard.writeText(url).then(function() {
+      toast('URL copiée !');
+    }).catch(function() {
+      prompt('Copiez cette URL :', url);
+    });
+  }
+
+  // ── Helpers ──
+  function showLoading(show) {
+    document.getElementById('loading').classList.toggle('active', show);
+  }
+
+  function toast(msg, isError) {
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.style.background = isError ? '#da3633' : '#238636';
+    el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 3000);
+  }
+
+  function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+</script>
+
+</body>
+</html>
