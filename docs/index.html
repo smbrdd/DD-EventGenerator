@@ -62,12 +62,7 @@
       mix-blend-mode: screen;
     }
 
-    .bg-darken {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,.35);
-      z-index: 2;
-    }
+    /* bg-darken removed — brightness now controlled dynamically */
 
     /* ── Content ── */
     .content {
@@ -257,7 +252,6 @@
 <div class="page-frame hidden" id="eventPage">
   <div class="bg" id="bgImage"></div>
   <div class="bg-gradient-overlay hidden" id="gradientOverlay"></div>
-  <div class="bg-darken"></div>
   <div class="content">
     <h1 class="title" id="title"></h1>
     <p class="subtitle hidden" id="subtitle"></p>
@@ -357,9 +351,10 @@
     frame.classList.add(ev.format || 'landscape');
 
     // Background
+    var bgBr = ev.bgBrightness !== undefined && ev.bgBrightness !== '' ? ev.bgBrightness : 40;
     if (ev.backgroundImageUrl) {
       document.getElementById('bgImage').style.backgroundImage = "url('" + ev.backgroundImageUrl + "')";
-      document.getElementById('bgImage').style.filter = 'brightness(.4) saturate(1.1)';
+      document.getElementById('bgImage').style.filter = 'brightness(' + (bgBr / 100) + ') saturate(1.1)';
     } else {
       document.getElementById('bgImage').style.background = '#000';
     }

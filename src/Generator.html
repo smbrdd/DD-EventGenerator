@@ -629,6 +629,14 @@
     </div>
 
     <div class="form-group">
+      <label>Luminosité de l'image de fond (0% = noir, 100% = image originale)</label>
+      <div class="slider-wrapper">
+        <input type="range" id="bgBrightness" min="0" max="100" value="40">
+        <span class="slider-value" id="bgBrightnessValue">40%</span>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label>Unités du compte à rebours à afficher</label>
       <div class="checkbox-row">
         <label class="checkbox-label">
@@ -936,6 +944,9 @@
   document.getElementById('gradientOpacity').addEventListener('input', function() {
     document.getElementById('gradientOpacityValue').textContent = this.value + '%';
   });
+  document.getElementById('bgBrightness').addEventListener('input', function() {
+    document.getElementById('bgBrightnessValue').textContent = this.value + '%';
+  });
 
   // ── Drop zone ──
   var dropZone = document.getElementById('dropZone');
@@ -1039,6 +1050,7 @@
         showProgress: document.getElementById('showProgress').checked,
         showGradient: document.getElementById('showGradient').checked,
         gradientOpacity: parseInt(document.getElementById('gradientOpacity').value, 10),
+        bgBrightness: parseInt(document.getElementById('bgBrightness').value, 10),
         progressLabel: document.getElementById('progressLabel').value.trim(),
         preCountdownText: document.getElementById('preCountdownText').value.trim(),
         postCountdownText: document.getElementById('postCountdownText').value.trim(),
@@ -1110,6 +1122,9 @@
         var gop = ev.gradientOpacity !== undefined && ev.gradientOpacity !== '' ? ev.gradientOpacity : 50;
         document.getElementById('gradientOpacity').value = gop;
         document.getElementById('gradientOpacityValue').textContent = gop + '%';
+        var bgb = ev.bgBrightness !== undefined && ev.bgBrightness !== '' ? ev.bgBrightness : 40;
+        document.getElementById('bgBrightness').value = bgb;
+        document.getElementById('bgBrightnessValue').textContent = bgb + '%';
         document.getElementById('progressLabel').value = ev.progressLabel || '';
         document.getElementById('preCountdownText').value = ev.preCountdownText || '';
         document.getElementById('postCountdownText').value = ev.postCountdownText || '';
@@ -1182,6 +1197,8 @@
     document.getElementById('showGradient').checked = true;
     document.getElementById('gradientOpacity').value = 50;
     document.getElementById('gradientOpacityValue').textContent = '50%';
+    document.getElementById('bgBrightness').value = 40;
+    document.getElementById('bgBrightnessValue').textContent = '40%';
     document.getElementById('progressLabel').value = '';
     document.getElementById('preCountdownText').value = '';
     document.getElementById('postCountdownText').value = '';
