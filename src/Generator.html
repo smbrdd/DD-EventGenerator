@@ -400,6 +400,28 @@
     </div>
 
     <div class="form-group">
+      <label>Unités du compte à rebours à afficher</label>
+      <div class="checkbox-row">
+        <label class="checkbox-label">
+          <input type="checkbox" id="showDays" checked>
+          <span>Jours</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="showHours" checked>
+          <span>Heures</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="showMinutes" checked>
+          <span>Minutes</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="showSeconds" checked>
+          <span>Secondes</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label for="progressLabel">Libellé de la barre d'avancement</label>
       <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
     </div>
@@ -580,7 +602,11 @@
         showGradient: document.getElementById('showGradient').checked,
         progressLabel: document.getElementById('progressLabel').value.trim(),
         preCountdownText: document.getElementById('preCountdownText').value.trim(),
-        postCountdownText: document.getElementById('postCountdownText').value.trim()
+        postCountdownText: document.getElementById('postCountdownText').value.trim(),
+        showDays: document.getElementById('showDays').checked,
+        showHours: document.getElementById('showHours').checked,
+        showMinutes: document.getElementById('showMinutes').checked,
+        showSeconds: document.getElementById('showSeconds').checked
       };
 
       google.script.run
@@ -633,6 +659,10 @@
         document.getElementById('progressLabel').value = ev.progressLabel || '';
         document.getElementById('preCountdownText').value = ev.preCountdownText || '';
         document.getElementById('postCountdownText').value = ev.postCountdownText || '';
+        document.getElementById('showDays').checked = String(ev.showDays) !== 'false';
+        document.getElementById('showHours').checked = String(ev.showHours) !== 'false';
+        document.getElementById('showMinutes').checked = String(ev.showMinutes) !== 'false';
+        document.getElementById('showSeconds').checked = String(ev.showSeconds) !== 'false';
         selectFormat(ev.format || 'landscape');
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
@@ -688,6 +718,10 @@
     document.getElementById('progressLabel').value = '';
     document.getElementById('preCountdownText').value = '';
     document.getElementById('postCountdownText').value = '';
+    document.getElementById('showDays').checked = true;
+    document.getElementById('showHours').checked = true;
+    document.getElementById('showMinutes').checked = true;
+    document.getElementById('showSeconds').checked = true;
     selectFormat('landscape');
     dropZone.innerHTML = '<p>Glissez une image ici ou cliquez pour sélectionner</p><input type="file" id="imageInput" accept="image/*">';
     imageBase64 = null;

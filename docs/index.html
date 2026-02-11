@@ -288,7 +288,7 @@
       <div class="countdown-item" id="daysBlock"><span class="number" id="days">--</span><span class="label">Days</span></div>
       <div class="countdown-item" id="hoursBlock"><span class="number" id="hours">--</span><span class="label">Hours</span></div>
       <div class="countdown-item" id="minutesBlock"><span class="number" id="minutes">--</span><span class="label">Minutes</span></div>
-      <div class="countdown-item"><span class="number" id="seconds">--</span><span class="label">Seconds</span></div>
+      <div class="countdown-item" id="secondsBlock"><span class="number" id="seconds">--</span><span class="label">Seconds</span></div>
     </div>
     <div class="countdown-passed hidden" id="countdownPassed">The event has started!</div>
     <p class="post-countdown-text hidden" id="postCountdownText"></p>
@@ -363,7 +363,12 @@
     // Countdown
     if (ev.eventDate && String(ev.showTimer) !== 'false') {
       document.getElementById('countdown').classList.remove('hidden');
-      startCountdown(ev.eventDate);
+      startCountdown(ev.eventDate, {
+        showDays: String(ev.showDays) !== 'false',
+        showHours: String(ev.showHours) !== 'false',
+        showMinutes: String(ev.showMinutes) !== 'false',
+        showSeconds: String(ev.showSeconds) !== 'false'
+      });
     }
 
     // Post-countdown text
@@ -397,7 +402,7 @@
     frame.classList.remove('hidden');
   }
 
-  function startCountdown(dateStr) {
+  function startCountdown(dateStr, units) {
     var target = new Date(dateStr + 'T00:00:00');
     var countdownEl = document.getElementById('countdown');
     var passedEl = document.getElementById('countdownPassed');
@@ -408,6 +413,13 @@
     var daysBlock = document.getElementById('daysBlock');
     var hoursBlock = document.getElementById('hoursBlock');
     var minutesBlock = document.getElementById('minutesBlock');
+    var secondsBlock = document.getElementById('secondsBlock');
+
+    // Masquer les unités désactivées par l'admin
+    if (!units.showDays) daysBlock.style.display = 'none';
+    if (!units.showHours) hoursBlock.style.display = 'none';
+    if (!units.showMinutes) minutesBlock.style.display = 'none';
+    if (!units.showSeconds) secondsBlock.style.display = 'none';
 
     function update() {
       var diff = target - new Date();
@@ -422,14 +434,27 @@
       var m = Math.floor((diff % 3600000) / 60000);
       var s = Math.floor((diff % 60000) / 1000);
 
-      daysEl.textContent = d;
-      hoursEl.textContent = String(h).padStart(2, '0');
-      minutesEl.textContent = String(m).padStart(2, '0');
-      secondsEl.textContent = String(s).padStart(2, '0');
+      // Si une unité est masquée, reporter sa valeur sur l'unité inférieure
+      if (!units.showDays) { h += d * 24; d = 0; }
+      if (!units.showHours) { m += h * 60; h = 0; }
+      if (!units.showMinutes) { s += m * 60; m = 0; }
 
-      daysBlock.style.display = (d === 0) ? 'none' : '';
-      hoursBlock.style.display = (d === 0 && h === 0) ? 'none' : '';
-      minutesBlock.style.display = (d === 0 && h === 0 && m === 0) ? 'none' : '';
+      if (units.showDays) {
+        daysEl.textContent = d;
+        // Masquer dynamiquement si valeur = 0
+        daysBlock.style.display = (d === 0) ? 'none' : '';
+      }
+      if (units.showHours) {
+        hoursEl.textContent = String(h).padStart(2, '0');
+        if (units.showDays) hoursBlock.style.display = (d === 0 && h === 0) ? 'none' : '';
+      }
+      if (units.showMinutes) {
+        minutesEl.textContent = String(m).padStart(2, '0');
+        if (units.showDays && units.showHours) minutesBlock.style.display = (d === 0 && h === 0 && m === 0) ? 'none' : '';
+      }
+      if (units.showSeconds) {
+        secondsEl.textContent = String(s).padStart(2, '0');
+      }
     }
 
     update();
