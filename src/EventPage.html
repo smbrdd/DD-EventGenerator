@@ -240,7 +240,9 @@
 
 <div class="page-frame <?= fmt ?>">
 
-<div class="bg" style="<? if (bgUrl) { ?>background-image: url('<?= bgUrl ?>');<?  } else { ?>background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);<?  } ?>"></div>
+<? var bpx = parseInt(event.bgPositionX) || 50; if (bpx < 0 || bpx > 100) bpx = 50; ?>
+<? var bpy = parseInt(event.bgPositionY) || 50; if (bpy < 0 || bpy > 100) bpy = 50; ?>
+<div class="bg" style="<? if (bgUrl) { ?>background-image: url('<?= bgUrl ?>'); background-position: <?= bpx ?>% <?= bpy ?>%;<?  } else { ?>background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);<?  } ?>"></div>
 <div class="bg-overlay"></div>
 
 <? var coy = parseInt(event.contentOffsetY) || 0; if (coy < 0 || coy > 100) coy = 0; ?>

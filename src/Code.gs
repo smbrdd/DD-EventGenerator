@@ -16,7 +16,7 @@
 var CONFIG = {
   SHEET_NAME: 'Events',
   FOLDER_NAME: 'EventGenerator-Images',
-  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name']
+  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY']
 };
 
 // ─── Routing ────────────────────────────────────────────────────
@@ -185,7 +185,9 @@ function buildRow_(data, createdAt, updatedAt) {
     data.optionalTextOffsetY !== undefined && data.optionalTextOffsetY !== '' ? data.optionalTextOffsetY : 0,
     createdAt,
     updatedAt,
-    data.name || ''
+    data.name || '',
+    data.bgPositionX !== undefined && data.bgPositionX !== '' ? data.bgPositionX : 50,
+    data.bgPositionY !== undefined && data.bgPositionY !== '' ? data.bgPositionY : 50
   ];
 }
 

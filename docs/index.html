@@ -369,8 +369,14 @@
     // Background
     var bgBr = ev.bgBrightness !== undefined && ev.bgBrightness !== '' ? ev.bgBrightness : 40;
     if (ev.backgroundImageUrl) {
-      document.getElementById('bgImage').style.backgroundImage = "url('" + ev.backgroundImageUrl + "')";
-      document.getElementById('bgImage').style.filter = 'brightness(' + (bgBr / 100) + ') saturate(1.1)';
+      var bgEl = document.getElementById('bgImage');
+      bgEl.style.backgroundImage = "url('" + ev.backgroundImageUrl + "')";
+      bgEl.style.filter = 'brightness(' + (bgBr / 100) + ') saturate(1.1)';
+      var bpx = parseInt(ev.bgPositionX, 10);
+      var bpy = parseInt(ev.bgPositionY, 10);
+      if (isNaN(bpx) || bpx < 0 || bpx > 100) bpx = 50;
+      if (isNaN(bpy) || bpy < 0 || bpy > 100) bpy = 50;
+      bgEl.style.backgroundPosition = bpx + '% ' + bpy + '%';
     } else {
       document.getElementById('bgImage').style.background = '#000';
     }

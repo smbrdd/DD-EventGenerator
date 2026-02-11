@@ -818,6 +818,23 @@
 
     <div class="sliders-inline expert-only">
       <div class="form-group">
+        <label>Position image X</label>
+        <div class="slider-wrapper">
+          <input type="range" id="bgPositionX" min="0" max="100" value="50">
+          <span class="slider-value" id="bgPositionXValue">50%</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Position image Y</label>
+        <div class="slider-wrapper">
+          <input type="range" id="bgPositionY" min="0" max="100" value="50">
+          <span class="slider-value" id="bgPositionYValue">50%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sliders-inline expert-only">
+      <div class="form-group">
         <label>Position verticale du contenu</label>
         <div class="slider-wrapper">
           <input type="range" id="contentOffsetY" min="0" max="100" value="0">
@@ -1234,6 +1251,12 @@
   document.getElementById('bgBrightness').addEventListener('input', function() {
     document.getElementById('bgBrightnessValue').textContent = this.value + '%';
   });
+  document.getElementById('bgPositionX').addEventListener('input', function() {
+    document.getElementById('bgPositionXValue').textContent = this.value + '%';
+  });
+  document.getElementById('bgPositionY').addEventListener('input', function() {
+    document.getElementById('bgPositionYValue').textContent = this.value + '%';
+  });
   document.getElementById('contentOffsetY').addEventListener('input', function() {
     document.getElementById('contentOffsetYValue').textContent = this.value + 'px';
   });
@@ -1376,7 +1399,9 @@
         optionalTextStyle: JSON.stringify(getFieldStyle('optionalText')),
         contentOffsetY: parseInt(document.getElementById('contentOffsetY').value, 10),
         optionalTextOffsetY: parseInt(document.getElementById('optionalTextOffsetY').value, 10),
-        name: document.getElementById('eventName').value.trim()
+        name: document.getElementById('eventName').value.trim(),
+        bgPositionX: parseInt(document.getElementById('bgPositionX').value, 10),
+        bgPositionY: parseInt(document.getElementById('bgPositionY').value, 10)
       };
 
       google.script.run
@@ -1445,6 +1470,15 @@
         document.getElementById('showHours').checked = String(ev.showHours) !== 'false';
         document.getElementById('showMinutes').checked = String(ev.showMinutes) !== 'false';
         document.getElementById('showSeconds').checked = String(ev.showSeconds) !== 'false';
+
+        var bgpx = parseInt(ev.bgPositionX, 10);
+        if (isNaN(bgpx) || bgpx < 0 || bgpx > 100) bgpx = 50;
+        document.getElementById('bgPositionX').value = bgpx;
+        document.getElementById('bgPositionXValue').textContent = bgpx + '%';
+        var bgpy = parseInt(ev.bgPositionY, 10);
+        if (isNaN(bgpy) || bgpy < 0 || bgpy > 100) bgpy = 50;
+        document.getElementById('bgPositionY').value = bgpy;
+        document.getElementById('bgPositionYValue').textContent = bgpy + '%';
 
         var coy = parseInt(ev.contentOffsetY, 10) || 0;
         if (coy < 0 || coy > 100) coy = 0;
@@ -1520,6 +1554,14 @@
         document.getElementById('showHours').checked = String(ev.showHours) !== 'false';
         document.getElementById('showMinutes').checked = String(ev.showMinutes) !== 'false';
         document.getElementById('showSeconds').checked = String(ev.showSeconds) !== 'false';
+        var bgpx2 = parseInt(ev.bgPositionX, 10);
+        if (isNaN(bgpx2) || bgpx2 < 0 || bgpx2 > 100) bgpx2 = 50;
+        document.getElementById('bgPositionX').value = bgpx2;
+        document.getElementById('bgPositionXValue').textContent = bgpx2 + '%';
+        var bgpy2 = parseInt(ev.bgPositionY, 10);
+        if (isNaN(bgpy2) || bgpy2 < 0 || bgpy2 > 100) bgpy2 = 50;
+        document.getElementById('bgPositionY').value = bgpy2;
+        document.getElementById('bgPositionYValue').textContent = bgpy2 + '%';
         var coy = parseInt(ev.contentOffsetY, 10) || 0;
         if (coy < 0 || coy > 100) coy = 0;
         document.getElementById('contentOffsetY').value = coy;
@@ -1600,6 +1642,10 @@
     document.getElementById('showHours').checked = true;
     document.getElementById('showMinutes').checked = true;
     document.getElementById('showSeconds').checked = true;
+    document.getElementById('bgPositionX').value = 50;
+    document.getElementById('bgPositionXValue').textContent = '50%';
+    document.getElementById('bgPositionY').value = 50;
+    document.getElementById('bgPositionYValue').textContent = '50%';
     document.getElementById('contentOffsetY').value = 0;
     document.getElementById('contentOffsetYValue').textContent = '0px';
     document.getElementById('optionalTextOffsetY').value = 0;
