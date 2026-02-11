@@ -280,7 +280,7 @@
 
   <? if (event.optionalText) { ?>
 <? var otoy = parseInt(event.optionalTextOffsetY) || 0; if (otoy < 0 || otoy > 100) otoy = 0; ?>
-    <p class="optional-text" id="optionalTextBlock" style="bottom: <?= (1.5 * 16 + otoy) ?>px;"><?= event.optionalText ?></p>
+    <p class="optional-text" id="optionalTextBlock" style="bottom: <?= Math.max(0, 1.5 * 16 - otoy) ?>px;"><?= event.optionalText ?></p>
   <? } ?>
 
 </div>

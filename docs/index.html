@@ -448,7 +448,7 @@
     var optOff = parseInt(ev.optionalTextOffsetY, 10) || 0;
     if (optOff < 0 || optOff > 100) optOff = 0;
     if (optOff !== 0) {
-      document.getElementById('optionalText').style.bottom = (2.5 * 16 + optOff) + 'px';
+      document.getElementById('optionalText').style.bottom = Math.max(0, 2.5 * 16 - optOff) + 'px';
     }
 
     // Apply text styles

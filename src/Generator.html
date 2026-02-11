@@ -1267,10 +1267,10 @@
     document.getElementById('bgPositionYValue').textContent = this.value + '%';
   });
   document.getElementById('contentOffsetY').addEventListener('input', function() {
-    document.getElementById('contentOffsetYValue').textContent = this.value + 'px';
+    document.getElementById('contentOffsetYValue').textContent = (this.value == 0 ? '0' : '-' + this.value) + 'px';
   });
   document.getElementById('optionalTextOffsetY').addEventListener('input', function() {
-    document.getElementById('optionalTextOffsetYValue').textContent = this.value + 'px';
+    document.getElementById('optionalTextOffsetYValue').textContent = (this.value == 0 ? '0' : '-' + this.value) + 'px';
   });
 
   // ── Drop zone ──
@@ -1492,11 +1492,11 @@
         var coy = parseInt(ev.contentOffsetY, 10) || 0;
         if (coy < 0 || coy > 100) coy = 0;
         document.getElementById('contentOffsetY').value = coy;
-        document.getElementById('contentOffsetYValue').textContent = coy + 'px';
+        document.getElementById('contentOffsetYValue').textContent = (coy == 0 ? '0' : '-' + coy) + 'px';
         var otoy = parseInt(ev.optionalTextOffsetY, 10) || 0;
         if (otoy < 0 || otoy > 100) otoy = 0;
         document.getElementById('optionalTextOffsetY').value = otoy;
-        document.getElementById('optionalTextOffsetYValue').textContent = otoy + 'px';
+        document.getElementById('optionalTextOffsetYValue').textContent = (otoy == 0 ? '0' : '-' + otoy) + 'px';
 
         // Restore styles
         setFieldStyle('title', safeParse(ev.titleStyle));
@@ -1574,11 +1574,11 @@
         var coy = parseInt(ev.contentOffsetY, 10) || 0;
         if (coy < 0 || coy > 100) coy = 0;
         document.getElementById('contentOffsetY').value = coy;
-        document.getElementById('contentOffsetYValue').textContent = coy + 'px';
+        document.getElementById('contentOffsetYValue').textContent = (coy == 0 ? '0' : '-' + coy) + 'px';
         var otoy = parseInt(ev.optionalTextOffsetY, 10) || 0;
         if (otoy < 0 || otoy > 100) otoy = 0;
         document.getElementById('optionalTextOffsetY').value = otoy;
-        document.getElementById('optionalTextOffsetYValue').textContent = otoy + 'px';
+        document.getElementById('optionalTextOffsetYValue').textContent = (otoy == 0 ? '0' : '-' + otoy) + 'px';
         setFieldStyle('title', safeParse(ev.titleStyle));
         setFieldStyle('subtitle', safeParse(ev.subtitleStyle));
         setFieldStyle('preCountdownText', safeParse(ev.preCountdownStyle));
