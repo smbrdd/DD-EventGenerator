@@ -75,9 +75,9 @@
       position: relative;
       z-index: 3;
       text-align: center;
-      max-width: 1000px;
+      max-width: 1100px;
       width: 100%;
-      padding: 2.8rem 2rem;
+      padding: 3.4rem 2.4rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -85,8 +85,8 @@
     }
 
     .portrait .content {
-      max-width: 700px;
-      padding: 2.8rem 1.4rem;
+      max-width: 800px;
+      padding: 3.4rem 1.7rem;
     }
 
     @keyframes fadeUp {
@@ -96,35 +96,45 @@
 
     /* ── Title (gradient #F43D46 -> #FD4D26) ── */
     .title {
-      font-size: clamp(2.8rem, 8.4vw, 4.9rem);
+      font-size: clamp(3.4rem, 10vw, 5.9rem);
       font-weight: 900;
       line-height: 1.1;
-      margin-bottom: .6rem;
+      margin-bottom: .7rem;
       background: linear-gradient(135deg, #F43D46, #FD4D26);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .portrait .title {
-      font-size: clamp(2.5rem, 7vw, 3.9rem);
+      font-size: clamp(3rem, 8.4vw, 4.7rem);
     }
 
     /* ── Subtitle UNDER title ── */
     .subtitle {
-      font-size: 1.4rem;
+      font-size: 1.7rem;
       font-weight: 400;
       letter-spacing: .12em;
       text-transform: uppercase;
       color: rgba(255,255,255,.7);
-      margin-bottom: 2.8rem;
+      margin-bottom: 3.4rem;
+    }
+
+    /* ── Pre-countdown text ── */
+    .pre-countdown-text {
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.6);
+      margin-bottom: 1rem;
     }
 
     /* ── Countdown ── */
     .countdown {
       display: flex;
       justify-content: center;
-      gap: 1.7rem;
-      margin-bottom: 3.5rem;
+      gap: 2rem;
+      margin-bottom: 1rem;
       flex-wrap: wrap;
     }
 
@@ -132,83 +142,96 @@
       background: rgba(255,255,255,.08);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255,255,255,.12);
-      border-radius: 22px;
-      padding: 1.4rem 1.7rem;
-      min-width: 112px;
+      border-radius: 26px;
+      padding: 1.7rem 2rem;
+      min-width: 134px;
     }
 
     .countdown-item .number {
       display: block;
-      font-size: 3.1rem;
+      font-size: 3.7rem;
       font-weight: 700;
       line-height: 1;
-      margin-bottom: .35rem;
+      margin-bottom: .4rem;
     }
 
     .countdown-item .label {
-      font-size: 1rem;
+      font-size: 1.2rem;
       text-transform: uppercase;
       letter-spacing: .1em;
       color: rgba(255,255,255,.6);
     }
 
     .countdown-passed {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-weight: 500;
       color: rgba(255,255,255,.7);
-      margin-bottom: 3.5rem;
+      margin-bottom: 3.4rem;
     }
 
-    .portrait .countdown { gap: 1.1rem; }
-    .portrait .countdown-item { min-width: 98px; padding: 1.1rem 1.4rem; }
-    .portrait .countdown-item .number { font-size: 2.5rem; }
+    /* ── Post-countdown text ── */
+    .post-countdown-text {
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.6);
+      margin-top: .8rem;
+      margin-bottom: 3.4rem;
+    }
+
+    .portrait .countdown { gap: 1.3rem; }
+    .portrait .countdown-item { min-width: 118px; padding: 1.3rem 1.7rem; }
+    .portrait .countdown-item .number { font-size: 3rem; }
 
     /* ── Progress bar (gradient #F43D46 -> #FD4D26) ── */
     .progress-section {
       width: 100%;
-      max-width: 700px;
-      margin-bottom: 2.8rem;
+      max-width: 840px;
+      margin-bottom: 3.4rem;
     }
 
     .progress-label {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
       color: rgba(255,255,255,.7);
-      margin-bottom: .8rem;
+      margin-bottom: 1rem;
     }
 
     .progress-bar-track {
       width: 100%;
-      height: 14px;
+      height: 17px;
       background: rgba(255,255,255,.1);
-      border-radius: 7px;
+      border-radius: 8px;
       overflow: hidden;
     }
 
     .progress-bar-fill {
       height: 100%;
-      border-radius: 7px;
+      border-radius: 8px;
       background: linear-gradient(90deg, #F43D46, #FD4D26);
       width: 0%;
       transition: width 1.5s cubic-bezier(.4, 0, .2, 1);
     }
 
     .progress-value {
-      font-size: 2.2rem;
+      font-size: 2.6rem;
       font-weight: 700;
-      margin-top: .6rem;
+      margin-top: .7rem;
       color: rgba(255,255,255,.9);
     }
 
     /* ── Optional text — pushed lower ── */
     .optional-text {
-      font-size: 1.3rem;
+      font-size: 1.6rem;
       font-weight: 300;
       line-height: 1.7;
       color: rgba(255,255,255,.75);
-      max-width: 750px;
+      max-width: 850px;
       margin-top: auto;
-      padding-top: 2rem;
+      padding-top: 2.4rem;
       white-space: pre-line;
     }
 
@@ -216,16 +239,16 @@
     .loading, .error-page {
       text-align: center;
       color: rgba(255,255,255,.6);
-      font-size: 1.4rem;
+      font-size: 1.7rem;
     }
 
     .spinner {
-      width: 56px; height: 56px;
-      border: 4px solid rgba(255,255,255,.15);
+      width: 67px; height: 67px;
+      border: 5px solid rgba(255,255,255,.15);
       border-top-color: #F43D46;
       border-radius: 50%;
       animation: spin .8s linear infinite;
-      margin: 0 auto 1.4rem;
+      margin: 0 auto 1.7rem;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -233,9 +256,9 @@
     .hidden { display: none; }
 
     @media (max-width: 480px) {
-      .countdown { gap: .8rem; }
-      .countdown-item { min-width: 90px; padding: 1rem 1.1rem; }
-      .countdown-item .number { font-size: 2.2rem; }
+      .countdown { gap: 1rem; }
+      .countdown-item { min-width: 108px; padding: 1.2rem 1.3rem; }
+      .countdown-item .number { font-size: 2.6rem; }
     }
   </style>
 </head>
@@ -255,11 +278,12 @@
 <!-- Event page -->
 <div class="page-frame hidden" id="eventPage">
   <div class="bg" id="bgImage"></div>
-  <div class="bg-gradient-overlay" id="gradientOverlay"></div>
+  <div class="bg-gradient-overlay hidden" id="gradientOverlay"></div>
   <div class="bg-darken"></div>
   <div class="content">
     <h1 class="title" id="title"></h1>
     <p class="subtitle hidden" id="subtitle"></p>
+    <p class="pre-countdown-text hidden" id="preCountdownText"></p>
     <div class="countdown hidden" id="countdown">
       <div class="countdown-item" id="daysBlock"><span class="number" id="days">--</span><span class="label">Days</span></div>
       <div class="countdown-item" id="hoursBlock"><span class="number" id="hours">--</span><span class="label">Hours</span></div>
@@ -267,8 +291,9 @@
       <div class="countdown-item"><span class="number" id="seconds">--</span><span class="label">Seconds</span></div>
     </div>
     <div class="countdown-passed hidden" id="countdownPassed">The event has started!</div>
+    <p class="post-countdown-text hidden" id="postCountdownText"></p>
     <div class="progress-section hidden" id="progressSection">
-      <p class="progress-label">Project progress</p>
+      <p class="progress-label" id="progressLabel">PROJECT PROGRESS</p>
       <div class="progress-bar-track">
         <div class="progress-bar-fill" id="progressBar"></div>
       </div>
@@ -285,14 +310,9 @@
   var params = new URLSearchParams(window.location.search);
   var eventId = params.get('id');
 
-  if (!eventId) {
-    showError();
-    return;
-  }
+  if (!eventId) { showError(); return; }
 
-  var url = API_URL + '?action=api&id=' + encodeURIComponent(eventId);
-
-  fetch(url)
+  fetch(API_URL + '?action=api&id=' + encodeURIComponent(eventId))
     .then(function(r) { return r.json(); })
     .then(function(ev) {
       if (ev.error) { showError(); return; }
@@ -309,38 +329,64 @@
     document.title = ev.title;
     document.getElementById('title').textContent = ev.title;
 
+    // Subtitle
     if (ev.subtitle) {
       var sub = document.getElementById('subtitle');
       sub.textContent = ev.subtitle;
       sub.classList.remove('hidden');
     }
 
+    // Format
     var frame = document.getElementById('eventPage');
     frame.classList.add(ev.format || 'landscape');
 
-    // Background: uploaded image or plain black
+    // Background
     if (ev.backgroundImageUrl) {
       document.getElementById('bgImage').style.backgroundImage = "url('" + ev.backgroundImageUrl + "')";
       document.getElementById('bgImage').style.filter = 'brightness(.4) saturate(1.1)';
     } else {
       document.getElementById('bgImage').style.background = '#000';
-      // No uploaded image: gradient overlay is the sole visual BG
     }
 
+    // Gradient overlay (conditional)
+    if (String(ev.showGradient) !== 'false') {
+      document.getElementById('gradientOverlay').classList.remove('hidden');
+    }
+
+    // Pre-countdown text
+    if (ev.preCountdownText) {
+      var pre = document.getElementById('preCountdownText');
+      pre.textContent = ev.preCountdownText;
+      pre.classList.remove('hidden');
+    }
+
+    // Countdown
     if (ev.eventDate && String(ev.showTimer) !== 'false') {
       document.getElementById('countdown').classList.remove('hidden');
       startCountdown(ev.eventDate);
     }
 
+    // Post-countdown text
+    if (ev.postCountdownText) {
+      var post = document.getElementById('postCountdownText');
+      post.textContent = ev.postCountdownText;
+      post.classList.remove('hidden');
+    }
+
+    // Progress
     var progress = parseInt(ev.progress, 10) || 0;
     if (progress > 0 && String(ev.showProgress) !== 'false') {
       document.getElementById('progressSection').classList.remove('hidden');
+      // Custom label
+      var label = ev.progressLabel || 'PROJECT PROGRESS';
+      document.getElementById('progressLabel').textContent = label.toUpperCase();
       setTimeout(function() {
         document.getElementById('progressBar').style.width = progress + '%';
         document.getElementById('progressText').textContent = progress + '%';
       }, 300);
     }
 
+    // Optional text
     if (ev.optionalText) {
       var txt = document.getElementById('optionalText');
       txt.textContent = ev.optionalText;
@@ -381,7 +427,6 @@
       minutesEl.textContent = String(m).padStart(2, '0');
       secondsEl.textContent = String(s).padStart(2, '0');
 
-      // Hide blocks with value 0 (cascading: days first, then hours, then minutes)
       daysBlock.style.display = (d === 0) ? 'none' : '';
       hoursBlock.style.display = (d === 0 && h === 0) ? 'none' : '';
       minutesBlock.style.display = (d === 0 && h === 0 && m === 0) ? 'none' : '';

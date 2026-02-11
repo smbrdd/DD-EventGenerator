@@ -392,7 +392,26 @@
           <input type="checkbox" id="showProgress" checked>
           <span>Afficher la barre d'avancement</span>
         </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="showGradient" checked>
+          <span>Afficher le gradient par-dessus l'image</span>
+        </label>
       </div>
+    </div>
+
+    <div class="form-group">
+      <label for="progressLabel">Libellé de la barre d'avancement</label>
+      <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
+    </div>
+
+    <div class="form-group">
+      <label for="preCountdownText">Texte au-dessus du compte à rebours</label>
+      <input type="text" id="preCountdownText" placeholder="Ex: COMING SOON">
+    </div>
+
+    <div class="form-group">
+      <label for="postCountdownText">Texte sous le compte à rebours (majuscules)</label>
+      <input type="text" id="postCountdownText" placeholder="Ex: DUE DATE 15 MARCH">
     </div>
 
     <div class="form-group">
@@ -428,7 +447,7 @@
   var WEB_APP_URL = '<?= webAppUrl ?>';
   // URL publique GitHub Pages — à configurer après déploiement GitHub
   var PUBLIC_PAGE_URL = '<?= webAppUrl.replace(/\/exec$/, "") ?>/exec';
-  var GITHUB_PAGES_URL = localStorage.getItem('githubPagesUrl') || '';
+  var GITHUB_PAGES_URL = localStorage.getItem('githubPagesUrl') || 'https://smbrdd.github.io/DD-EventGenerator';
   var imageBase64 = null;
   var imageFilename = null;
 
@@ -557,7 +576,11 @@
         backgroundImageId: bgId || currentImageId || '',
         format: document.getElementById('format').value,
         showTimer: document.getElementById('showTimer').checked,
-        showProgress: document.getElementById('showProgress').checked
+        showProgress: document.getElementById('showProgress').checked,
+        showGradient: document.getElementById('showGradient').checked,
+        progressLabel: document.getElementById('progressLabel').value.trim(),
+        preCountdownText: document.getElementById('preCountdownText').value.trim(),
+        postCountdownText: document.getElementById('postCountdownText').value.trim()
       };
 
       google.script.run
@@ -606,6 +629,10 @@
         document.getElementById('optionalText').value = ev.optionalText;
         document.getElementById('showTimer').checked = String(ev.showTimer) !== 'false';
         document.getElementById('showProgress').checked = String(ev.showProgress) !== 'false';
+        document.getElementById('showGradient').checked = String(ev.showGradient) !== 'false';
+        document.getElementById('progressLabel').value = ev.progressLabel || '';
+        document.getElementById('preCountdownText').value = ev.preCountdownText || '';
+        document.getElementById('postCountdownText').value = ev.postCountdownText || '';
         selectFormat(ev.format || 'landscape');
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
@@ -657,6 +684,10 @@
     document.getElementById('formTitle').textContent = 'Nouvel événement';
     document.getElementById('showTimer').checked = true;
     document.getElementById('showProgress').checked = true;
+    document.getElementById('showGradient').checked = true;
+    document.getElementById('progressLabel').value = '';
+    document.getElementById('preCountdownText').value = '';
+    document.getElementById('postCountdownText').value = '';
     selectFormat('landscape');
     dropZone.innerHTML = '<p>Glissez une image ici ou cliquez pour sélectionner</p><input type="file" id="imageInput" accept="image/*">';
     imageBase64 = null;
