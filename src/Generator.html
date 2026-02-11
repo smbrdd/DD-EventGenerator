@@ -140,12 +140,28 @@
     .event-card:hover { border-color: #667eea; }
 
     .event-card .thumb {
-      width: 60px; height: 60px;
       border-radius: 8px;
-      background-size: cover;
-      background-position: center;
-      background-color: #21262d;
+      background-color: #000;
       flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .event-card .thumb.landscape-thumb {
+      width: 107px; height: 60px;
+    }
+
+    .event-card .thumb.portrait-thumb {
+      width: 34px; height: 60px;
+    }
+
+    .event-card .thumb iframe {
+      border: none;
+      transform-origin: top left;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     .event-card .info { flex: 1; min-width: 0; }
@@ -1260,12 +1276,17 @@
     }
     var html = '';
     events.forEach(function(ev) {
-      var thumbStyle = ev.backgroundImageId
-        ? 'background-image:url(https://lh3.googleusercontent.com/d/' + ev.backgroundImageId + ')'
-        : '';
       var publicUrl = getPublicUrl(ev.id);
+      var isPortrait = ev.format === 'portrait';
+      var thumbCls = isPortrait ? 'portrait-thumb' : 'landscape-thumb';
+      var srcW = isPortrait ? 1080 : 1920;
+      var srcH = isPortrait ? 1920 : 1080;
+      var thumbW = isPortrait ? 34 : 107;
+      var scale = thumbW / srcW;
       html += '<div class="event-card">'
-        + '<div class="thumb" style="' + thumbStyle + '"></div>'
+        + '<div class="thumb ' + thumbCls + '">'
+        + '<iframe src="' + publicUrl + '" sandbox="allow-scripts allow-same-origin" style="width:' + srcW + 'px;height:' + srcH + 'px;transform:scale(' + scale + ');"></iframe>'
+        + '</div>'
         + '<div class="info">'
         + '<h3>' + escapeHtml(ev.name || ev.title) + '</h3>'
         + '<span>' + (ev.eventDate || 'Pas de date') + ' — ' + (ev.progress || 0) + '% — ' + (ev.format === 'portrait' ? '1080x1920' : '1920x1080') + '</span>'
