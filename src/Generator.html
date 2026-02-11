@@ -1383,10 +1383,12 @@
         document.getElementById('showMinutes').checked = String(ev.showMinutes) !== 'false';
         document.getElementById('showSeconds').checked = String(ev.showSeconds) !== 'false';
 
-        var coy = ev.contentOffsetY !== undefined && ev.contentOffsetY !== '' ? ev.contentOffsetY : 0;
+        var coy = parseInt(ev.contentOffsetY, 10) || 0;
+        if (coy < -300 || coy > 300) coy = 0;
         document.getElementById('contentOffsetY').value = coy;
         document.getElementById('contentOffsetYValue').textContent = coy + 'px';
-        var otoy = ev.optionalTextOffsetY !== undefined && ev.optionalTextOffsetY !== '' ? ev.optionalTextOffsetY : 0;
+        var otoy = parseInt(ev.optionalTextOffsetY, 10) || 0;
+        if (otoy < -200 || otoy > 200) otoy = 0;
         document.getElementById('optionalTextOffsetY').value = otoy;
         document.getElementById('optionalTextOffsetYValue').textContent = otoy + 'px';
 
