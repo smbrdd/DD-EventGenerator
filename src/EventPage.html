@@ -83,7 +83,7 @@
     .portrait .content {
       max-width: 520px;
       padding: 2rem 1rem;
-      margin-top: -8%;
+      margin-top: -8vh;
     }
 
     .portrait .title {
@@ -215,7 +215,7 @@
     /* ── Optional text ── */
     .optional-text {
       position: absolute;
-      bottom: 1.5rem;
+      bottom: 2.5rem;
       left: 50%;
       transform: translateX(-50%);
       font-size: .95rem;
@@ -278,12 +278,13 @@
     </div>
   <? } ?>
 
-  <? if (event.optionalText) { ?>
-<? var otoy = parseInt(event.optionalTextOffsetY) || 0; if (otoy < 0 || otoy > 100) otoy = 0; ?>
-    <p class="optional-text" id="optionalTextBlock" style="bottom: <?= Math.max(0, 1.5 * 16 - otoy) ?>px;"><?= event.optionalText ?></p>
-  <? } ?>
 
 </div>
+
+  <? if (event.optionalText) { ?>
+<? var otoy = parseInt(event.optionalTextOffsetY) || 0; if (otoy < 0 || otoy > 100) otoy = 0; ?>
+    <p class="optional-text" id="optionalTextBlock" style="bottom: <?= Math.max(0, 2.5 * 16 - otoy) ?>px;"><?= event.optionalText ?></p>
+  <? } ?>
 
 </div><!-- .page-frame -->
 
