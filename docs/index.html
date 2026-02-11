@@ -79,9 +79,9 @@
     }
 
     .portrait .content {
-      max-width: 800px;
-      padding: 3.4rem 1.7rem;
-      margin-top: -8vh;
+      max-width: 900px;
+      padding: 4rem 2rem;
+      margin-top: -4vh;
     }
 
     @keyframes fadeUp {
@@ -103,7 +103,7 @@
     }
 
     .portrait .title {
-      font-size: clamp(3rem, 8.4vw, 4.7rem);
+      font-size: clamp(4rem, 12vw, 7rem);
     }
 
     /* ── Subtitle UNDER title ── */
@@ -181,9 +181,18 @@
       text-shadow: 0 2px 12px rgba(0,0,0,.6);
     }
 
-    .portrait .countdown { gap: 1.3rem; }
-    .portrait .countdown-item { min-width: 118px; padding: 1.3rem 1.7rem; }
-    .portrait .countdown-item .number { font-size: 3rem; }
+    .portrait .subtitle { font-size: 2rem; margin-bottom: 4rem; }
+    .portrait .pre-countdown-text { font-size: 1.55rem; }
+    .portrait .countdown { gap: 2.4rem; }
+    .portrait .countdown-item { min-width: 160px; padding: 2rem 2.4rem; border-radius: 30px; }
+    .portrait .countdown-item .number { font-size: 4.4rem; }
+    .portrait .countdown-item .label { font-size: 1.45rem; }
+    .portrait .countdown-passed { font-size: 2.15rem; margin-bottom: 4rem; }
+    .portrait .post-countdown-text { font-size: 1.55rem; margin-bottom: 6rem; }
+    .portrait .progress-label { font-size: 1.7rem; }
+    .portrait .progress-bar-track { height: 20px; }
+    .portrait .progress-value { font-size: 3.1rem; }
+    .portrait .optional-text { font-size: 1.9rem; bottom: 150px; }
 
     /* ── Progress bar (gradient #F43D46 -> #FD4D26) ── */
     .progress-section {
@@ -441,14 +450,21 @@
     // Content vertical offset
     var contentOff = parseInt(ev.contentOffsetY, 10) || 0;
     if (contentOff < 0 || contentOff > 100) contentOff = 0;
-    if (contentOff !== 0) {
+    var isPortrait = frame.classList.contains('portrait');
+    if (isPortrait) {
+      // Portrait: slider 0 → margin-top -4vh, slider 100 → margin-top 25vh
+      document.querySelector('.content').style.marginTop = (-4 + contentOff * 0.29) + 'vh';
+    } else if (contentOff !== 0) {
       document.querySelector('.content').style.transform = 'translateY(' + contentOff + 'px)';
     }
 
-    // Optional text vertical offset (adjusts bottom position)
+    // Optional text vertical offset
     var optOff = parseInt(ev.optionalTextOffsetY, 10) || 0;
     if (optOff < 0 || optOff > 100) optOff = 0;
-    if (optOff !== 0) {
+    if (isPortrait) {
+      // Portrait: slider 0 → bottom 150px, slider 100 → bottom 80px
+      document.getElementById('optionalText').style.bottom = (150 - optOff * 0.7) + 'px';
+    } else if (optOff !== 0) {
       document.getElementById('optionalText').style.bottom = Math.max(0, 2.5 * 16 - optOff) + 'px';
     }
 

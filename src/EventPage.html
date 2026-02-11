@@ -79,29 +79,29 @@
       animation: fadeUp .8s ease-out;
     }
 
-    /* Portrait adjustments */
+    /* Portrait adjustments (+20% sizes) */
     .portrait .content {
-      max-width: 520px;
-      padding: 2rem 1rem;
-      margin-top: -8vh;
+      max-width: 900px;
+      padding: 4rem 2rem;
+      margin-top: -4vh;
     }
 
     .portrait .title {
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-size: clamp(4rem, 12vw, 7rem);
     }
 
-    .portrait .countdown {
-      gap: .8rem;
-    }
-
-    .portrait .countdown-item {
-      min-width: 70px;
-      padding: .8rem 1rem;
-    }
-
-    .portrait .countdown-item .number {
-      font-size: 1.8rem;
-    }
+    .portrait .subtitle { font-size: 2rem; margin-bottom: 4rem; }
+    .portrait .pre-countdown-text { font-size: 1.55rem; }
+    .portrait .countdown { gap: 2.4rem; }
+    .portrait .countdown-item { min-width: 160px; padding: 2rem 2.4rem; border-radius: 30px; }
+    .portrait .countdown-item .number { font-size: 4.4rem; }
+    .portrait .countdown-item .label { font-size: 1.45rem; }
+    .portrait .countdown-passed { font-size: 2.15rem; margin-bottom: 4rem; }
+    .portrait .post-countdown-text { font-size: 1.55rem; margin-bottom: 6rem; }
+    .portrait .progress-label { font-size: 1.7rem; }
+    .portrait .progress-bar-track { height: 20px; }
+    .portrait .progress-value { font-size: 3.1rem; }
+    .portrait .optional-text { font-size: 1.9rem; bottom: 150px; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(30px); }
@@ -251,7 +251,12 @@
 <div class="bg-overlay"></div>
 
 <? var coy = parseInt(event.contentOffsetY) || 0; if (coy < 0 || coy > 100) coy = 0; ?>
+<? var isPortrait = (fmt === 'portrait'); ?>
+<? if (isPortrait) { ?>
+<div class="content" id="contentBlock" style="margin-top: <?= (-4 + coy * 0.29) ?>vh;">
+<? } else { ?>
 <div class="content" id="contentBlock" style="<? if (coy != 0) { ?>transform: translateY(<?= coy ?>px);<? } ?>">
+<? } ?>
 
   <? if (event.subtitle) { ?>
     <p class="subtitle"><?= event.subtitle ?></p>
@@ -284,7 +289,11 @@
 
   <? if (event.optionalText) { ?>
 <? var otoy = parseInt(event.optionalTextOffsetY) || 0; if (otoy < 0 || otoy > 100) otoy = 0; ?>
+  <? if (isPortrait) { ?>
+    <p class="optional-text" id="optionalTextBlock" style="bottom: <?= (150 - otoy * 0.7) ?>px;"><?= event.optionalText ?></p>
+  <? } else { ?>
     <p class="optional-text" id="optionalTextBlock" style="bottom: <?= Math.max(0, 2.5 * 16 - otoy) ?>px;"><?= event.optionalText ?></p>
+  <? } ?>
   <? } ?>
 
 </div><!-- .page-frame -->
