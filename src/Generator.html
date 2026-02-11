@@ -138,7 +138,13 @@
       position: relative;
     }
 
-    .event-card:hover { border-color: #FD4D26; }
+    .event-card:hover, .event-card.editing { border-color: #FD4D26; }
+
+    .event-card.editing .thumb {
+      transform: none !important;
+      z-index: 1 !important;
+      box-shadow: none !important;
+    }
 
     .event-card .thumb {
       border-radius: 8px;
@@ -1348,7 +1354,7 @@
       var srcH = isPortrait ? 1920 : 1080;
       var thumbW = isPortrait ? 34 : 107;
       var scale = thumbW / srcW;
-      html += '<div class="event-card">'
+      html += '<div class="event-card" data-id="' + ev.id + '">'
         + '<div class="thumb ' + thumbCls + '">'
         + '<iframe src="' + publicUrl + '" sandbox="allow-scripts allow-same-origin" style="width:' + srcW + 'px;height:' + srcH + 'px;transform:scale(' + scale + ');"></iframe>'
         + '</div>'
@@ -1454,6 +1460,10 @@
       .withSuccessHandler(function(ev) {
         showLoading(false);
         if (!ev) { toast('Événement introuvable', true); return; }
+        // Highlight editing card
+        document.querySelectorAll('.event-card.editing').forEach(function(c) { c.classList.remove('editing'); });
+        var card = document.querySelector('.event-card[data-id="' + ev.id + '"]');
+        if (card) card.classList.add('editing');
         document.getElementById('eventId').value = ev.id;
         document.getElementById('currentImageId').value = ev.backgroundImageId || '';
         document.getElementById('eventName').value = ev.name || '';
@@ -1631,6 +1641,7 @@
   // ── Reset form ──
   function resetForm() {
     hidePreview();
+    document.querySelectorAll('.event-card.editing').forEach(function(c) { c.classList.remove('editing'); });
     document.getElementById('eventId').value = '';
     document.getElementById('currentImageId').value = '';
     document.getElementById('eventName').value = '';
