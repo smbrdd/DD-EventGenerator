@@ -261,9 +261,9 @@
     <h1 class="title" id="title"></h1>
     <p class="subtitle hidden" id="subtitle"></p>
     <div class="countdown hidden" id="countdown">
-      <div class="countdown-item"><span class="number" id="days">--</span><span class="label">Days</span></div>
-      <div class="countdown-item"><span class="number" id="hours">--</span><span class="label">Hours</span></div>
-      <div class="countdown-item"><span class="number" id="minutes">--</span><span class="label">Minutes</span></div>
+      <div class="countdown-item" id="daysBlock"><span class="number" id="days">--</span><span class="label">Days</span></div>
+      <div class="countdown-item" id="hoursBlock"><span class="number" id="hours">--</span><span class="label">Hours</span></div>
+      <div class="countdown-item" id="minutesBlock"><span class="number" id="minutes">--</span><span class="label">Minutes</span></div>
       <div class="countdown-item"><span class="number" id="seconds">--</span><span class="label">Seconds</span></div>
     </div>
     <div class="countdown-passed hidden" id="countdownPassed">The event has started!</div>
@@ -359,6 +359,9 @@
     var hoursEl = document.getElementById('hours');
     var minutesEl = document.getElementById('minutes');
     var secondsEl = document.getElementById('seconds');
+    var daysBlock = document.getElementById('daysBlock');
+    var hoursBlock = document.getElementById('hoursBlock');
+    var minutesBlock = document.getElementById('minutesBlock');
 
     function update() {
       var diff = target - new Date();
@@ -367,10 +370,21 @@
         passedEl.classList.remove('hidden');
         return;
       }
-      daysEl.textContent = Math.floor(diff / 86400000);
-      hoursEl.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
-      minutesEl.textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-      secondsEl.textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor((diff % 86400000) / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      var s = Math.floor((diff % 60000) / 1000);
+
+      daysEl.textContent = d;
+      hoursEl.textContent = String(h).padStart(2, '0');
+      minutesEl.textContent = String(m).padStart(2, '0');
+      secondsEl.textContent = String(s).padStart(2, '0');
+
+      // Hide blocks with value 0 (cascading: days first, then hours, then minutes)
+      daysBlock.style.display = (d === 0) ? 'none' : '';
+      hoursBlock.style.display = (d === 0 && h === 0) ? 'none' : '';
+      minutesBlock.style.display = (d === 0 && h === 0 && m === 0) ? 'none' : '';
     }
 
     update();
