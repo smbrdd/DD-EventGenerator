@@ -16,7 +16,9 @@
 var CONFIG = {
   SHEET_NAME: 'Events',
   FOLDER_NAME: 'EventGenerator-Images',
-  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY']
+  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY', 'folderId'],
+  FOLDERS_SHEET: 'Folders',
+  FOLDER_COLUMNS: ['id', 'name', 'sortOrder']
 };
 
 // ─── Routing ────────────────────────────────────────────────────
@@ -187,7 +189,8 @@ function buildRow_(data, createdAt, updatedAt) {
     updatedAt,
     data.name || '',
     data.bgPositionX !== undefined && data.bgPositionX !== '' ? data.bgPositionX : 50,
-    data.bgPositionY !== undefined && data.bgPositionY !== '' ? data.bgPositionY : 50
+    data.bgPositionY !== undefined && data.bgPositionY !== '' ? data.bgPositionY : 50,
+    data.folderId || ''
   ];
 }
 
@@ -229,6 +232,109 @@ function getOrCreateImageFolder_() {
   var folder = DriveApp.createFolder(CONFIG.FOLDER_NAME);
   folder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
   return folder;
+}
+
+// ─── Folders CRUD ────────────────────────────────────────────────
+
+function getOrCreateFoldersSheet_() {
+  var ss = null;
+  var files = DriveApp.getFilesByName('DD-EventGenerator Data');
+  if (files.hasNext()) {
+    ss = SpreadsheetApp.openById(files.next().getId());
+  }
+  if (!ss) {
+    ss = SpreadsheetApp.create('DD-EventGenerator Data');
+  }
+  var sheet = ss.getSheetByName(CONFIG.FOLDERS_SHEET);
+  if (!sheet) {
+    sheet = ss.insertSheet(CONFIG.FOLDERS_SHEET);
+    sheet.appendRow(CONFIG.FOLDER_COLUMNS);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function getFolders() {
+  var sheet = getOrCreateFoldersSheet_();
+  var data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+  var folders = [];
+  for (var i = 1; i < data.length; i++) {
+    folders.push({ id: data[i][0], name: data[i][1], sortOrder: data[i][2] || 0 });
+  }
+  folders.sort(function(a, b) { return a.sortOrder - b.sortOrder; });
+  return folders;
+}
+
+function createFolder(name) {
+  var sheet = getOrCreateFoldersSheet_();
+  var id = generateId_();
+  var data = sheet.getDataRange().getValues();
+  var maxOrder = 0;
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][2] > maxOrder) maxOrder = data[i][2];
+  }
+  sheet.appendRow([id, name, maxOrder + 1]);
+  return { id: id, name: name, sortOrder: maxOrder + 1 };
+}
+
+function renameFolder(id, newName) {
+  var sheet = getOrCreateFoldersSheet_();
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] === id) {
+      sheet.getRange(i + 1, 2).setValue(newName);
+      return true;
+    }
+  }
+  return false;
+}
+
+function deleteFolder(id) {
+  // Remove folder — events keep their folderId (they'll show in "Sans dossier")
+  var sheet = getOrCreateFoldersSheet_();
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] === id) {
+      sheet.deleteRow(i + 1);
+      // Clear folderId from events that were in this folder
+      var evSheet = getOrCreateSheet_();
+      var evData = evSheet.getDataRange().getValues();
+      var folderColIdx = CONFIG.COLUMNS.indexOf('folderId');
+      for (var j = 1; j < evData.length; j++) {
+        if (evData[j][folderColIdx] === id) {
+          evSheet.getRange(j + 1, folderColIdx + 1).setValue('');
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+function reorderFolders(orderedIds) {
+  var sheet = getOrCreateFoldersSheet_();
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    var idx = orderedIds.indexOf(data[i][0]);
+    if (idx !== -1) {
+      sheet.getRange(i + 1, 3).setValue(idx);
+    }
+  }
+  return true;
+}
+
+function moveEventToFolder(eventId, folderId) {
+  var sheet = getOrCreateSheet_();
+  var data = sheet.getDataRange().getValues();
+  var folderColIdx = CONFIG.COLUMNS.indexOf('folderId');
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] === eventId) {
+      sheet.getRange(i + 1, folderColIdx + 1).setValue(folderId || '');
+      return true;
+    }
+  }
+  return false;
 }
 
 function getImageUrl(fileId) {

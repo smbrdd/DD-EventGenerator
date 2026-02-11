@@ -190,7 +190,20 @@
     .event-card .info h3 { font-size: 1rem; font-weight: 600; margin-bottom: .15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .event-card .info span { color: #8b949e; font-size: .8rem; }
 
-    .event-card .actions { display: flex; gap: .5rem; flex-shrink: 0; }
+    .event-card .actions { display: flex; gap: .4rem; flex-shrink: 0; align-items: center; }
+
+    /* Folders */
+    .folder-bar { display: flex; gap: .5rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+    .folder-bar input { background: #161b22; border: 1px solid #30363d; color: #e6edf3; border-radius: 8px; padding: .4rem .7rem; font-size: .8rem; font-family: inherit; }
+    .folder-bar input:focus { border-color: #FD4D26; outline: none; }
+    .folder-group { margin-bottom: 1.2rem; }
+    .folder-header { display: flex; align-items: center; gap: .5rem; padding: .5rem 0; margin-bottom: .5rem; border-bottom: 1px solid #30363d; }
+    .folder-header h3 { font-size: .9rem; font-weight: 600; color: #e6edf3; margin: 0; flex: 1; }
+    .folder-header .folder-actions { display: flex; gap: .3rem; }
+    .folder-header .folder-actions button { background: none; border: none; color: #8b949e; cursor: pointer; padding: 2px; font-size: .85rem; transition: color .15s; }
+    .folder-header .folder-actions button:hover { color: #FD4D26; }
+    .folder-select { background: #161b22; border: 1px solid #30363d; color: #8b949e; border-radius: 6px; padding: .25rem .4rem; font-size: .7rem; font-family: inherit; cursor: pointer; max-width: 100px; }
+    .folder-select:focus { border-color: #FD4D26; outline: none; }
 
     .btn {
       display: inline-flex;
@@ -226,6 +239,8 @@
     .btn-danger:hover { background: #f85149; box-shadow: 0 4px 16px rgba(248,81,73,.4); }
 
     .btn-small { padding: .4rem .7rem; font-size: .75rem; }
+    .btn-icon { padding: .4rem .5rem; line-height: 0; }
+    .btn-icon svg { width: 16px; height: 16px; fill: currentColor; vertical-align: middle; }
 
     .btn-copy { background: #238636; color: #fff; }
     .btn-copy:hover { background: #2ea043; box-shadow: 0 4px 16px rgba(46,160,67,.4); }
@@ -785,6 +800,12 @@
     Événements créés <span class="arrow" id="eventsArrow">▼</span>
   </button>
 
+  <!-- Folder bar -->
+  <div class="folder-bar" id="folderBar">
+    <input type="text" id="newFolderName" placeholder="Nouveau dossier…" onkeydown="if(event.key==='Enter')addFolder()">
+    <button class="btn btn-secondary btn-small" onclick="addFolder()">+ Dossier</button>
+  </div>
+
   <!-- Events list -->
   <div class="events-list collapsed" id="eventsList"></div>
 
@@ -827,6 +848,14 @@
         </label>
       </div>
       <input type="hidden" id="format" value="landscape">
+    </div>
+
+    <!-- Dossier -->
+    <div class="form-group">
+      <label for="folderId">Dossier</label>
+      <select id="folderId" class="folder-select" style="max-width:none;width:100%;padding:.5rem .7rem;font-size:.85rem;">
+        <option value="">— Sans dossier —</option>
+      </select>
     </div>
 
     <!-- Titre / Sous-titre -->
@@ -1180,6 +1209,102 @@
     arrow.classList.toggle('open');
   }
 
+  // ── Folders ──
+  var allFolders = [];
+
+  function loadFolders(cb) {
+    google.script.run
+      .withSuccessHandler(function(folders) {
+        allFolders = folders || [];
+        updateFolderSelects();
+        if (cb) cb();
+      })
+      .withFailureHandler(function() { allFolders = []; if (cb) cb(); })
+      .getFolders();
+  }
+
+  function updateFolderSelects() {
+    // Update form select
+    var sel = document.getElementById('folderId');
+    var curVal = sel.value;
+    sel.innerHTML = '<option value="">— Sans dossier —</option>';
+    allFolders.forEach(function(f) {
+      sel.innerHTML += '<option value="' + f.id + '">' + escapeHtml(f.name) + '</option>';
+    });
+    sel.value = curVal;
+  }
+
+  function addFolder() {
+    var input = document.getElementById('newFolderName');
+    var name = input.value.trim();
+    if (!name) return;
+    input.value = '';
+    google.script.run
+      .withSuccessHandler(function(folder) {
+        allFolders.push(folder);
+        updateFolderSelects();
+        loadEvents();
+        toast('Dossier "' + folder.name + '" créé');
+      })
+      .withFailureHandler(function() { toast('Erreur création dossier', true); })
+      .createFolder(name);
+  }
+
+  function renameFolderPrompt(id) {
+    var folder = allFolders.find(function(f) { return f.id === id; });
+    if (!folder) return;
+    var newName = prompt('Renommer le dossier :', folder.name);
+    if (!newName || newName.trim() === '' || newName.trim() === folder.name) return;
+    google.script.run
+      .withSuccessHandler(function() {
+        folder.name = newName.trim();
+        updateFolderSelects();
+        loadEvents();
+      })
+      .withFailureHandler(function() { toast('Erreur renommage', true); })
+      .renameFolder(id, newName.trim());
+  }
+
+  function deleteFolderConfirm(id) {
+    var folder = allFolders.find(function(f) { return f.id === id; });
+    if (!folder) return;
+    if (!confirm('Supprimer le dossier "' + folder.name + '" ? Les événements seront déplacés dans "Sans dossier".')) return;
+    google.script.run
+      .withSuccessHandler(function() {
+        allFolders = allFolders.filter(function(f) { return f.id !== id; });
+        updateFolderSelects();
+        loadEvents();
+        toast('Dossier supprimé');
+      })
+      .withFailureHandler(function() { toast('Erreur suppression', true); })
+      .deleteFolder(id);
+  }
+
+  function moveFolderUp(id) {
+    var idx = allFolders.findIndex(function(f) { return f.id === id; });
+    if (idx <= 0) return;
+    var tmp = allFolders[idx]; allFolders[idx] = allFolders[idx - 1]; allFolders[idx - 1] = tmp;
+    var orderedIds = allFolders.map(function(f) { return f.id; });
+    google.script.run.reorderFolders(orderedIds);
+    loadEvents();
+  }
+
+  function moveFolderDown(id) {
+    var idx = allFolders.findIndex(function(f) { return f.id === id; });
+    if (idx === -1 || idx >= allFolders.length - 1) return;
+    var tmp = allFolders[idx]; allFolders[idx] = allFolders[idx + 1]; allFolders[idx + 1] = tmp;
+    var orderedIds = allFolders.map(function(f) { return f.id; });
+    google.script.run.reorderFolders(orderedIds);
+    loadEvents();
+  }
+
+  function changeEventFolder(eventId, folderId) {
+    google.script.run
+      .withSuccessHandler(function() { loadEvents(); })
+      .withFailureHandler(function() { toast('Erreur déplacement', true); })
+      .moveEventToFolder(eventId, folderId);
+  }
+
   // ── Show/hide form ──
   function showForm() {
     document.getElementById('formWrapper').classList.add('visible');
@@ -1350,17 +1475,51 @@
   // ── Load events ──
   function loadEvents() {
     showLoading(true);
-    google.script.run
-      .withSuccessHandler(function(events) {
-        renderEvents(events);
-        showLoading(false);
-      })
-      .withFailureHandler(function(err) {
-        console.error(err);
-        showLoading(false);
-        toast('Erreur lors du chargement', true);
-      })
-      .getEvents();
+    loadFolders(function() {
+      google.script.run
+        .withSuccessHandler(function(events) {
+          renderEvents(events);
+          showLoading(false);
+        })
+        .withFailureHandler(function(err) {
+          console.error(err);
+          showLoading(false);
+          toast('Erreur lors du chargement', true);
+        })
+        .getEvents();
+    });
+  }
+
+  function buildEventCard(ev) {
+    var publicUrl = getPublicUrl(ev.id);
+    var isPortrait = ev.format === 'portrait';
+    var thumbCls = isPortrait ? 'portrait-thumb' : 'landscape-thumb';
+    var srcW = isPortrait ? 1080 : 1920;
+    var srcH = isPortrait ? 1920 : 1080;
+    var thumbW = isPortrait ? 34 : 107;
+    var scale = thumbW / srcW;
+    // Folder select
+    var folderOpts = '<option value="">—</option>';
+    allFolders.forEach(function(f) {
+      folderOpts += '<option value="' + f.id + '"' + (ev.folderId === f.id ? ' selected' : '') + '>' + escapeHtml(f.name) + '</option>';
+    });
+    return '<div class="event-card" data-id="' + ev.id + '">'
+      + '<div class="thumb ' + thumbCls + '">'
+      + '<iframe src="' + publicUrl + '" sandbox="allow-scripts allow-same-origin" style="width:' + srcW + 'px;height:' + srcH + 'px;transform:scale(' + scale + ');"></iframe>'
+      + '</div>'
+      + '<div class="info">'
+      + '<h3>' + escapeHtml(ev.name || ev.title) + '</h3>'
+      + '<span>' + (ev.eventDate || 'Pas de date') + ' — ' + (ev.progress || 0) + '% — ' + (ev.format === 'portrait' ? '1080x1920' : '1920x1080') + '</span>'
+      + '</div>'
+      + '<div class="actions">'
+      + '<select class="folder-select" title="Déplacer dans un dossier" onchange="changeEventFolder(\'' + ev.id + '\',this.value)">' + folderOpts + '</select>'
+      + '<button class="btn btn-copy btn-icon" title="Copier URL" onclick="copyUrl(\'' + publicUrl + '\')"><svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg></button>'
+      + '<button class="btn btn-secondary btn-icon" title="Dupliquer" onclick="duplicateEvent(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm-1 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h7v14zm-3-8h-1v2H9v-2H8v-1h1v-2h2v2h1v1z"/></svg></button>'
+      + '<button class="btn btn-secondary btn-icon" title="Éditer" onclick="editEvent(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>'
+      + '<button class="btn btn-secondary btn-icon" title="Ouvrir" onclick="window.open(\'' + publicUrl + '\',\'_blank\')"><svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg></button>'
+      + '<button class="btn btn-danger btn-icon" title="Supprimer" onclick="confirmDelete(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>'
+      + '</div>'
+      + '</div>';
   }
 
   function renderEvents(events) {
@@ -1372,32 +1531,43 @@
       container.innerHTML = '<div class="empty-state"><p>Aucun événement.</p></div>';
       return;
     }
-    var html = '';
+    // Group events by folder
+    var grouped = {};
+    var noFolder = [];
     events.forEach(function(ev) {
-      var publicUrl = getPublicUrl(ev.id);
-      var isPortrait = ev.format === 'portrait';
-      var thumbCls = isPortrait ? 'portrait-thumb' : 'landscape-thumb';
-      var srcW = isPortrait ? 1080 : 1920;
-      var srcH = isPortrait ? 1920 : 1080;
-      var thumbW = isPortrait ? 34 : 107;
-      var scale = thumbW / srcW;
-      html += '<div class="event-card" data-id="' + ev.id + '">'
-        + '<div class="thumb ' + thumbCls + '">'
-        + '<iframe src="' + publicUrl + '" sandbox="allow-scripts allow-same-origin" style="width:' + srcW + 'px;height:' + srcH + 'px;transform:scale(' + scale + ');"></iframe>'
-        + '</div>'
-        + '<div class="info">'
-        + '<h3>' + escapeHtml(ev.name || ev.title) + '</h3>'
-        + '<span>' + (ev.eventDate || 'Pas de date') + ' — ' + (ev.progress || 0) + '% — ' + (ev.format === 'portrait' ? '1080x1920' : '1920x1080') + '</span>'
-        + '</div>'
-        + '<div class="actions">'
-        + '<button class="btn btn-copy btn-small" onclick="copyUrl(\'' + publicUrl + '\')">Copier URL</button>'
-        + '<button class="btn btn-secondary btn-small" onclick="duplicateEvent(\'' + ev.id + '\')">Dupliquer</button>'
-        + '<button class="btn btn-secondary btn-small" onclick="editEvent(\'' + ev.id + '\')">Éditer</button>'
-        + '<button class="btn btn-secondary btn-small" onclick="window.open(\'' + publicUrl + '\',\'_blank\')">↗ Ouvrir</button>'
-        + '<button class="btn btn-danger btn-small" onclick="confirmDelete(\'' + ev.id + '\')">Suppr.</button>'
+      if (ev.folderId && allFolders.some(function(f) { return f.id === ev.folderId; })) {
+        if (!grouped[ev.folderId]) grouped[ev.folderId] = [];
+        grouped[ev.folderId].push(ev);
+      } else {
+        noFolder.push(ev);
+      }
+    });
+    var html = '';
+    // Render folders
+    allFolders.forEach(function(folder, idx) {
+      var folderEvents = grouped[folder.id] || [];
+      html += '<div class="folder-group">'
+        + '<div class="folder-header">'
+        + '<h3>📁 ' + escapeHtml(folder.name) + ' (' + folderEvents.length + ')</h3>'
+        + '<div class="folder-actions">'
+        + (idx > 0 ? '<button title="Monter" onclick="moveFolderUp(\'' + folder.id + '\')">▲</button>' : '')
+        + (idx < allFolders.length - 1 ? '<button title="Descendre" onclick="moveFolderDown(\'' + folder.id + '\')">▼</button>' : '')
+        + '<button title="Renommer" onclick="renameFolderPrompt(\'' + folder.id + '\')">✏️</button>'
+        + '<button title="Supprimer le dossier" onclick="deleteFolderConfirm(\'' + folder.id + '\')">🗑️</button>'
         + '</div>'
         + '</div>';
+      folderEvents.forEach(function(ev) { html += buildEventCard(ev); });
+      if (!folderEvents.length) html += '<div style="color:#8b949e;font-size:.8rem;padding:.3rem 0;">Aucun événement dans ce dossier</div>';
+      html += '</div>';
     });
+    // Render events without folder
+    if (noFolder.length) {
+      if (allFolders.length) {
+        html += '<div class="folder-group"><div class="folder-header"><h3>Sans dossier (' + noFolder.length + ')</h3></div>';
+      }
+      noFolder.forEach(function(ev) { html += buildEventCard(ev); });
+      if (allFolders.length) html += '</div>';
+    }
     container.innerHTML = html;
   }
 
@@ -1443,7 +1613,8 @@
         optionalTextOffsetY: parseInt(document.getElementById('optionalTextOffsetY').value, 10),
         name: document.getElementById('eventName').value.trim(),
         bgPositionX: Math.round(parseInt(document.getElementById('bgPositionX').value, 10) / 2 + 50),
-        bgPositionY: Math.round(parseInt(document.getElementById('bgPositionY').value, 10) / 2 + 50)
+        bgPositionY: Math.round(parseInt(document.getElementById('bgPositionY').value, 10) / 2 + 50),
+        folderId: document.getElementById('folderId').value
       };
 
       google.script.run
@@ -1550,6 +1721,7 @@
         setFieldStyle('optionalText', safeParse(ev.optionalTextStyle));
 
         selectFormat(ev.format || 'landscape');
+        document.getElementById('folderId').value = ev.folderId || '';
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
         if (ev.backgroundImageId) {
@@ -1633,6 +1805,7 @@
         setFieldStyle('progressValue', safeParse(ev.progressValueStyle));
         setFieldStyle('optionalText', safeParse(ev.optionalTextStyle));
         selectFormat(ev.format || 'landscape');
+        document.getElementById('folderId').value = ev.folderId || '';
         document.getElementById('formTitle').textContent = 'Dupliquer l\'événement';
 
         if (ev.backgroundImageId) {
@@ -1685,6 +1858,7 @@
     document.getElementById('progressValue').textContent = '0%';
     document.getElementById('optionalText').value = '';
     document.getElementById('formTitle').textContent = 'Nouvel événement';
+    document.getElementById('folderId').value = '';
     document.getElementById('showTimer').checked = true;
     document.getElementById('showProgress').checked = true;
     toggleTimerFields();
