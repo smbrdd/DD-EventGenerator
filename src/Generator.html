@@ -447,6 +447,43 @@
       border-color: #667eea;
     }
 
+    /* Color group (picker + hex + presets) */
+    .sr-color-group {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    .sr-color-group input[type="text"] {
+      width: 68px;
+      padding: .2rem .3rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 5px;
+      color: #e1e4e8;
+      font-size: .72rem;
+      font-family: monospace;
+    }
+
+    .sr-presets {
+      display: flex;
+      gap: 2px;
+    }
+
+    .sr-preset {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1px solid #484f58;
+      cursor: pointer;
+      padding: 0;
+      transition: transform .15s;
+    }
+
+    .sr-preset:hover {
+      transform: scale(1.2);
+    }
+
     /* ── Empty state ── */
     .empty-state {
       text-align: center;
@@ -543,45 +580,13 @@
     <div class="form-group">
       <label for="title">Titre</label>
       <input type="text" id="title" placeholder="Nom de l'événement">
-      <div class="style-row" data-field="title">
-        <span class="sr-label">Taille</span>
-        <input type="number" class="sr-size" value="94" min="8" max="300">
-        <span class="sr-label">px</span>
-        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
-        <div class="sr-sep"></div>
-        <select class="sr-color-type" onchange="toggleColor2(this)">
-          <option value="gradient">Gradient</option>
-          <option value="solid">Uni</option>
-        </select>
-        <input type="color" class="sr-color1" value="#F43D46">
-        <input type="color" class="sr-color2" value="#FD4D26">
-        <div class="sr-sep"></div>
-        <span class="sr-label">Opacité</span>
-        <input type="range" class="sr-opacity" min="0" max="100" value="100" oninput="this.nextElementSibling.textContent=this.value+'%'">
-        <span class="sr-opacity-val">100%</span>
-      </div>
+      <div class="style-row" data-field="title"></div>
     </div>
 
     <div class="form-group">
       <label for="subtitle">Sous-titre</label>
       <input type="text" id="subtitle" placeholder="Description courte">
-      <div class="style-row" data-field="subtitle">
-        <span class="sr-label">Taille</span>
-        <input type="number" class="sr-size" value="27" min="8" max="200">
-        <span class="sr-label">px</span>
-        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
-        <div class="sr-sep"></div>
-        <select class="sr-color-type" onchange="toggleColor2(this)">
-          <option value="solid">Uni</option>
-          <option value="gradient">Gradient</option>
-        </select>
-        <input type="color" class="sr-color1" value="#ffffff">
-        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
-        <div class="sr-sep"></div>
-        <span class="sr-label">Opacité</span>
-        <input type="range" class="sr-opacity" min="0" max="100" value="70" oninput="this.nextElementSibling.textContent=this.value+'%'">
-        <span class="sr-opacity-val">70%</span>
-      </div>
+      <div class="style-row" data-field="subtitle"></div>
     </div>
 
     <div class="form-group">
@@ -648,67 +653,24 @@
     <div class="form-group">
       <label for="preCountdownText">Texte au-dessus du compte à rebours</label>
       <input type="text" id="preCountdownText" placeholder="Ex: COMING SOON">
-      <div class="style-row" data-field="preCountdownText">
-        <span class="sr-label">Taille</span>
-        <input type="number" class="sr-size" value="21" min="8" max="200">
-        <span class="sr-label">px</span>
-        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
-        <div class="sr-sep"></div>
-        <select class="sr-color-type" onchange="toggleColor2(this)">
-          <option value="solid">Uni</option>
-          <option value="gradient">Gradient</option>
-        </select>
-        <input type="color" class="sr-color1" value="#ffffff">
-        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
-        <div class="sr-sep"></div>
-        <span class="sr-label">Opacité</span>
-        <input type="range" class="sr-opacity" min="0" max="100" value="60" oninput="this.nextElementSibling.textContent=this.value+'%'">
-        <span class="sr-opacity-val">60%</span>
-      </div>
+      <div class="style-row" data-field="preCountdownText"></div>
     </div>
 
     <div class="form-group">
       <label for="postCountdownText">Texte sous le compte à rebours (majuscules)</label>
       <input type="text" id="postCountdownText" placeholder="Ex: DUE DATE 15 MARCH">
-      <div class="style-row" data-field="postCountdownText">
-        <span class="sr-label">Taille</span>
-        <input type="number" class="sr-size" value="21" min="8" max="200">
-        <span class="sr-label">px</span>
-        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
-        <div class="sr-sep"></div>
-        <select class="sr-color-type" onchange="toggleColor2(this)">
-          <option value="solid">Uni</option>
-          <option value="gradient">Gradient</option>
-        </select>
-        <input type="color" class="sr-color1" value="#ffffff">
-        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
-        <div class="sr-sep"></div>
-        <span class="sr-label">Opacité</span>
-        <input type="range" class="sr-opacity" min="0" max="100" value="60" oninput="this.nextElementSibling.textContent=this.value+'%'">
-        <span class="sr-opacity-val">60%</span>
-      </div>
+      <div class="style-row" data-field="postCountdownText"></div>
     </div>
 
     <div class="form-group">
       <label for="progressLabel">Libellé de la barre d'avancement</label>
       <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
-      <div class="style-row" data-field="progressLabel">
-        <span class="sr-label">Taille</span>
-        <input type="number" class="sr-size" value="22" min="8" max="200">
-        <span class="sr-label">px</span>
-        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
-        <div class="sr-sep"></div>
-        <select class="sr-color-type" onchange="toggleColor2(this)">
-          <option value="solid">Uni</option>
-          <option value="gradient">Gradient</option>
-        </select>
-        <input type="color" class="sr-color1" value="#ffffff">
-        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
-        <div class="sr-sep"></div>
-        <span class="sr-label">Opacité</span>
-        <input type="range" class="sr-opacity" min="0" max="100" value="70" oninput="this.nextElementSibling.textContent=this.value+'%'">
-        <span class="sr-opacity-val">70%</span>
-      </div>
+      <div class="style-row" data-field="progressLabel"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Style du pourcentage</label>
+      <div class="style-row" data-field="progressValue"></div>
     </div>
 
     <div class="form-group">
@@ -731,23 +693,7 @@
     <div class="form-group">
       <label for="optionalText">Texte optionnel</label>
       <textarea id="optionalText" placeholder="Informations complémentaires…"></textarea>
-      <div class="style-row" data-field="optionalText">
-        <span class="sr-label">Taille</span>
-        <input type="number" class="sr-size" value="26" min="8" max="200">
-        <span class="sr-label">px</span>
-        <button type="button" class="sr-uppercase" onclick="toggleUppercase(this)" title="Majuscules">AA</button>
-        <div class="sr-sep"></div>
-        <select class="sr-color-type" onchange="toggleColor2(this)">
-          <option value="solid">Uni</option>
-          <option value="gradient">Gradient</option>
-        </select>
-        <input type="color" class="sr-color1" value="#ffffff">
-        <input type="color" class="sr-color2" value="#ffffff" style="display:none;">
-        <div class="sr-sep"></div>
-        <span class="sr-label">Opacité</span>
-        <input type="range" class="sr-opacity" min="0" max="100" value="75" oninput="this.nextElementSibling.textContent=this.value+'%'">
-        <span class="sr-opacity-val">75%</span>
-      </div>
+      <div class="style-row" data-field="optionalText"></div>
     </div>
 
     <div class="form-actions">
@@ -789,15 +735,80 @@
     preCountdownText:  { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true },
     postCountdownText: { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true },
     progressLabel:     { fontSize: 22, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true },
+    progressValue:     { fontSize: 42, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 90,  uppercase: false },
     optionalText:      { fontSize: 26, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 75,  uppercase: true }
   };
   var STYLE_FIELDS = Object.keys(STYLE_DEFAULTS);
+  var PRESET_COLORS = ['#F43D46', '#FD4D26', '#FFFFFF'];
+
+  // ── Build style row HTML ──
+  function buildStyleRow(row) {
+    var field = row.getAttribute('data-field');
+    var d = STYLE_DEFAULTS[field];
+    var gradFirst = d.colorType === 'gradient';
+    row.innerHTML =
+      '<span class="sr-label">Taille</span>' +
+      '<input type="number" class="sr-size" value="' + d.fontSize + '" min="8" max="300">' +
+      '<span class="sr-label">px</span>' +
+      '<button type="button" class="sr-uppercase' + (d.uppercase ? ' active' : '') + '" onclick="toggleUppercase(this)" title="Majuscules">AA</button>' +
+      '<div class="sr-sep"></div>' +
+      '<select class="sr-color-type" onchange="toggleColor2(this)">' +
+        (gradFirst
+          ? '<option value="gradient">Gradient</option><option value="solid">Uni</option>'
+          : '<option value="solid">Uni</option><option value="gradient">Gradient</option>') +
+      '</select>' +
+      buildColorGroup('sr-color1', d.color1, true) +
+      buildColorGroup('sr-color2', d.color2, gradFirst) +
+      '<div class="sr-sep"></div>' +
+      '<span class="sr-label">Opacité</span>' +
+      '<input type="range" class="sr-opacity" min="0" max="100" value="' + d.opacity + '" oninput="this.nextElementSibling.textContent=this.value+\'%\'">' +
+      '<span class="sr-opacity-val">' + d.opacity + '%</span>';
+  }
+
+  function buildColorGroup(cls, val, visible) {
+    var presets = '';
+    PRESET_COLORS.forEach(function(c) {
+      presets += '<button type="button" class="sr-preset" style="background:' + c + ';" onclick="applyPreset(this,\'' + c + '\')" title="' + c + '"></button>';
+    });
+    return '<div class="sr-color-group" style="' + (visible ? '' : 'display:none;') + '">' +
+      '<input type="color" class="' + cls + '" value="' + val + '" oninput="syncHexFromPicker(this)">' +
+      '<input type="text" class="' + cls + '-hex" value="' + val + '" maxlength="7" oninput="syncPickerFromHex(this,\'' + cls + '\')">' +
+      '<div class="sr-presets">' + presets + '</div>' +
+    '</div>';
+  }
+
+  function initStyleRows() {
+    document.querySelectorAll('.style-row[data-field]').forEach(buildStyleRow);
+  }
 
   // ── Style helpers ──
+  function syncHexFromPicker(picker) {
+    var hex = picker.nextElementSibling;
+    hex.value = picker.value;
+  }
+
+  function syncPickerFromHex(hexInput, cls) {
+    var val = hexInput.value.trim();
+    if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+      var picker = hexInput.parentElement.querySelector('.' + cls);
+      picker.value = val;
+    }
+  }
+
+  function applyPreset(btn, color) {
+    var group = btn.closest('.sr-color-group');
+    var picker = group.querySelector('input[type="color"]');
+    var hex = group.querySelector('input[type="text"]');
+    picker.value = color;
+    hex.value = color;
+  }
+
   function toggleColor2(selectEl) {
     var row = selectEl.closest('.style-row');
-    var c2 = row.querySelector('.sr-color2');
-    c2.style.display = (selectEl.value === 'gradient') ? '' : 'none';
+    var groups = row.querySelectorAll('.sr-color-group');
+    if (groups.length >= 2) {
+      groups[1].style.display = (selectEl.value === 'gradient') ? '' : 'none';
+    }
   }
 
   function toggleUppercase(btn) {
@@ -827,6 +838,11 @@
     sel.value = s.colorType || d.colorType;
     row.querySelector('.sr-color1').value = s.color1 || d.color1;
     row.querySelector('.sr-color2').value = s.color2 || d.color2;
+    // Sync hex inputs
+    var hex1 = row.querySelector('.sr-color1-hex');
+    var hex2 = row.querySelector('.sr-color2-hex');
+    if (hex1) hex1.value = s.color1 || d.color1;
+    if (hex2) hex2.value = s.color2 || d.color2;
     var op = s.opacity !== undefined && s.opacity !== '' ? s.opacity : d.opacity;
     row.querySelector('.sr-opacity').value = op;
     row.querySelector('.sr-opacity-val').textContent = op + '%';
@@ -893,6 +909,7 @@
   // ── Init ──
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('ghPagesUrl').value = GITHUB_PAGES_URL;
+    initStyleRows();
     resetAllStyles();
     loadEvents();
   });
@@ -1034,6 +1051,7 @@
         preCountdownStyle: JSON.stringify(getFieldStyle('preCountdownText')),
         postCountdownStyle: JSON.stringify(getFieldStyle('postCountdownText')),
         progressLabelStyle: JSON.stringify(getFieldStyle('progressLabel')),
+        progressValueStyle: JSON.stringify(getFieldStyle('progressValue')),
         optionalTextStyle: JSON.stringify(getFieldStyle('optionalText'))
       };
 
@@ -1106,6 +1124,7 @@
         setFieldStyle('preCountdownText', safeParse(ev.preCountdownStyle));
         setFieldStyle('postCountdownText', safeParse(ev.postCountdownStyle));
         setFieldStyle('progressLabel', safeParse(ev.progressLabelStyle));
+        setFieldStyle('progressValue', safeParse(ev.progressValueStyle));
         setFieldStyle('optionalText', safeParse(ev.optionalTextStyle));
 
         selectFormat(ev.format || 'landscape');

@@ -305,6 +305,7 @@
     preCountdownText:  { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true },
     postCountdownText: { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true },
     progressLabel:     { fontSize: 22, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true },
+    progressValue:     { fontSize: 42, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 90,  uppercase: false },
     optionalText:      { fontSize: 26, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 75,  uppercase: true }
   };
 
@@ -422,6 +423,7 @@
     applyTextStyle('preCountdownText', ev.preCountdownStyle, 'preCountdownText');
     applyTextStyle('postCountdownText', ev.postCountdownStyle, 'postCountdownText');
     applyTextStyle('progressLabel', ev.progressLabelStyle, 'progressLabel');
+    applyTextStyle('progressText', ev.progressValueStyle, 'progressValue');
     applyTextStyle('optionalText', ev.optionalTextStyle, 'optionalText');
 
     frame.classList.remove('hidden');
