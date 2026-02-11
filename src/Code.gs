@@ -16,7 +16,7 @@
 var CONFIG = {
   SHEET_NAME: 'Events',
   FOLDER_NAME: 'EventGenerator-Images',
-  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'optionalTextStyle', 'createdAt', 'updatedAt']
+  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'optionalTextStyle', 'createdAt', 'updatedAt']
 };
 
 // ─── Routing ────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ function createOrUpdateEvent(data) {
     var allData = sheet.getDataRange().getValues();
     for (var i = 1; i < allData.length; i++) {
       if (allData[i][0] === data.id) {
-        var row = buildRow_(data, allData[i][24], now);
+        var row = buildRow_(data, allData[i][25], now);
         sheet.getRange(i + 1, 1, 1, CONFIG.COLUMNS.length).setValues([row]);
         return data.id;
       }
@@ -165,6 +165,7 @@ function buildRow_(data, createdAt, updatedAt) {
     data.showTimer !== false ? 'true' : 'false',
     data.showProgress !== false ? 'true' : 'false',
     data.showGradient !== false ? 'true' : 'false',
+    data.gradientOpacity !== undefined && data.gradientOpacity !== '' ? data.gradientOpacity : 50,
     data.progressLabel || '',
     data.preCountdownText || '',
     data.postCountdownText || '',

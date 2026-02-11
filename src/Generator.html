@@ -616,6 +616,14 @@
     </div>
 
     <div class="form-group">
+      <label>Intensité du gradient</label>
+      <div class="slider-wrapper">
+        <input type="range" id="gradientOpacity" min="0" max="100" value="50">
+        <span class="slider-value" id="gradientOpacityValue">50%</span>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label>Unités du compte à rebours à afficher</label>
       <div class="checkbox-row">
         <label class="checkbox-label">
@@ -904,9 +912,12 @@
     return WEB_APP_URL + '?id=' + eventId;
   }
 
-  // ── Slider ──
+  // ── Sliders ──
   document.getElementById('progress').addEventListener('input', function() {
     document.getElementById('progressValue').textContent = this.value + '%';
+  });
+  document.getElementById('gradientOpacity').addEventListener('input', function() {
+    document.getElementById('gradientOpacityValue').textContent = this.value + '%';
   });
 
   // ── Drop zone ──
@@ -1010,6 +1021,7 @@
         showTimer: document.getElementById('showTimer').checked,
         showProgress: document.getElementById('showProgress').checked,
         showGradient: document.getElementById('showGradient').checked,
+        gradientOpacity: parseInt(document.getElementById('gradientOpacity').value, 10),
         progressLabel: document.getElementById('progressLabel').value.trim(),
         preCountdownText: document.getElementById('preCountdownText').value.trim(),
         postCountdownText: document.getElementById('postCountdownText').value.trim(),
@@ -1077,6 +1089,9 @@
         document.getElementById('showTimer').checked = String(ev.showTimer) !== 'false';
         document.getElementById('showProgress').checked = String(ev.showProgress) !== 'false';
         document.getElementById('showGradient').checked = String(ev.showGradient) !== 'false';
+        var gop = ev.gradientOpacity !== undefined && ev.gradientOpacity !== '' ? ev.gradientOpacity : 50;
+        document.getElementById('gradientOpacity').value = gop;
+        document.getElementById('gradientOpacityValue').textContent = gop + '%';
         document.getElementById('progressLabel').value = ev.progressLabel || '';
         document.getElementById('preCountdownText').value = ev.preCountdownText || '';
         document.getElementById('postCountdownText').value = ev.postCountdownText || '';
@@ -1146,6 +1161,8 @@
     document.getElementById('showTimer').checked = true;
     document.getElementById('showProgress').checked = true;
     document.getElementById('showGradient').checked = true;
+    document.getElementById('gradientOpacity').value = 50;
+    document.getElementById('gradientOpacityValue').textContent = '50%';
     document.getElementById('progressLabel').value = '';
     document.getElementById('preCountdownText').value = '';
     document.getElementById('postCountdownText').value = '';

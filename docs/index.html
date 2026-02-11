@@ -60,7 +60,6 @@
       background-position: center;
       z-index: 1;
       mix-blend-mode: screen;
-      opacity: .85;
     }
 
     .bg-darken {
@@ -366,7 +365,10 @@
 
     // Gradient overlay (conditional)
     if (String(ev.showGradient) !== 'false') {
-      document.getElementById('gradientOverlay').classList.remove('hidden');
+      var gOverlay = document.getElementById('gradientOverlay');
+      gOverlay.classList.remove('hidden');
+      var gOp = ev.gradientOpacity !== undefined && ev.gradientOpacity !== '' ? ev.gradientOpacity : 50;
+      gOverlay.style.opacity = gOp / 100;
     }
 
     // Pre-countdown text
