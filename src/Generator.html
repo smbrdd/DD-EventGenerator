@@ -140,29 +140,12 @@
     .event-card:hover { border-color: #667eea; }
 
     .event-card .thumb {
-      width: 106px; height: 60px;
+      width: 60px; height: 60px;
       border-radius: 8px;
+      background-size: cover;
+      background-position: center;
       background-color: #21262d;
       flex-shrink: 0;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .event-card .thumb iframe {
-      width: 1920px;
-      height: 1080px;
-      border: none;
-      transform-origin: top left;
-      pointer-events: none;
-    }
-
-    .event-card .thumb.portrait-thumb {
-      width: 34px; height: 60px;
-    }
-
-    .event-card .thumb.portrait-thumb iframe {
-      width: 1080px;
-      height: 1920px;
     }
 
     .event-card .info { flex: 1; min-width: 0; }
@@ -1277,11 +1260,12 @@
     }
     var html = '';
     events.forEach(function(ev) {
+      var thumbStyle = ev.backgroundImageId
+        ? 'background-image:url(https://lh3.googleusercontent.com/d/' + ev.backgroundImageId + ')'
+        : '';
       var publicUrl = getPublicUrl(ev.id);
-      var isPortrait = ev.format === 'portrait';
-      var thumbCls = 'thumb' + (isPortrait ? ' portrait-thumb' : '');
       html += '<div class="event-card">'
-        + '<div class="' + thumbCls + '" data-src="' + publicUrl + '" data-portrait="' + isPortrait + '"></div>'
+        + '<div class="thumb" style="' + thumbStyle + '"></div>'
         + '<div class="info">'
         + '<h3>' + escapeHtml(ev.name || ev.title) + '</h3>'
         + '<span>' + (ev.eventDate || 'Pas de date') + ' — ' + (ev.progress || 0) + '% — ' + (ev.format === 'portrait' ? '1080x1920' : '1920x1080') + '</span>'
@@ -1296,21 +1280,6 @@
         + '</div>';
     });
     container.innerHTML = html;
-    // Load thumb iframes
-    container.querySelectorAll('.thumb[data-src]').forEach(function(thumb) {
-      var src = thumb.getAttribute('data-src');
-      var isPortrait = thumb.getAttribute('data-portrait') === 'true';
-      var iframe = document.createElement('iframe');
-      iframe.src = src;
-      iframe.sandbox = 'allow-scripts allow-same-origin';
-      var srcW = isPortrait ? 1080 : 1920;
-      var srcH = isPortrait ? 1920 : 1080;
-      var thumbW = thumb.clientWidth;
-      var scale = thumbW / srcW;
-      iframe.style.transform = 'scale(' + scale + ')';
-      thumb.style.height = (srcH * scale) + 'px';
-      thumb.appendChild(iframe);
-    });
   }
 
   // ── Save ──
