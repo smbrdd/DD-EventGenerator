@@ -261,6 +261,16 @@
       transition: border-color .2s;
     }
 
+    .form-group input[type="date"] {
+      width: 220px;
+      color-scheme: dark;
+    }
+
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      cursor: pointer;
+    }
+
     .form-group input:focus,
     .form-group textarea:focus {
       outline: none;
