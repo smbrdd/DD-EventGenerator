@@ -128,15 +128,16 @@
     .fx-shimmer { display: none; }
 
     .fx-glow {
-      position: absolute; inset: -20%; z-index: 3; pointer-events: none;
-      width: 140%; height: 140%;
-      background: radial-gradient(ellipse at 50% 50%, rgba(255,180,0,.5) 0%, rgba(255,200,0,.15) 40%, transparent 70%);
-      animation: fxGlowPulse 5s ease-in-out infinite;
+      position: absolute; inset: -30%; z-index: 3; pointer-events: none;
+      width: 160%; height: 160%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(255,160,0,.8) 0%, rgba(255,190,0,.35) 35%, transparent 65%);
+      animation: fxGlowPulse 6s ease-in-out infinite;
+      animation-delay: 2s;
     }
     @keyframes fxGlowPulse {
-      0%   { opacity: 0; transform: scale(0.9); }
-      50%  { opacity: 0.6; transform: scale(1.05); }
-      100% { opacity: 0; transform: scale(0.9); }
+      0%   { opacity: 0.1; transform: scale(0.85); }
+      50%  { opacity: 0.85; transform: scale(1.1); }
+      100% { opacity: 0.1; transform: scale(0.85); }
     }
 
     .fx-rays {
@@ -154,7 +155,7 @@
         transparent 280deg, rgba(255,215,0,.15) 290deg, transparent 300deg,
         transparent 320deg, rgba(255,215,0,.15) 330deg, transparent 340deg,
         transparent 360deg);
-      animation: fxRaysSpin 60s linear infinite;
+      animation: fxRaysSpin 120s linear infinite;
     }
     @keyframes fxRaysSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
