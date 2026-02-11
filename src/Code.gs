@@ -101,6 +101,13 @@ function getEvents() {
   return events;
 }
 
+function getAllData() {
+  return {
+    events: getEvents(),
+    folders: getFolders()
+  };
+}
+
 function getEvent(id) {
   var sheet = getOrCreateSheet_();
   var data = sheet.getDataRange().getValues();

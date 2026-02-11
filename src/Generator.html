@@ -1274,16 +1274,24 @@
 
   // ── Folders ──
   var allFolders = [];
+  var allEvents = [];
+  var CACHE_KEY = 'ddeg_cache';
+
+  function saveCache() {
+    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ folders: allFolders, events: allEvents, ts: Date.now() })); } catch(e) {}
+  }
+
+  function loadCache() {
+    try {
+      var raw = sessionStorage.getItem(CACHE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return null;
+  }
 
   function loadFolders(cb) {
-    google.script.run
-      .withSuccessHandler(function(folders) {
-        allFolders = folders || [];
-        updateFolderSelects();
-        if (cb) cb();
-      })
-      .withFailureHandler(function() { allFolders = []; if (cb) cb(); })
-      .getFolders();
+    // Legacy compat — now handled by loadEvents via getAllData
+    if (cb) cb();
   }
 
   function updateFolderSelects() {
@@ -1306,7 +1314,8 @@
       .withSuccessHandler(function(folder) {
         allFolders.push(folder);
         updateFolderSelects();
-        loadEvents();
+        renderEvents(allEvents);
+        saveCache();
         toast('Dossier "' + folder.name + '" créé');
       })
       .withFailureHandler(function() { toast('Erreur création dossier', true); })
@@ -1319,6 +1328,7 @@
     if (!folder || !newName || newName === folder.name) return;
     folder.name = newName;
     updateFolderSelects();
+    saveCache();
     google.script.run
       .withFailureHandler(function() { toast('Erreur renommage', true); })
       .renameFolder(id, newName);
@@ -1331,8 +1341,10 @@
     google.script.run
       .withSuccessHandler(function() {
         allFolders = allFolders.filter(function(f) { return f.id !== id; });
+        allEvents.forEach(function(ev) { if (ev.folderId === id) ev.folderId = ''; });
         updateFolderSelects();
-        loadEvents();
+        renderEvents(allEvents);
+        saveCache();
         toast('Dossier supprimé');
       })
       .withFailureHandler(function() { toast('Erreur suppression', true); })
@@ -1345,7 +1357,8 @@
     var tmp = allFolders[idx]; allFolders[idx] = allFolders[idx - 1]; allFolders[idx - 1] = tmp;
     var orderedIds = allFolders.map(function(f) { return f.id; });
     google.script.run.reorderFolders(orderedIds);
-    loadEvents();
+    renderEvents(allEvents);
+    saveCache();
   }
 
   function moveFolderDown(id) {
@@ -1354,13 +1367,16 @@
     var tmp = allFolders[idx]; allFolders[idx] = allFolders[idx + 1]; allFolders[idx + 1] = tmp;
     var orderedIds = allFolders.map(function(f) { return f.id; });
     google.script.run.reorderFolders(orderedIds);
-    loadEvents();
+    renderEvents(allEvents);
+    saveCache();
   }
 
   function changeEventFolder(eventId, folderId) {
+    // Mise à jour locale immédiate
+    var ev = allEvents.find(function(e) { return e.id === eventId; });
+    if (ev) { ev.folderId = folderId; renderEvents(allEvents); saveCache(); }
     google.script.run
-      .withSuccessHandler(function() { loadEvents(); })
-      .withFailureHandler(function() { toast('Erreur déplacement', true); })
+      .withFailureHandler(function() { toast('Erreur déplacement', true); loadEvents(true); })
       .moveEventToFolder(eventId, folderId);
   }
 
@@ -1535,7 +1551,8 @@
     localStorage.setItem('githubPagesUrl', url);
     GITHUB_PAGES_URL = url;
     toast(url ? 'URL GitHub Pages sauvegardée !' : 'URL GitHub Pages supprimée');
-    loadEvents();
+    sessionStorage.removeItem(CACHE_KEY);
+    loadEvents(true);
   }
 
   function getPublicUrl(eventId) {
@@ -1610,21 +1627,34 @@
   }
 
   // ── Load events ──
-  function loadEvents() {
+  function loadEvents(forceRefresh) {
+    // 1. Afficher le cache immédiatement si dispo
+    if (!forceRefresh) {
+      var cached = loadCache();
+      if (cached) {
+        allFolders = cached.folders || [];
+        allEvents = cached.events || [];
+        updateFolderSelects();
+        renderEvents(allEvents);
+      }
+    }
+    // 2. Charger depuis le serveur (batch unique)
     showLoading(true);
-    loadFolders(function() {
-      google.script.run
-        .withSuccessHandler(function(events) {
-          renderEvents(events);
-          showLoading(false);
-        })
-        .withFailureHandler(function(err) {
-          console.error(err);
-          showLoading(false);
-          toast('Erreur lors du chargement', true);
-        })
-        .getEvents();
-    });
+    google.script.run
+      .withSuccessHandler(function(data) {
+        allFolders = data.folders || [];
+        allEvents = data.events || [];
+        updateFolderSelects();
+        renderEvents(allEvents);
+        saveCache();
+        showLoading(false);
+      })
+      .withFailureHandler(function(err) {
+        console.error(err);
+        showLoading(false);
+        if (!allEvents.length) toast('Erreur lors du chargement', true);
+      })
+      .getAllData();
   }
 
   function buildEventCard(ev) {
@@ -1759,7 +1789,7 @@
         .withSuccessHandler(function() {
           showLoading(false);
           toast('Événement enregistré !');
-          loadEvents();
+          loadEvents(true);
           // Si on éditait, rafraîchir le preview au lieu de fermer
           if (id && previewCurrentUrl) {
             setTimeout(refreshPreview, 500);
@@ -1991,7 +2021,7 @@
       .withSuccessHandler(function() {
         showLoading(false);
         toast('Événement supprimé');
-        loadEvents();
+        loadEvents(true);
       })
       .withFailureHandler(function(err) {
         showLoading(false);
