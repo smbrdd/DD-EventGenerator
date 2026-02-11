@@ -52,28 +52,24 @@
       z-index: 0;
     }
 
+    .bg-gradient-support {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,.7) 0%, rgba(0,0,0,.4) 35%, transparent 65%);
+      z-index: 1;
+    }
+
     .bg-gradient-overlay {
       position: absolute;
       inset: 0;
       background-image: url('overlay-gradient.png');
       background-size: cover;
       background-position: center;
-      z-index: 1;
+      z-index: 2;
       mix-blend-mode: screen;
     }
 
-    .bg-gradient-overlay::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: inherit;
-      background-size: inherit;
-      background-position: inherit;
-      opacity: var(--gradient-boost, 0);
-    }
-
-    .portrait .bg-gradient-overlay,
-    .portrait .bg-gradient-overlay::after {
+    .portrait .bg-gradient-overlay {
       background-size: 100% 100%;
     }
 
@@ -299,6 +295,7 @@
 <!-- Event page -->
 <div class="page-frame hidden" id="eventPage">
   <div class="bg" id="bgImage"></div>
+  <div class="bg-gradient-support hidden" id="gradientSupport"></div>
   <div class="bg-gradient-overlay hidden" id="gradientOverlay"></div>
   <div class="content">
     <h1 class="title" id="title"></h1>
@@ -417,12 +414,12 @@
     // Gradient overlay (conditional)
     if (String(ev.showGradient) !== 'false') {
       var gOverlay = document.getElementById('gradientOverlay');
+      var gSupport = document.getElementById('gradientSupport');
       gOverlay.classList.remove('hidden');
+      gSupport.classList.remove('hidden');
       var gOp = ev.gradientOpacity !== undefined && ev.gradientOpacity !== '' ? ev.gradientOpacity : 50;
       gOverlay.style.opacity = gOp / 100;
-      // Normal (non-blended) layer: kicks in above 50%, ramps 0→1 from 50%→100%
-      var boost = Math.max(0, (gOp - 50) / 50);
-      gOverlay.style.setProperty('--gradient-boost', boost);
+      gSupport.style.opacity = gOp / 100;
     }
 
     // Pre-countdown text
