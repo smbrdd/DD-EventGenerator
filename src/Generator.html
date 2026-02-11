@@ -135,6 +135,7 @@
       align-items: center;
       gap: 1rem;
       transition: border-color .2s;
+      position: relative;
     }
 
     .event-card:hover { border-color: #667eea; }
@@ -145,6 +146,7 @@
       flex-shrink: 0;
       overflow: hidden;
       position: relative;
+      cursor: pointer;
     }
 
     .event-card .thumb.landscape-thumb {
@@ -159,6 +161,31 @@
       border: none;
       transform-origin: top left;
       pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* ── Thumb hover zoom popup ── */
+    .thumb-zoom-popup {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,.7);
+      border: 1px solid #30363d;
+      background: #000;
+      pointer-events: none;
+    }
+
+    .thumb-zoom-popup.visible {
+      display: block;
+    }
+
+    .thumb-zoom-popup iframe {
+      border: none;
+      transform-origin: top left;
       position: absolute;
       top: 0;
       left: 0;
@@ -710,6 +737,7 @@
 
 <div class="loading-overlay" id="loading"><div class="spinner"></div></div>
 <div class="toast" id="toast"></div>
+<div class="thumb-zoom-popup" id="thumbZoom"><iframe id="thumbZoomIframe" sandbox="allow-scripts allow-same-origin"></iframe></div>
 
 <div class="container">
   <header>
@@ -1284,7 +1312,7 @@
       var thumbW = isPortrait ? 34 : 107;
       var scale = thumbW / srcW;
       html += '<div class="event-card">'
-        + '<div class="thumb ' + thumbCls + '">'
+        + '<div class="thumb ' + thumbCls + '" data-url="' + publicUrl + '" data-portrait="' + isPortrait + '">'
         + '<iframe src="' + publicUrl + '" sandbox="allow-scripts allow-same-origin" style="width:' + srcW + 'px;height:' + srcH + 'px;transform:scale(' + scale + ');"></iframe>'
         + '</div>'
         + '<div class="info">'
@@ -1301,6 +1329,44 @@
         + '</div>';
     });
     container.innerHTML = html;
+    initThumbHover();
+  }
+
+  // ── Thumb hover zoom ──
+  var zoomPopup = document.getElementById('thumbZoom');
+  var zoomIframe = document.getElementById('thumbZoomIframe');
+  var zoomCurrentSrc = '';
+
+  function initThumbHover() {
+    document.querySelectorAll('.event-card .thumb[data-url]').forEach(function(thumb) {
+      thumb.addEventListener('mouseenter', function(e) {
+        var url = thumb.getAttribute('data-url');
+        var isPortrait = thumb.getAttribute('data-portrait') === 'true';
+        var srcW = isPortrait ? 1080 : 1920;
+        var srcH = isPortrait ? 1920 : 1080;
+        var popW = isPortrait ? 152 : 480;
+        var popH = isPortrait ? 270 : 270;
+        var scale = popW / srcW;
+
+        zoomPopup.style.width = popW + 'px';
+        zoomPopup.style.height = popH + 'px';
+        zoomIframe.style.width = srcW + 'px';
+        zoomIframe.style.height = srcH + 'px';
+        zoomIframe.style.transform = 'scale(' + scale + ')';
+        if (zoomCurrentSrc !== url) {
+          zoomIframe.src = url;
+          zoomCurrentSrc = url;
+        }
+
+        var rect = thumb.getBoundingClientRect();
+        zoomPopup.style.left = (rect.right + 12) + 'px';
+        zoomPopup.style.top = Math.max(8, rect.top + rect.height / 2 - popH / 2) + 'px';
+        zoomPopup.classList.add('visible');
+      });
+      thumb.addEventListener('mouseleave', function() {
+        zoomPopup.classList.remove('visible');
+      });
+    });
   }
 
   // ── Save ──
