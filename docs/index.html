@@ -235,23 +235,12 @@
       white-space: pre-line;
     }
 
-    /* ── Loading / Error ── */
-    .loading, .error-page {
+    /* ── Error ── */
+    .error-page {
       text-align: center;
       color: rgba(255,255,255,.6);
       font-size: 1.7rem;
     }
-
-    .spinner {
-      width: 67px; height: 67px;
-      border: 5px solid rgba(255,255,255,.15);
-      border-top-color: #F43D46;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-      margin: 0 auto 1.7rem;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
 
     .hidden { display: none; }
 
@@ -263,12 +252,6 @@
   </style>
 </head>
 <body>
-
-<!-- Loading state -->
-<div class="loading" id="loadingState">
-  <div class="spinner"></div>
-  <p>Loading…</p>
-</div>
 
 <!-- Error state -->
 <div class="error-page hidden" id="errorState">
@@ -321,7 +304,6 @@
     .catch(function() { showError(); });
 
   function showError() {
-    document.getElementById('loadingState').classList.add('hidden');
     document.getElementById('errorState').classList.remove('hidden');
   }
 
@@ -398,7 +380,6 @@
       txt.classList.remove('hidden');
     }
 
-    document.getElementById('loadingState').classList.add('hidden');
     frame.classList.remove('hidden');
   }
 
