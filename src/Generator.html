@@ -108,7 +108,7 @@
     header h1 {
       font-size: 1.8rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #FD4D26, #F43D46);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: .3rem;
@@ -138,7 +138,7 @@
       position: relative;
     }
 
-    .event-card:hover { border-color: #667eea; }
+    .event-card:hover { border-color: #FD4D26; }
 
     .event-card .thumb {
       border-radius: 8px;
@@ -191,17 +191,33 @@
       font-size: .8rem;
       font-weight: 500;
       cursor: pointer;
-      transition: opacity .2s;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
       font-family: inherit;
     }
 
-    .btn:hover { opacity: .85; }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,.3);
+    }
 
-    .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .btn-primary { background: linear-gradient(135deg, #FD4D26, #F43D46); color: #fff; }
+    .btn-primary:hover { box-shadow: 0 4px 16px rgba(253,77,38,.4); }
+
     .btn-secondary { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+    .btn-secondary:hover { background: #2d333b; border-color: #FD4D26; color: #fff; }
+
     .btn-danger { background: #da3633; color: #fff; }
+    .btn-danger:hover { background: #f85149; box-shadow: 0 4px 16px rgba(248,81,73,.4); }
+
     .btn-small { padding: .4rem .7rem; font-size: .75rem; }
+
     .btn-copy { background: #238636; color: #fff; }
+    .btn-copy:hover { background: #2ea043; box-shadow: 0 4px 16px rgba(46,160,67,.4); }
 
     /* ── Form ── */
     .form-section {
@@ -248,7 +264,7 @@
     .form-group input:focus,
     .form-group textarea:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: #FD4D26;
     }
 
     .form-group textarea { resize: vertical; min-height: 80px; }
@@ -272,7 +288,7 @@
     .slider-wrapper input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 18px; height: 18px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #FD4D26, #F43D46);
       border-radius: 50%;
       cursor: pointer;
     }
@@ -302,7 +318,7 @@
 
     .checkbox-label input[type="checkbox"] {
       width: 18px; height: 18px;
-      accent-color: #667eea;
+      accent-color: #FD4D26;
       cursor: pointer;
     }
 
@@ -327,7 +343,7 @@
     }
 
     .format-option:hover { border-color: #484f58; }
-    .format-option.selected { border-color: #667eea; background: rgba(102, 126, 234, .06); }
+    .format-option.selected { border-color: #FD4D26; background: rgba(102, 126, 234, .06); }
 
     .format-option span { font-size: .85rem; font-weight: 600; color: #c9d1d9; }
     .format-option small { font-size: .7rem; color: #8b949e; }
@@ -353,7 +369,7 @@
     }
 
     .drop-zone.dragover {
-      border-color: #667eea;
+      border-color: #FD4D26;
       background: rgba(102, 126, 234, .05);
     }
 
@@ -443,7 +459,7 @@
     .style-row input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 14px; height: 14px;
-      background: #667eea;
+      background: #FD4D26;
       border-radius: 50%;
       cursor: pointer;
     }
@@ -469,9 +485,9 @@
     }
 
     .style-row .sr-uppercase.active {
-      background: #667eea;
+      background: #FD4D26;
       color: #fff;
-      border-color: #667eea;
+      border-color: #FD4D26;
     }
 
     /* Color group (picker + hex + presets) */
@@ -555,7 +571,7 @@
     .spinner {
       width: 40px; height: 40px;
       border: 3px solid #30363d;
-      border-top-color: #667eea;
+      border-top-color: #FD4D26;
       border-radius: 50%;
       animation: spin .8s linear infinite;
     }
@@ -611,7 +627,7 @@
     }
 
     .create-event-btn:hover {
-      border-color: #667eea;
+      border-color: #FD4D26;
       color: #c9d1d9;
     }
 
@@ -641,7 +657,7 @@
     }
 
     .mode-toggle button.active {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #FD4D26, #F43D46);
       color: #fff;
     }
 
@@ -683,7 +699,7 @@
     }
 
     .events-toggle-btn:hover {
-      border-color: #667eea;
+      border-color: #FD4D26;
       color: #c9d1d9;
     }
 
