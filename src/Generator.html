@@ -140,7 +140,7 @@
 
     .event-card:hover, .event-card.editing { border-color: #FD4D26; }
 
-    .event-card.editing .thumb {
+    .is-editing .event-card:hover .thumb {
       transform: none !important;
       z-index: 1 !important;
       box-shadow: none !important;
@@ -169,7 +169,10 @@
     }
 
     .event-card .thumb.portrait-thumb {
-      width: 34px; height: 60px;
+      width: 107px; height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
     }
 
     .event-card .thumb iframe {
@@ -1460,10 +1463,11 @@
       .withSuccessHandler(function(ev) {
         showLoading(false);
         if (!ev) { toast('Événement introuvable', true); return; }
-        // Highlight editing card
+        // Highlight editing card & disable hover zoom on all cards
         document.querySelectorAll('.event-card.editing').forEach(function(c) { c.classList.remove('editing'); });
         var card = document.querySelector('.event-card[data-id="' + ev.id + '"]');
         if (card) card.classList.add('editing');
+        document.getElementById('eventsList').classList.add('is-editing');
         document.getElementById('eventId').value = ev.id;
         document.getElementById('currentImageId').value = ev.backgroundImageId || '';
         document.getElementById('eventName').value = ev.name || '';
@@ -1642,6 +1646,7 @@
   function resetForm() {
     hidePreview();
     document.querySelectorAll('.event-card.editing').forEach(function(c) { c.classList.remove('editing'); });
+    document.getElementById('eventsList').classList.remove('is-editing');
     document.getElementById('eventId').value = '';
     document.getElementById('currentImageId').value = '';
     document.getElementById('eventName').value = '';
