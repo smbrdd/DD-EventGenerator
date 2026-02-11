@@ -81,7 +81,7 @@
     .portrait .content {
       max-width: 900px;
       padding: 4rem 2rem;
-      margin-top: -4vh;
+      margin-top: 6vh;
     }
 
     @keyframes fadeUp {
@@ -189,6 +189,7 @@
     .portrait .countdown-item .label { font-size: 1.45rem; }
     .portrait .countdown-passed { font-size: 2.15rem; margin-bottom: 4rem; }
     .portrait .post-countdown-text { font-size: 1.55rem; margin-bottom: 6rem; }
+    .portrait .progress-section { max-width: 100%; }
     .portrait .progress-label { font-size: 1.7rem; }
     .portrait .progress-bar-track { height: 20px; }
     .portrait .progress-value { font-size: 3.1rem; }
@@ -452,8 +453,8 @@
     if (contentOff < 0 || contentOff > 100) contentOff = 0;
     var isPortrait = frame.classList.contains('portrait');
     if (isPortrait) {
-      // Portrait: slider 0 → margin-top -4vh, slider 100 → margin-top 25vh
-      document.querySelector('.content').style.marginTop = (-4 + contentOff * 0.29) + 'vh';
+      // Portrait: slider 0 → margin-top 6vh, slider 100 → margin-top 30vh
+      document.querySelector('.content').style.marginTop = (6 + contentOff * 0.24) + 'vh';
     } else if (contentOff !== 0) {
       document.querySelector('.content').style.transform = 'translateY(' + contentOff + 'px)';
     }

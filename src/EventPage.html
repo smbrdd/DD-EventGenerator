@@ -83,7 +83,7 @@
     .portrait .content {
       max-width: 900px;
       padding: 4rem 2rem;
-      margin-top: -4vh;
+      margin-top: 6vh;
     }
 
     .portrait .title {
@@ -253,7 +253,7 @@
 <? var coy = parseInt(event.contentOffsetY) || 0; if (coy < 0 || coy > 100) coy = 0; ?>
 <? var isPortrait = (fmt === 'portrait'); ?>
 <? if (isPortrait) { ?>
-<div class="content" id="contentBlock" style="margin-top: <?= (-4 + coy * 0.29) ?>vh;">
+<div class="content" id="contentBlock" style="margin-top: <?= (6 + coy * 0.24) ?>vh;">
 <? } else { ?>
 <div class="content" id="contentBlock" style="<? if (coy != 0) { ?>transform: translateY(<?= coy ?>px);<? } ?>">
 <? } ?>
