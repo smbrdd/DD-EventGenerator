@@ -844,75 +844,79 @@
 
     <!-- Compte à rebours -->
     <div class="form-group">
-      <label class="checkbox-label" style="margin-bottom:0.5rem;">
-        <input type="checkbox" id="showTimer" checked>
+      <label class="checkbox-label" style="margin-bottom:0;">
+        <input type="checkbox" id="showTimer" checked onchange="toggleTimerFields()">
         <span>Afficher le compte à rebours</span>
       </label>
     </div>
 
-    <div class="form-group">
-      <label for="preCountdownText">Texte au-dessus du compte à rebours</label>
-      <input type="text" id="preCountdownText" placeholder="Ex: COMING SOON">
-      <div class="style-row expert-only" data-field="preCountdownText"></div>
-    </div>
+    <div id="timerFields">
+      <div class="form-group">
+        <label for="preCountdownText">Texte au-dessus du compte à rebours</label>
+        <input type="text" id="preCountdownText" placeholder="Ex: COMING SOON">
+        <div class="style-row expert-only" data-field="preCountdownText"></div>
+      </div>
 
-    <div class="form-group">
-      <label for="eventDate">Date de l'événement</label>
-      <input type="date" id="eventDate">
-      <div style="margin-top:0.5rem;">
-        <label style="font-size:.85rem;color:#aaa;margin-bottom:.4rem;display:block;">Unités du compte à rebours à afficher</label>
-        <div class="checkbox-row">
-          <label class="checkbox-label">
-            <input type="checkbox" id="showDays" checked>
-            <span>Jours</span>
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" id="showHours" checked>
-            <span>Heures</span>
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" id="showMinutes" checked>
-            <span>Minutes</span>
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" id="showSeconds" checked>
-            <span>Secondes</span>
-          </label>
+      <div class="form-group">
+        <label for="eventDate">Date de l'événement</label>
+        <input type="date" id="eventDate">
+        <div style="margin-top:0.5rem;">
+          <label style="font-size:.85rem;color:#aaa;margin-bottom:.4rem;display:block;">Unités du compte à rebours à afficher</label>
+          <div class="checkbox-row">
+            <label class="checkbox-label">
+              <input type="checkbox" id="showDays" checked>
+              <span>Jours</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="showHours" checked>
+              <span>Heures</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="showMinutes" checked>
+              <span>Minutes</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="showSeconds" checked>
+              <span>Secondes</span>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="postCountdownText">Texte sous le compte à rebours (majuscules)</label>
-      <input type="text" id="postCountdownText" placeholder="Ex: DUE DATE 15 MARCH">
-      <div class="style-row expert-only" data-field="postCountdownText"></div>
+      <div class="form-group">
+        <label for="postCountdownText">Texte sous le compte à rebours (majuscules)</label>
+        <input type="text" id="postCountdownText" placeholder="Ex: DUE DATE 15 MARCH">
+        <div class="style-row expert-only" data-field="postCountdownText"></div>
+      </div>
     </div>
 
     <!-- Barre d'avancement -->
     <div class="form-group">
-      <label class="checkbox-label" style="margin-bottom:0.5rem;">
-        <input type="checkbox" id="showProgress" checked>
+      <label class="checkbox-label" style="margin-bottom:0;">
+        <input type="checkbox" id="showProgress" checked onchange="toggleProgressFields()">
         <span>Afficher la barre d'avancement</span>
       </label>
     </div>
 
-    <div class="form-group">
-      <label for="progressLabel">Libellé de la barre d'avancement</label>
-      <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
-      <div class="style-row expert-only" data-field="progressLabel"></div>
-    </div>
-
-    <div class="form-group">
-      <label>Avancement du projet</label>
-      <div class="slider-wrapper">
-        <input type="range" id="progress" min="0" max="100" value="0">
-        <span class="slider-value" id="progressValue">0%</span>
+    <div id="progressFields">
+      <div class="form-group">
+        <label for="progressLabel">Libellé de la barre d'avancement</label>
+        <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
+        <div class="style-row expert-only" data-field="progressLabel"></div>
       </div>
-    </div>
 
-    <div class="form-group expert-only">
-      <label>Style du pourcentage</label>
-      <div class="style-row" data-field="progressValue"></div>
+      <div class="form-group">
+        <label>Avancement du projet</label>
+        <div class="slider-wrapper">
+          <input type="range" id="progress" min="0" max="100" value="0">
+          <span class="slider-value" id="progressValue">0%</span>
+        </div>
+      </div>
+
+      <div class="form-group expert-only">
+        <label>Style du pourcentage</label>
+        <div class="style-row" data-field="progressValue"></div>
+      </div>
     </div>
 
     <!-- Texte optionnel -->
@@ -1196,6 +1200,13 @@
     document.getElementById('modeSimple').classList.toggle('active', mode === 'simple');
     document.getElementById('modeExpert').classList.toggle('active', mode === 'expert');
     document.getElementById('formSection').classList.toggle('mode-expert', mode === 'expert');
+  }
+
+  function toggleTimerFields() {
+    document.getElementById('timerFields').style.display = document.getElementById('showTimer').checked ? '' : 'none';
+  }
+  function toggleProgressFields() {
+    document.getElementById('progressFields').style.display = document.getElementById('showProgress').checked ? '' : 'none';
   }
 
   // ── Preview ──
@@ -1492,6 +1503,8 @@
         document.getElementById('optionalText').value = ev.optionalText;
         document.getElementById('showTimer').checked = String(ev.showTimer) !== 'false';
         document.getElementById('showProgress').checked = String(ev.showProgress) !== 'false';
+        toggleTimerFields();
+        toggleProgressFields();
         document.getElementById('showGradient').checked = String(ev.showGradient) !== 'false';
         var gop = ev.gradientOpacity !== undefined && ev.gradientOpacity !== '' ? ev.gradientOpacity : 50;
         document.getElementById('gradientOpacity').value = gop;
@@ -1578,6 +1591,8 @@
         document.getElementById('optionalText').value = ev.optionalText;
         document.getElementById('showTimer').checked = String(ev.showTimer) !== 'false';
         document.getElementById('showProgress').checked = String(ev.showProgress) !== 'false';
+        toggleTimerFields();
+        toggleProgressFields();
         document.getElementById('showGradient').checked = String(ev.showGradient) !== 'false';
         var gop = ev.gradientOpacity !== undefined && ev.gradientOpacity !== '' ? ev.gradientOpacity : 50;
         document.getElementById('gradientOpacity').value = gop;
@@ -1672,6 +1687,8 @@
     document.getElementById('formTitle').textContent = 'Nouvel événement';
     document.getElementById('showTimer').checked = true;
     document.getElementById('showProgress').checked = true;
+    toggleTimerFields();
+    toggleProgressFields();
     document.getElementById('showGradient').checked = true;
     document.getElementById('gradientOpacity').value = 50;
     document.getElementById('gradientOpacityValue').textContent = '50%';
