@@ -178,6 +178,28 @@
       font-size: .95rem;
     }
 
+    /* Checkboxes */
+    .checkbox-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      cursor: pointer;
+      font-size: .85rem;
+      color: #c9d1d9;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: 18px; height: 18px;
+      accent-color: #667eea;
+      cursor: pointer;
+    }
+
     /* Format selector */
     .format-selector {
       display: flex;
@@ -360,6 +382,20 @@
     </div>
 
     <div class="form-group">
+      <label>Éléments visibles sur la page</label>
+      <div class="checkbox-row">
+        <label class="checkbox-label">
+          <input type="checkbox" id="showTimer" checked>
+          <span>Afficher le compte à rebours</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="showProgress" checked>
+          <span>Afficher la barre d'avancement</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label>Format de la page</label>
       <div class="format-selector">
         <label class="format-option selected" id="formatLandscape" onclick="selectFormat('landscape')">
@@ -519,7 +555,9 @@
         progress: parseInt(document.getElementById('progress').value, 10),
         optionalText: document.getElementById('optionalText').value.trim(),
         backgroundImageId: bgId || currentImageId || '',
-        format: document.getElementById('format').value
+        format: document.getElementById('format').value,
+        showTimer: document.getElementById('showTimer').checked,
+        showProgress: document.getElementById('showProgress').checked
       };
 
       google.script.run
@@ -566,6 +604,8 @@
         document.getElementById('progress').value = ev.progress || 0;
         document.getElementById('progressValue').textContent = (ev.progress || 0) + '%';
         document.getElementById('optionalText').value = ev.optionalText;
+        document.getElementById('showTimer').checked = ev.showTimer !== 'false';
+        document.getElementById('showProgress').checked = ev.showProgress !== 'false';
         selectFormat(ev.format || 'landscape');
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
@@ -615,6 +655,8 @@
     document.getElementById('progressValue').textContent = '0%';
     document.getElementById('optionalText').value = '';
     document.getElementById('formTitle').textContent = 'Nouvel événement';
+    document.getElementById('showTimer').checked = true;
+    document.getElementById('showProgress').checked = true;
     selectFormat('landscape');
     dropZone.innerHTML = '<p>Glissez une image ici ou cliquez pour sélectionner</p><input type="file" id="imageInput" accept="image/*">';
     imageBase64 = null;
