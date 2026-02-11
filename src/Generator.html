@@ -534,6 +534,107 @@
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Settings toggle ── */
+    .header-actions {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      margin-top: .5rem;
+    }
+
+    .settings-btn {
+      background: none;
+      border: none;
+      color: #484f58;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: .3rem;
+      border-radius: 6px;
+      transition: color .2s, background .2s;
+    }
+
+    .settings-btn:hover {
+      color: #c9d1d9;
+      background: rgba(255,255,255,.05);
+    }
+
+    .settings-panel {
+      display: none;
+    }
+
+    .settings-panel.visible {
+      display: block;
+    }
+
+    /* ── Create button ── */
+    .create-event-btn {
+      width: 100%;
+      padding: 1rem;
+      background: #161b22;
+      border: 2px dashed #30363d;
+      border-radius: 12px;
+      color: #8b949e;
+      font-size: .95rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color .2s, color .2s;
+      margin-bottom: 1.5rem;
+    }
+
+    .create-event-btn:hover {
+      border-color: #667eea;
+      color: #c9d1d9;
+    }
+
+    .create-event-btn.hidden { display: none; }
+
+    /* ── Mode toggle ── */
+    .mode-toggle {
+      display: flex;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .mode-toggle button {
+      flex: 1;
+      padding: .55rem 1rem;
+      background: none;
+      border: none;
+      color: #8b949e;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .2s, color .2s;
+    }
+
+    .mode-toggle button.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+    }
+
+    /* ── Expert-only fields ── */
+    .expert-only {
+      display: none;
+    }
+
+    .mode-expert .expert-only {
+      display: block;
+    }
+
+    /* ── Form wrapper ── */
+    .form-wrapper {
+      display: none;
+    }
+
+    .form-wrapper.visible {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -545,15 +646,20 @@
   <header>
     <h1>DD-EventGenerator</h1>
     <p>Générateur de pages événements</p>
+    <div class="header-actions">
+      <button class="settings-btn" onclick="toggleSettings()" title="Paramètres">⚙</button>
+    </div>
   </header>
 
-  <!-- GitHub Pages URL config -->
-  <div class="form-section" style="margin-bottom:1.5rem;padding:1.2rem 1.5rem;">
-    <div class="form-group" style="margin-bottom:0;">
-      <label for="ghPagesUrl">URL GitHub Pages (pour les liens publics sans bandeau Google)</label>
-      <div style="display:flex;gap:.5rem;">
-        <input type="text" id="ghPagesUrl" placeholder="https://votre-user.github.io/dd-events" style="flex:1;">
-        <button class="btn btn-primary btn-small" onclick="saveGhUrl()">Sauver</button>
+  <!-- GitHub Pages URL config (hidden by default) -->
+  <div class="settings-panel" id="settingsPanel">
+    <div class="form-section" style="margin-bottom:1.5rem;padding:1.2rem 1.5rem;">
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="ghPagesUrl">URL GitHub Pages (pour les liens publics sans bandeau Google)</label>
+        <div style="display:flex;gap:.5rem;">
+          <input type="text" id="ghPagesUrl" placeholder="https://votre-user.github.io/dd-events" style="flex:1;">
+          <button class="btn btn-primary btn-small" onclick="saveGhUrl()">Sauver</button>
+        </div>
       </div>
     </div>
   </div>
@@ -561,10 +667,20 @@
   <!-- Events list -->
   <div class="events-list" id="eventsList"></div>
 
+  <!-- Create button -->
+  <button class="create-event-btn" id="createEventBtn" onclick="showForm()">+ Créer un événement</button>
+
   <!-- Form + Preview layout -->
+  <div class="form-wrapper" id="formWrapper">
   <div class="edit-layout">
-  <div class="form-section">
+  <div class="form-section" id="formSection">
     <h2 id="formTitle">Nouvel événement</h2>
+
+    <!-- Mode toggle -->
+    <div class="mode-toggle">
+      <button id="modeSimple" class="active" onclick="setMode('simple')">Simple</button>
+      <button id="modeExpert" onclick="setMode('expert')">Expert</button>
+    </div>
 
     <input type="hidden" id="eventId">
     <input type="hidden" id="currentImageId">
@@ -580,13 +696,13 @@
     <div class="form-group">
       <label for="title">Titre</label>
       <input type="text" id="title" placeholder="Nom de l'événement">
-      <div class="style-row" data-field="title"></div>
+      <div class="style-row expert-only" data-field="title"></div>
     </div>
 
     <div class="form-group">
       <label for="subtitle">Sous-titre</label>
       <input type="text" id="subtitle" placeholder="Description courte">
-      <div class="style-row" data-field="subtitle"></div>
+      <div class="style-row expert-only" data-field="subtitle"></div>
     </div>
 
     <div class="form-group">
@@ -602,7 +718,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label>Éléments visibles sur la page</label>
       <div class="checkbox-row">
         <label class="checkbox-label">
@@ -620,7 +736,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label>Intensité du gradient</label>
       <div class="slider-wrapper">
         <input type="range" id="gradientOpacity" min="0" max="100" value="50">
@@ -628,7 +744,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label>Luminosité de l'image de fond (0% = noir, 100% = image originale)</label>
       <div class="slider-wrapper">
         <input type="range" id="bgBrightness" min="0" max="100" value="40">
@@ -636,7 +752,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label>Unités du compte à rebours à afficher</label>
       <div class="checkbox-row">
         <label class="checkbox-label">
@@ -658,30 +774,30 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label for="preCountdownText">Texte au-dessus du compte à rebours</label>
       <input type="text" id="preCountdownText" placeholder="Ex: COMING SOON">
       <div class="style-row" data-field="preCountdownText"></div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label for="postCountdownText">Texte sous le compte à rebours (majuscules)</label>
       <input type="text" id="postCountdownText" placeholder="Ex: DUE DATE 15 MARCH">
       <div class="style-row" data-field="postCountdownText"></div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label for="progressLabel">Libellé de la barre d'avancement</label>
       <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
       <div class="style-row" data-field="progressLabel"></div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label>Style du pourcentage</label>
       <div class="style-row" data-field="progressValue"></div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label>Format de la page</label>
       <div class="format-selector">
         <label class="format-option selected" id="formatLandscape" onclick="selectFormat('landscape')">
@@ -698,7 +814,7 @@
       <input type="hidden" id="format" value="landscape">
     </div>
 
-    <div class="form-group">
+    <div class="form-group expert-only">
       <label for="optionalText">Texte optionnel</label>
       <textarea id="optionalText" placeholder="Informations complémentaires…"></textarea>
       <div class="style-row" data-field="optionalText"></div>
@@ -727,6 +843,7 @@
   </div>
 
   </div><!-- /edit-layout -->
+  </div><!-- /form-wrapper -->
 </div>
 
 <script>
@@ -861,6 +978,33 @@
 
   function resetAllStyles() {
     STYLE_FIELDS.forEach(function(f) { setFieldStyle(f, null); });
+  }
+
+  // ── Settings toggle ──
+  function toggleSettings() {
+    document.getElementById('settingsPanel').classList.toggle('visible');
+  }
+
+  // ── Show/hide form ──
+  function showForm() {
+    document.getElementById('formWrapper').classList.add('visible');
+    document.getElementById('createEventBtn').classList.add('hidden');
+    document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function hideForm() {
+    document.getElementById('formWrapper').classList.remove('visible');
+    document.getElementById('createEventBtn').classList.remove('hidden');
+  }
+
+  // ── Mode Simple / Expert ──
+  var currentMode = 'simple';
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('modeSimple').classList.toggle('active', mode === 'simple');
+    document.getElementById('modeExpert').classList.toggle('active', mode === 'expert');
+    document.getElementById('formSection').classList.toggle('mode-expert', mode === 'expert');
   }
 
   // ── Preview ──
@@ -1153,8 +1297,10 @@
         imageBase64 = null;
         imageFilename = null;
 
+        showForm();
+        setMode('expert');
         showPreview(ev.id);
-        document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
       })
       .withFailureHandler(function(err) {
         showLoading(false);
@@ -1216,6 +1362,8 @@
     newInput.addEventListener('change', function() {
       if (this.files.length) handleFile(this.files[0]);
     });
+    hideForm();
+    setMode('simple');
   }
 
   // ── Copy URL ──
