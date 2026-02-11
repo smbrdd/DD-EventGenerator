@@ -829,15 +829,15 @@
       <div class="form-group">
         <label>Position image horizontale</label>
         <div class="slider-wrapper">
-          <input type="range" id="bgPositionX" min="0" max="100" value="50">
-          <span class="slider-value" id="bgPositionXValue">50%</span>
+          <input type="range" id="bgPositionX" min="-100" max="100" value="0">
+          <span class="slider-value" id="bgPositionXValue">0</span>
         </div>
       </div>
       <div class="form-group">
         <label>Position image verticale</label>
         <div class="slider-wrapper">
-          <input type="range" id="bgPositionY" min="0" max="100" value="50">
-          <span class="slider-value" id="bgPositionYValue">50%</span>
+          <input type="range" id="bgPositionY" min="-100" max="100" value="0">
+          <span class="slider-value" id="bgPositionYValue">0</span>
         </div>
       </div>
     </div>
@@ -1261,10 +1261,10 @@
     document.getElementById('bgBrightnessValue').textContent = this.value + '%';
   });
   document.getElementById('bgPositionX').addEventListener('input', function() {
-    document.getElementById('bgPositionXValue').textContent = this.value + '%';
+    document.getElementById('bgPositionXValue').textContent = this.value;
   });
   document.getElementById('bgPositionY').addEventListener('input', function() {
-    document.getElementById('bgPositionYValue').textContent = this.value + '%';
+    document.getElementById('bgPositionYValue').textContent = this.value;
   });
   document.getElementById('contentOffsetY').addEventListener('input', function() {
     document.getElementById('contentOffsetYValue').textContent = (this.value == 0 ? '0' : '-' + this.value) + 'px';
@@ -1409,8 +1409,8 @@
         contentOffsetY: parseInt(document.getElementById('contentOffsetY').value, 10),
         optionalTextOffsetY: parseInt(document.getElementById('optionalTextOffsetY').value, 10),
         name: document.getElementById('eventName').value.trim(),
-        bgPositionX: parseInt(document.getElementById('bgPositionX').value, 10),
-        bgPositionY: parseInt(document.getElementById('bgPositionY').value, 10)
+        bgPositionX: Math.round(parseInt(document.getElementById('bgPositionX').value, 10) / 2 + 50),
+        bgPositionY: Math.round(parseInt(document.getElementById('bgPositionY').value, 10) / 2 + 50)
       };
 
       google.script.run
@@ -1482,12 +1482,14 @@
 
         var bgpx = parseInt(ev.bgPositionX, 10);
         if (isNaN(bgpx) || bgpx < 0 || bgpx > 100) bgpx = 50;
-        document.getElementById('bgPositionX').value = bgpx;
-        document.getElementById('bgPositionXValue').textContent = bgpx + '%';
+        var bgpxUi = (bgpx - 50) * 2;
+        document.getElementById('bgPositionX').value = bgpxUi;
+        document.getElementById('bgPositionXValue').textContent = bgpxUi;
         var bgpy = parseInt(ev.bgPositionY, 10);
         if (isNaN(bgpy) || bgpy < 0 || bgpy > 100) bgpy = 50;
-        document.getElementById('bgPositionY').value = bgpy;
-        document.getElementById('bgPositionYValue').textContent = bgpy + '%';
+        var bgpyUi = (bgpy - 50) * 2;
+        document.getElementById('bgPositionY').value = bgpyUi;
+        document.getElementById('bgPositionYValue').textContent = bgpyUi;
 
         var coy = parseInt(ev.contentOffsetY, 10) || 0;
         if (coy < 0 || coy > 100) coy = 0;
@@ -1565,12 +1567,14 @@
         document.getElementById('showSeconds').checked = String(ev.showSeconds) !== 'false';
         var bgpx2 = parseInt(ev.bgPositionX, 10);
         if (isNaN(bgpx2) || bgpx2 < 0 || bgpx2 > 100) bgpx2 = 50;
-        document.getElementById('bgPositionX').value = bgpx2;
-        document.getElementById('bgPositionXValue').textContent = bgpx2 + '%';
+        var bgpx2Ui = (bgpx2 - 50) * 2;
+        document.getElementById('bgPositionX').value = bgpx2Ui;
+        document.getElementById('bgPositionXValue').textContent = bgpx2Ui;
         var bgpy2 = parseInt(ev.bgPositionY, 10);
         if (isNaN(bgpy2) || bgpy2 < 0 || bgpy2 > 100) bgpy2 = 50;
-        document.getElementById('bgPositionY').value = bgpy2;
-        document.getElementById('bgPositionYValue').textContent = bgpy2 + '%';
+        var bgpy2Ui = (bgpy2 - 50) * 2;
+        document.getElementById('bgPositionY').value = bgpy2Ui;
+        document.getElementById('bgPositionYValue').textContent = bgpy2Ui;
         var coy = parseInt(ev.contentOffsetY, 10) || 0;
         if (coy < 0 || coy > 100) coy = 0;
         document.getElementById('contentOffsetY').value = coy;
@@ -1651,10 +1655,10 @@
     document.getElementById('showHours').checked = true;
     document.getElementById('showMinutes').checked = true;
     document.getElementById('showSeconds').checked = true;
-    document.getElementById('bgPositionX').value = 50;
-    document.getElementById('bgPositionXValue').textContent = '50%';
-    document.getElementById('bgPositionY').value = 50;
-    document.getElementById('bgPositionYValue').textContent = '50%';
+    document.getElementById('bgPositionX').value = 0;
+    document.getElementById('bgPositionXValue').textContent = '0';
+    document.getElementById('bgPositionY').value = 0;
+    document.getElementById('bgPositionYValue').textContent = '0';
     document.getElementById('contentOffsetY').value = 0;
     document.getElementById('contentOffsetYValue').textContent = '0px';
     document.getElementById('optionalTextOffsetY').value = 0;
