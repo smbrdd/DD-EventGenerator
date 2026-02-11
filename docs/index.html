@@ -69,7 +69,6 @@
       background-image: inherit;
       background-size: inherit;
       background-position: inherit;
-      mix-blend-mode: screen;
       opacity: var(--gradient-boost, 0);
     }
 
@@ -421,8 +420,9 @@
       gOverlay.classList.remove('hidden');
       var gOp = ev.gradientOpacity !== undefined && ev.gradientOpacity !== '' ? ev.gradientOpacity : 50;
       gOverlay.style.opacity = gOp / 100;
-      // Second layer boost: ramps from 0 (at 0%) to 1 (at 100%) for double-screen effect
-      gOverlay.style.setProperty('--gradient-boost', gOp / 100);
+      // Normal (non-blended) layer: kicks in above 50%, ramps 0→1 from 50%→100%
+      var boost = Math.max(0, (gOp - 50) / 50);
+      gOverlay.style.setProperty('--gradient-boost', boost);
     }
 
     // Pre-countdown text
