@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Événement</title>
+  <title>Event</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -223,12 +223,12 @@
 <!-- Loading state -->
 <div class="loading" id="loadingState">
   <div class="spinner"></div>
-  <p>Chargement…</p>
+  <p>Loading…</p>
 </div>
 
 <!-- Error state -->
 <div class="error-page hidden" id="errorState">
-  <p>Événement introuvable.</p>
+  <p>Event not found.</p>
 </div>
 
 <!-- Event page -->
@@ -239,14 +239,14 @@
     <p class="subtitle hidden" id="subtitle"></p>
     <h1 class="title" id="title"></h1>
     <div class="countdown hidden" id="countdown">
-      <div class="countdown-item"><span class="number" id="days">--</span><span class="label">Jours</span></div>
-      <div class="countdown-item"><span class="number" id="hours">--</span><span class="label">Heures</span></div>
+      <div class="countdown-item"><span class="number" id="days">--</span><span class="label">Days</span></div>
+      <div class="countdown-item"><span class="number" id="hours">--</span><span class="label">Hours</span></div>
       <div class="countdown-item"><span class="number" id="minutes">--</span><span class="label">Minutes</span></div>
-      <div class="countdown-item"><span class="number" id="seconds">--</span><span class="label">Secondes</span></div>
+      <div class="countdown-item"><span class="number" id="seconds">--</span><span class="label">Seconds</span></div>
     </div>
-    <div class="countdown-passed hidden" id="countdownPassed">L'événement a commencé !</div>
+    <div class="countdown-passed hidden" id="countdownPassed">The event has started!</div>
     <div class="progress-section hidden" id="progressSection">
-      <p class="progress-label">Avancement du projet</p>
+      <p class="progress-label">Project progress</p>
       <div class="progress-bar-track">
         <div class="progress-bar-fill" id="progressBar"></div>
       </div>

@@ -29,9 +29,9 @@ function doGet(e) {
     var eventId = e.parameter.id;
     var event = eventId ? getEvent(eventId) : null;
     var payload = event || { error: 'Event not found' };
-    // Ajouter l'URL de l'image si présente
+    // Ajouter l'URL de l'image si présente (lh3 format pour éviter les blocages CORS)
     if (event && event.backgroundImageId) {
-      payload.backgroundImageUrl = 'https://drive.google.com/uc?export=view&id=' + event.backgroundImageId;
+      payload.backgroundImageUrl = 'https://lh3.googleusercontent.com/d/' + event.backgroundImageId;
     }
     return ContentService.createTextOutput(JSON.stringify(payload))
       .setMimeType(ContentService.MimeType.JSON);
