@@ -811,6 +811,118 @@
     <input type="hidden" id="eventId">
     <input type="hidden" id="currentImageId">
 
+    <!-- Format de la page -->
+    <div class="form-group">
+      <label>Format de la page</label>
+      <div class="format-selector">
+        <label class="format-option selected" id="formatLandscape" onclick="selectFormat('landscape')">
+          <div class="format-preview landscape"></div>
+          <span>1920 x 1080</span>
+          <small>Paysage</small>
+        </label>
+        <label class="format-option" id="formatPortrait" onclick="selectFormat('portrait')">
+          <div class="format-preview portrait"></div>
+          <span>1080 x 1920</span>
+          <small>Portrait</small>
+        </label>
+      </div>
+      <input type="hidden" id="format" value="landscape">
+    </div>
+
+    <!-- Titre / Sous-titre -->
+    <div class="form-group">
+      <label for="title">Titre</label>
+      <textarea rows="2" id="title" placeholder="Titre affiché sur la page publique"></textarea>
+      <div class="style-row expert-only" data-field="title"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="subtitle">Sous-titre</label>
+      <textarea rows="2" id="subtitle" placeholder="Description courte"></textarea>
+      <div class="style-row expert-only" data-field="subtitle"></div>
+    </div>
+
+    <!-- Compte à rebours -->
+    <div class="form-group">
+      <label class="checkbox-label" style="margin-bottom:0.5rem;">
+        <input type="checkbox" id="showTimer" checked>
+        <span>Afficher le compte à rebours</span>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label for="preCountdownText">Texte au-dessus du compte à rebours</label>
+      <input type="text" id="preCountdownText" placeholder="Ex: COMING SOON">
+      <div class="style-row expert-only" data-field="preCountdownText"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="eventDate">Date de l'événement</label>
+      <input type="date" id="eventDate">
+      <div style="margin-top:0.5rem;">
+        <label style="font-size:.85rem;color:#aaa;margin-bottom:.4rem;display:block;">Unités du compte à rebours à afficher</label>
+        <div class="checkbox-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="showDays" checked>
+            <span>Jours</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="showHours" checked>
+            <span>Heures</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="showMinutes" checked>
+            <span>Minutes</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="showSeconds" checked>
+            <span>Secondes</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="postCountdownText">Texte sous le compte à rebours (majuscules)</label>
+      <input type="text" id="postCountdownText" placeholder="Ex: DUE DATE 15 MARCH">
+      <div class="style-row expert-only" data-field="postCountdownText"></div>
+    </div>
+
+    <!-- Barre d'avancement -->
+    <div class="form-group">
+      <label class="checkbox-label" style="margin-bottom:0.5rem;">
+        <input type="checkbox" id="showProgress" checked>
+        <span>Afficher la barre d'avancement</span>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label for="progressLabel">Libellé de la barre d'avancement</label>
+      <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
+      <div class="style-row expert-only" data-field="progressLabel"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Avancement du projet</label>
+      <div class="slider-wrapper">
+        <input type="range" id="progress" min="0" max="100" value="0">
+        <span class="slider-value" id="progressValue">0%</span>
+      </div>
+    </div>
+
+    <div class="form-group expert-only">
+      <label>Style du pourcentage</label>
+      <div class="style-row" data-field="progressValue"></div>
+    </div>
+
+    <!-- Texte optionnel -->
+    <div class="form-group">
+      <label for="optionalText">Texte optionnel</label>
+      <textarea id="optionalText" placeholder="Informations complémentaires…"></textarea>
+      <div class="style-row expert-only" data-field="optionalText"></div>
+    </div>
+
+    <!-- Image de fond -->
     <div class="form-group">
       <label>Image de fond</label>
       <div class="drop-zone" id="dropZone">
@@ -853,6 +965,15 @@
       </div>
     </div>
 
+    <!-- Gradient checkbox -->
+    <div class="form-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="showGradient" checked>
+        <span>Afficher le gradient par-dessus l'image</span>
+      </label>
+    </div>
+
+    <!-- Position expert sliders -->
     <div class="sliders-inline expert-only">
       <div class="form-group">
         <label>Position verticale du contenu</label>
@@ -868,118 +989,6 @@
           <span class="slider-value" id="optionalTextOffsetYValue">0px</span>
         </div>
       </div>
-    </div>
-
-    <div class="form-group">
-      <label for="title">Titre</label>
-      <textarea rows="2" id="title" placeholder="Titre affiché sur la page publique"></textarea>
-      <div class="style-row expert-only" data-field="title"></div>
-    </div>
-
-    <div class="form-group">
-      <label for="subtitle">Sous-titre</label>
-      <textarea rows="2" id="subtitle" placeholder="Description courte"></textarea>
-      <div class="style-row expert-only" data-field="subtitle"></div>
-    </div>
-
-    <div class="form-group">
-      <label for="eventDate">Date de l'événement</label>
-      <input type="date" id="eventDate">
-    </div>
-
-    <div class="form-group">
-      <label>Avancement du projet</label>
-      <div class="slider-wrapper">
-        <input type="range" id="progress" min="0" max="100" value="0">
-        <span class="slider-value" id="progressValue">0%</span>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Éléments visibles sur la page</label>
-      <div class="checkbox-row">
-        <label class="checkbox-label">
-          <input type="checkbox" id="showTimer" checked>
-          <span>Afficher le compte à rebours</span>
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="showProgress" checked>
-          <span>Afficher la barre d'avancement</span>
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="showGradient" checked>
-          <span>Afficher le gradient par-dessus l'image</span>
-        </label>
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <label>Unités du compte à rebours à afficher</label>
-      <div class="checkbox-row">
-        <label class="checkbox-label">
-          <input type="checkbox" id="showDays" checked>
-          <span>Jours</span>
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="showHours" checked>
-          <span>Heures</span>
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="showMinutes" checked>
-          <span>Minutes</span>
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="showSeconds" checked>
-          <span>Secondes</span>
-        </label>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="preCountdownText">Texte au-dessus du compte à rebours</label>
-      <input type="text" id="preCountdownText" placeholder="Ex: COMING SOON">
-      <div class="style-row expert-only" data-field="preCountdownText"></div>
-    </div>
-
-    <div class="form-group">
-      <label for="postCountdownText">Texte sous le compte à rebours (majuscules)</label>
-      <input type="text" id="postCountdownText" placeholder="Ex: DUE DATE 15 MARCH">
-      <div class="style-row expert-only" data-field="postCountdownText"></div>
-    </div>
-
-    <div class="form-group">
-      <label for="progressLabel">Libellé de la barre d'avancement</label>
-      <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
-      <div class="style-row expert-only" data-field="progressLabel"></div>
-    </div>
-
-    <div class="form-group expert-only">
-      <label>Style du pourcentage</label>
-      <div class="style-row" data-field="progressValue"></div>
-    </div>
-
-    <div class="form-group">
-      <label>Format de la page</label>
-      <div class="format-selector">
-        <label class="format-option selected" id="formatLandscape" onclick="selectFormat('landscape')">
-          <div class="format-preview landscape"></div>
-          <span>1920 x 1080</span>
-          <small>Paysage</small>
-        </label>
-        <label class="format-option" id="formatPortrait" onclick="selectFormat('portrait')">
-          <div class="format-preview portrait"></div>
-          <span>1080 x 1920</span>
-          <small>Portrait</small>
-        </label>
-      </div>
-      <input type="hidden" id="format" value="landscape">
-    </div>
-
-    <div class="form-group">
-      <label for="optionalText">Texte optionnel</label>
-      <textarea id="optionalText" placeholder="Informations complémentaires…"></textarea>
-      <div class="style-row expert-only" data-field="optionalText"></div>
     </div>
 
     <div class="form-actions">
