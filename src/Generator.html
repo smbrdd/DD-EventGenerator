@@ -16,7 +16,7 @@
     }
 
     .container {
-      max-width: 960px;
+      max-width: 1010px;
       margin: 0 auto;
       padding: 2rem 1.5rem;
       transition: max-width .3s;
@@ -631,6 +631,55 @@
       display: flex !important;
     }
 
+    .mode-expert .expert-only.sliders-inline {
+      display: flex !important;
+    }
+
+    /* ── Events toggle button ── */
+    .events-toggle-btn {
+      width: 100%;
+      padding: .65rem 1rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      color: #8b949e;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color .2s, color .2s;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+    }
+
+    .events-toggle-btn:hover {
+      border-color: #667eea;
+      color: #c9d1d9;
+    }
+
+    .events-toggle-btn .arrow {
+      transition: transform .2s;
+      font-size: .7rem;
+    }
+
+    .events-toggle-btn .arrow.open { transform: rotate(180deg); }
+
+    .events-list.collapsed { display: none; }
+
+    /* ── Sliders inline row ── */
+    .sliders-inline {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .sliders-inline .form-group {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
     /* ── Form wrapper ── */
     .form-wrapper {
       display: none;
@@ -668,8 +717,13 @@
     </div>
   </div>
 
+  <!-- Events toggle -->
+  <button class="events-toggle-btn" id="eventsToggleBtn" onclick="toggleEventsList()">
+    Événements créés <span class="arrow" id="eventsArrow">▼</span>
+  </button>
+
   <!-- Events list -->
-  <div class="events-list" id="eventsList"></div>
+  <div class="events-list collapsed" id="eventsList"></div>
 
   <!-- Create button -->
   <button class="create-event-btn" id="createEventBtn" onclick="showForm()">+ Créer un événement</button>
@@ -694,6 +748,23 @@
       <div class="drop-zone" id="dropZone">
         <p>Glissez une image ici ou cliquez pour sélectionner</p>
         <input type="file" id="imageInput" accept="image/*">
+      </div>
+    </div>
+
+    <div class="sliders-inline expert-only">
+      <div class="form-group">
+        <label>Intensité du gradient</label>
+        <div class="slider-wrapper">
+          <input type="range" id="gradientOpacity" min="0" max="100" value="50">
+          <span class="slider-value" id="gradientOpacityValue">50%</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Luminosité image de fond</label>
+        <div class="slider-wrapper">
+          <input type="range" id="bgBrightness" min="0" max="100" value="40">
+          <span class="slider-value" id="bgBrightnessValue">40%</span>
+        </div>
       </div>
     </div>
 
@@ -722,7 +793,7 @@
       </div>
     </div>
 
-    <div class="form-group expert-only">
+    <div class="form-group">
       <label>Éléments visibles sur la page</label>
       <div class="checkbox-row">
         <label class="checkbox-label">
@@ -740,23 +811,8 @@
       </div>
     </div>
 
-    <div class="form-group expert-only">
-      <label>Intensité du gradient</label>
-      <div class="slider-wrapper">
-        <input type="range" id="gradientOpacity" min="0" max="100" value="50">
-        <span class="slider-value" id="gradientOpacityValue">50%</span>
-      </div>
-    </div>
 
-    <div class="form-group expert-only">
-      <label>Luminosité de l'image de fond (0% = noir, 100% = image originale)</label>
-      <div class="slider-wrapper">
-        <input type="range" id="bgBrightness" min="0" max="100" value="40">
-        <span class="slider-value" id="bgBrightnessValue">40%</span>
-      </div>
-    </div>
-
-    <div class="form-group expert-only">
+    <div class="form-group">
       <label>Unités du compte à rebours à afficher</label>
       <div class="checkbox-row">
         <label class="checkbox-label">
@@ -778,22 +834,22 @@
       </div>
     </div>
 
-    <div class="form-group expert-only">
+    <div class="form-group">
       <label for="preCountdownText">Texte au-dessus du compte à rebours</label>
       <input type="text" id="preCountdownText" placeholder="Ex: COMING SOON">
-      <div class="style-row" data-field="preCountdownText"></div>
+      <div class="style-row expert-only" data-field="preCountdownText"></div>
     </div>
 
-    <div class="form-group expert-only">
+    <div class="form-group">
       <label for="postCountdownText">Texte sous le compte à rebours (majuscules)</label>
       <input type="text" id="postCountdownText" placeholder="Ex: DUE DATE 15 MARCH">
-      <div class="style-row" data-field="postCountdownText"></div>
+      <div class="style-row expert-only" data-field="postCountdownText"></div>
     </div>
 
-    <div class="form-group expert-only">
+    <div class="form-group">
       <label for="progressLabel">Libellé de la barre d'avancement</label>
       <input type="text" id="progressLabel" placeholder="PROJECT PROGRESS">
-      <div class="style-row" data-field="progressLabel"></div>
+      <div class="style-row expert-only" data-field="progressLabel"></div>
     </div>
 
     <div class="form-group expert-only">
@@ -801,7 +857,7 @@
       <div class="style-row" data-field="progressValue"></div>
     </div>
 
-    <div class="form-group expert-only">
+    <div class="form-group">
       <label>Format de la page</label>
       <div class="format-selector">
         <label class="format-option selected" id="formatLandscape" onclick="selectFormat('landscape')">
@@ -818,10 +874,10 @@
       <input type="hidden" id="format" value="landscape">
     </div>
 
-    <div class="form-group expert-only">
+    <div class="form-group">
       <label for="optionalText">Texte optionnel</label>
       <textarea id="optionalText" placeholder="Informations complémentaires…"></textarea>
-      <div class="style-row" data-field="optionalText"></div>
+      <div class="style-row expert-only" data-field="optionalText"></div>
     </div>
 
     <div class="form-actions">
@@ -989,6 +1045,14 @@
     document.getElementById('settingsPanel').classList.toggle('visible');
   }
 
+  // ── Events list toggle ──
+  function toggleEventsList() {
+    var list = document.getElementById('eventsList');
+    var arrow = document.getElementById('eventsArrow');
+    list.classList.toggle('collapsed');
+    arrow.classList.toggle('open');
+  }
+
   // ── Show/hide form ──
   function showForm() {
     document.getElementById('formWrapper').classList.add('visible');
@@ -1149,8 +1213,11 @@
 
   function renderEvents(events) {
     var container = document.getElementById('eventsList');
+    var toggleBtn = document.getElementById('eventsToggleBtn');
+    var count = events ? events.length : 0;
+    toggleBtn.innerHTML = 'Événements créés (' + count + ') <span class="arrow' + (container.classList.contains('collapsed') ? '' : ' open') + '" id="eventsArrow">▼</span>';
     if (!events || !events.length) {
-      container.innerHTML = '<div class="empty-state"><p>Aucun événement. Créez-en un ci-dessous.</p></div>';
+      container.innerHTML = '<div class="empty-state"><p>Aucun événement.</p></div>';
       return;
     }
     var html = '';
