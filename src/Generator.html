@@ -196,9 +196,12 @@
     .folder-bar { display: flex; gap: .5rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
     .folder-bar input { background: #161b22; border: 1px solid #30363d; color: #e6edf3; border-radius: 8px; padding: .4rem .7rem; font-size: .8rem; font-family: inherit; }
     .folder-bar input:focus { border-color: #FD4D26; outline: none; }
-    .folder-group { margin-bottom: 1.2rem; }
+    .folder-group { margin-bottom: 1.5rem; display: grid; gap: .8rem; }
     .folder-header { display: flex; align-items: center; gap: .5rem; padding: .5rem 0; margin-bottom: .5rem; border-bottom: 1px solid #30363d; }
     .folder-header h3 { font-size: .9rem; font-weight: 600; color: #e6edf3; margin: 0; flex: 1; }
+    .folder-name-edit { outline: none; padding: 0 2px; border-radius: 3px; }
+    .folder-name-edit:hover { background: rgba(255,255,255,.05); }
+    .folder-name-edit:focus { background: rgba(255,255,255,.1); box-shadow: 0 0 0 1px #FD4D26; }
     .folder-header .folder-actions { display: flex; gap: .3rem; }
     .folder-header .folder-actions button { background: none; border: none; color: #8b949e; cursor: pointer; padding: 2px; font-size: .85rem; transition: color .15s; }
     .folder-header .folder-actions button:hover { color: #FD4D26; }
@@ -803,8 +806,8 @@
     Événements créés <span class="arrow" id="eventsArrow">▼</span>
   </button>
 
-  <!-- Folder bar -->
-  <div class="folder-bar" id="folderBar">
+  <!-- Folder bar (hidden until events list is open) -->
+  <div class="folder-bar" id="folderBar" style="display:none;">
     <input type="text" id="newFolderName" placeholder="Nouveau dossier…" onkeydown="if(event.key==='Enter')addFolder()">
     <button class="btn btn-secondary btn-small" onclick="addFolder()">+ Dossier</button>
   </div>
@@ -821,9 +824,17 @@
   <div class="form-section" id="formSection">
     <h2 id="formTitle">Nouvel événement</h2>
 
-    <div class="form-group">
-      <label for="eventName">Nom de l'événement (admin uniquement)</label>
-      <input type="text" id="eventName" placeholder="Ex: Lancement produit X — pour identifier dans la liste">
+    <div style="display:flex;gap:1rem;align-items:flex-end;">
+      <div class="form-group" style="flex:1;margin-bottom:0;">
+        <label for="eventName">Nom de l'événement (admin uniquement)</label>
+        <input type="text" id="eventName" placeholder="Ex: Lancement produit X">
+      </div>
+      <div class="form-group" style="flex:0 0 200px;margin-bottom:0;">
+        <label for="folderId">Dossier</label>
+        <select id="folderId" style="background:#161b22;border:1px solid #30363d;color:#e6edf3;border-radius:8px;width:100%;padding:.5rem .7rem;font-size:.85rem;font-family:inherit;cursor:pointer;">
+          <option value="">— Sans dossier —</option>
+        </select>
+      </div>
     </div>
 
     <!-- Mode toggle -->
@@ -851,14 +862,6 @@
         </label>
       </div>
       <input type="hidden" id="format" value="landscape">
-    </div>
-
-    <!-- Dossier -->
-    <div class="form-group">
-      <label for="folderId">Dossier</label>
-      <select id="folderId" style="background:#161b22;border:1px solid #30363d;color:#e6edf3;border-radius:8px;width:100%;padding:.5rem .7rem;font-size:.85rem;font-family:inherit;cursor:pointer;">
-        <option value="">— Sans dossier —</option>
-      </select>
     </div>
 
     <!-- Titre / Sous-titre -->
@@ -1210,6 +1213,7 @@
     var arrow = document.getElementById('eventsArrow');
     list.classList.toggle('collapsed');
     arrow.classList.toggle('open');
+    document.getElementById('folderBar').style.display = list.classList.contains('collapsed') ? 'none' : '';
   }
 
   // ── Folders ──
@@ -1253,19 +1257,15 @@
       .createFolder(name);
   }
 
-  function renameFolderPrompt(id) {
+  function onFolderRename(el, id) {
+    var newName = el.textContent.trim();
     var folder = allFolders.find(function(f) { return f.id === id; });
-    if (!folder) return;
-    var newName = prompt('Renommer le dossier :', folder.name);
-    if (!newName || newName.trim() === '' || newName.trim() === folder.name) return;
+    if (!folder || !newName || newName === folder.name) return;
+    folder.name = newName;
+    updateFolderSelects();
     google.script.run
-      .withSuccessHandler(function() {
-        folder.name = newName.trim();
-        updateFolderSelects();
-        loadEvents();
-      })
       .withFailureHandler(function() { toast('Erreur renommage', true); })
-      .renameFolder(id, newName.trim());
+      .renameFolder(id, newName);
   }
 
   function deleteFolderConfirm(id) {
@@ -1587,11 +1587,10 @@
       var folderEvents = grouped[folder.id] || [];
       html += '<div class="folder-group" data-folder="' + folder.id + '" ondragover="onFolderDragOver(event)" ondragleave="onFolderDragLeave(event)" ondrop="onFolderDrop(event,\'' + folder.id + '\')">'
         + '<div class="folder-header">'
-        + '<h3>📁 ' + escapeHtml(folder.name) + ' (' + folderEvents.length + ')</h3>'
+        + '<h3>📁 <span contenteditable="true" class="folder-name-edit" data-folder-id="' + folder.id + '" onblur="onFolderRename(this,\'' + folder.id + '\')" onkeydown="if(event.key===\'Enter\'){event.preventDefault();this.blur();}">' + escapeHtml(folder.name) + '</span> <small style="color:#8b949e;font-weight:400;">(' + folderEvents.length + ')</small></h3>'
         + '<div class="folder-actions">'
         + (idx > 0 ? '<button title="Monter" onclick="moveFolderUp(\'' + folder.id + '\')">▲</button>' : '')
         + (idx < allFolders.length - 1 ? '<button title="Descendre" onclick="moveFolderDown(\'' + folder.id + '\')">▼</button>' : '')
-        + '<button title="Renommer" onclick="renameFolderPrompt(\'' + folder.id + '\')">✏️</button>'
         + '<button title="Supprimer le dossier" onclick="deleteFolderConfirm(\'' + folder.id + '\')">🗑️</button>'
         + '</div>'
         + '</div>';
