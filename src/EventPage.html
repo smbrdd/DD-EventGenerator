@@ -76,7 +76,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      animation: fadeUp .8s ease-out;
+      animation: fadeIn .8s ease-out;
     }
 
     /* Portrait adjustments (+20% sizes) */
@@ -103,9 +103,9 @@
     .portrait .progress-value { font-size: 3.1rem; }
     .portrait .optional-text { font-size: 1.9rem; bottom: 150px; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .subtitle {
