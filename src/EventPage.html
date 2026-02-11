@@ -111,6 +111,8 @@
       text-transform: uppercase;
       color: rgba(255,255,255,.7);
       margin-bottom: .5rem;
+      white-space: pre-line;
+      text-shadow: 0 2px 12px rgba(0,0,0,.6);
     }
 
     .title {
@@ -121,6 +123,8 @@
       background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,.8) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      white-space: pre-line;
+      text-shadow: 0 2px 12px rgba(0,0,0,.6);
     }
 
     /* ── Countdown ── */
@@ -139,6 +143,7 @@
       border-radius: 16px;
       padding: 1rem 1.2rem;
       min-width: 80px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.4);
     }
 
     .countdown-item .number {
@@ -147,6 +152,7 @@
       font-weight: 700;
       line-height: 1;
       margin-bottom: .25rem;
+      text-shadow: 0 2px 12px rgba(0,0,0,.6);
     }
 
     .countdown-item .label {
@@ -154,6 +160,7 @@
       text-transform: uppercase;
       letter-spacing: .1em;
       color: rgba(255,255,255,.6);
+      text-shadow: 0 2px 12px rgba(0,0,0,.6);
     }
 
     .countdown-passed {
@@ -173,6 +180,7 @@
       font-weight: 500;
       color: rgba(255,255,255,.7);
       margin-bottom: .6rem;
+      text-shadow: 0 2px 12px rgba(0,0,0,.6);
     }
 
     .progress-bar-track {
@@ -181,6 +189,7 @@
       background: rgba(255,255,255,.1);
       border-radius: 5px;
       overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.4);
     }
 
     .progress-bar-fill {
@@ -196,6 +205,7 @@
       font-weight: 600;
       margin-top: .4rem;
       color: rgba(255,255,255,.8);
+      text-shadow: 0 2px 12px rgba(0,0,0,.6);
     }
 
     /* ── Optional text ── */
@@ -207,6 +217,7 @@
       max-width: 580px;
       margin: 0 auto;
       white-space: pre-line;
+      text-shadow: 0 2px 12px rgba(0,0,0,.6);
     }
 
     /* ── Responsive ── */
@@ -227,7 +238,7 @@
 <div class="bg" style="<? if (bgUrl) { ?>background-image: url('<?= bgUrl ?>');<?  } else { ?>background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);<?  } ?>"></div>
 <div class="bg-overlay"></div>
 
-<div class="content">
+<div class="content" id="contentBlock" style="<? var coy = event.contentOffsetY || 0; if (coy != 0) { ?>transform: translateY(<?= coy ?>px);<? } ?>">
 
   <? if (event.subtitle) { ?>
     <p class="subtitle"><?= event.subtitle ?></p>
@@ -256,7 +267,7 @@
   <? } ?>
 
   <? if (event.optionalText) { ?>
-    <p class="optional-text"><?= event.optionalText ?></p>
+    <p class="optional-text" id="optionalTextBlock" style="<? var otoy = event.optionalTextOffsetY || 0; if (otoy != 0) { ?>transform: translateY(<?= otoy ?>px);<? } ?>"><?= event.optionalText ?></p>
   <? } ?>
 
 </div>
@@ -313,6 +324,36 @@
       bar.style.width = progress + '%';
       if (text) text.textContent = progress + '%';
     }, 300);
+  })();
+
+  // ── Apply text styles (fontWeight) ──
+  (function() {
+    var STYLE_DEFAULTS = {
+      title:        { fontWeight: 900 },
+      subtitle:     { fontWeight: 400 },
+      progressLabel:{ fontWeight: 500 },
+      progressValue:{ fontWeight: 700 },
+      optionalText: { fontWeight: 300 }
+    };
+
+    function safeParse(str) {
+      if (!str) return null;
+      try { return JSON.parse(str); } catch(e) { return null; }
+    }
+
+    function applyWeight(elSelector, styleJson, defaultKey) {
+      var el = document.querySelector(elSelector);
+      if (!el) return;
+      var d = STYLE_DEFAULTS[defaultKey] || {};
+      var s = safeParse(styleJson) || {};
+      el.style.fontWeight = s.fontWeight !== undefined ? s.fontWeight : (d.fontWeight || '');
+    }
+
+    applyWeight('.title',          '<?= event.titleStyle ?>',          'title');
+    applyWeight('.subtitle',       '<?= event.subtitleStyle ?>',       'subtitle');
+    applyWeight('.progress-label', '<?= event.progressLabelStyle ?>',  'progressLabel');
+    applyWeight('.progress-value', '<?= event.progressValueStyle ?>',  'progressValue');
+    applyWeight('.optional-text',  '<?= event.optionalTextStyle ?>',   'optionalText');
   })();
 </script>
 

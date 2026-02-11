@@ -768,15 +768,32 @@
       </div>
     </div>
 
+    <div class="sliders-inline expert-only">
+      <div class="form-group">
+        <label>Position verticale du contenu</label>
+        <div class="slider-wrapper">
+          <input type="range" id="contentOffsetY" min="-300" max="300" value="0">
+          <span class="slider-value" id="contentOffsetYValue">0px</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Position du texte optionnel</label>
+        <div class="slider-wrapper">
+          <input type="range" id="optionalTextOffsetY" min="-200" max="200" value="0">
+          <span class="slider-value" id="optionalTextOffsetYValue">0px</span>
+        </div>
+      </div>
+    </div>
+
     <div class="form-group">
       <label for="title">Titre</label>
-      <input type="text" id="title" placeholder="Nom de l'événement">
+      <textarea rows="2" id="title" placeholder="Nom de l'événement"></textarea>
       <div class="style-row expert-only" data-field="title"></div>
     </div>
 
     <div class="form-group">
       <label for="subtitle">Sous-titre</label>
-      <input type="text" id="subtitle" placeholder="Description courte">
+      <textarea rows="2" id="subtitle" placeholder="Description courte"></textarea>
       <div class="style-row expert-only" data-field="subtitle"></div>
     </div>
 
@@ -915,13 +932,13 @@
 
   // ── Style defaults (per field) ──
   var STYLE_DEFAULTS = {
-    title:             { fontSize: 94, colorType: 'gradient', color1: '#F43D46', color2: '#FD4D26', opacity: 100, uppercase: true },
-    subtitle:          { fontSize: 27, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true },
-    preCountdownText:  { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true },
-    postCountdownText: { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true },
-    progressLabel:     { fontSize: 22, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true },
-    progressValue:     { fontSize: 42, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 90,  uppercase: false },
-    optionalText:      { fontSize: 26, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 75,  uppercase: true }
+    title:             { fontSize: 94, colorType: 'gradient', color1: '#F43D46', color2: '#FD4D26', opacity: 100, uppercase: true, fontWeight: 900 },
+    subtitle:          { fontSize: 27, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true, fontWeight: 400 },
+    preCountdownText:  { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true, fontWeight: 500 },
+    postCountdownText: { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true, fontWeight: 500 },
+    progressLabel:     { fontSize: 22, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true, fontWeight: 500 },
+    progressValue:     { fontSize: 42, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 90,  uppercase: false, fontWeight: 700 },
+    optionalText:      { fontSize: 26, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 75,  uppercase: true, fontWeight: 300 }
   };
   var STYLE_FIELDS = Object.keys(STYLE_DEFAULTS);
   var PRESET_COLORS = ['#F43D46', '#FD4D26', '#FFFFFF'];
@@ -936,6 +953,13 @@
       '<input type="number" class="sr-size" value="' + d.fontSize + '" min="8" max="300">' +
       '<span class="sr-label">px</span>' +
       '<button type="button" class="sr-uppercase' + (d.uppercase ? ' active' : '') + '" onclick="toggleUppercase(this)" title="Majuscules">AA</button>' +
+      '<select class="sr-weight">' +
+        '<option value="300"' + (d.fontWeight === 300 ? ' selected' : '') + '>Light</option>' +
+        '<option value="400"' + (d.fontWeight === 400 ? ' selected' : '') + '>Regular</option>' +
+        '<option value="500"' + (d.fontWeight === 500 ? ' selected' : '') + '>Medium</option>' +
+        '<option value="700"' + (d.fontWeight === 700 ? ' selected' : '') + '>Bold</option>' +
+        '<option value="900"' + (d.fontWeight === 900 ? ' selected' : '') + '>Black</option>' +
+      '</select>' +
       '<div class="sr-sep"></div>' +
       '<select class="sr-color-type" onchange="toggleColor2(this)">' +
         (gradFirst
@@ -1009,7 +1033,8 @@
       color1:    row.querySelector('.sr-color1').value,
       color2:    row.querySelector('.sr-color2').value,
       opacity:   parseInt(row.querySelector('.sr-opacity').value, 10),
-      uppercase: row.querySelector('.sr-uppercase').classList.contains('active')
+      uppercase: row.querySelector('.sr-uppercase').classList.contains('active'),
+      fontWeight: parseInt(row.querySelector('.sr-weight').value, 10) || STYLE_DEFAULTS[field].fontWeight
     };
   }
 
@@ -1033,6 +1058,8 @@
     row.querySelector('.sr-opacity-val').textContent = op + '%';
     var uc = s.uppercase !== undefined ? s.uppercase : (d.uppercase || false);
     row.querySelector('.sr-uppercase').classList.toggle('active', uc);
+    var fw = s.fontWeight !== undefined ? s.fontWeight : d.fontWeight;
+    row.querySelector('.sr-weight').value = fw;
     toggleColor2(sel);
   }
 
@@ -1159,6 +1186,12 @@
   document.getElementById('bgBrightness').addEventListener('input', function() {
     document.getElementById('bgBrightnessValue').textContent = this.value + '%';
   });
+  document.getElementById('contentOffsetY').addEventListener('input', function() {
+    document.getElementById('contentOffsetYValue').textContent = this.value + 'px';
+  });
+  document.getElementById('optionalTextOffsetY').addEventListener('input', function() {
+    document.getElementById('optionalTextOffsetYValue').textContent = this.value + 'px';
+  });
 
   // ── Drop zone ──
   var dropZone = document.getElementById('dropZone');
@@ -1279,7 +1312,9 @@
         postCountdownStyle: JSON.stringify(getFieldStyle('postCountdownText')),
         progressLabelStyle: JSON.stringify(getFieldStyle('progressLabel')),
         progressValueStyle: JSON.stringify(getFieldStyle('progressValue')),
-        optionalTextStyle: JSON.stringify(getFieldStyle('optionalText'))
+        optionalTextStyle: JSON.stringify(getFieldStyle('optionalText')),
+        contentOffsetY: parseInt(document.getElementById('contentOffsetY').value, 10),
+        optionalTextOffsetY: parseInt(document.getElementById('optionalTextOffsetY').value, 10)
       };
 
       google.script.run
@@ -1347,6 +1382,13 @@
         document.getElementById('showHours').checked = String(ev.showHours) !== 'false';
         document.getElementById('showMinutes').checked = String(ev.showMinutes) !== 'false';
         document.getElementById('showSeconds').checked = String(ev.showSeconds) !== 'false';
+
+        var coy = ev.contentOffsetY !== undefined && ev.contentOffsetY !== '' ? ev.contentOffsetY : 0;
+        document.getElementById('contentOffsetY').value = coy;
+        document.getElementById('contentOffsetYValue').textContent = coy + 'px';
+        var otoy = ev.optionalTextOffsetY !== undefined && ev.optionalTextOffsetY !== '' ? ev.optionalTextOffsetY : 0;
+        document.getElementById('optionalTextOffsetY').value = otoy;
+        document.getElementById('optionalTextOffsetYValue').textContent = otoy + 'px';
 
         // Restore styles
         setFieldStyle('title', safeParse(ev.titleStyle));
@@ -1423,6 +1465,10 @@
     document.getElementById('showHours').checked = true;
     document.getElementById('showMinutes').checked = true;
     document.getElementById('showSeconds').checked = true;
+    document.getElementById('contentOffsetY').value = 0;
+    document.getElementById('contentOffsetYValue').textContent = '0px';
+    document.getElementById('optionalTextOffsetY').value = 0;
+    document.getElementById('optionalTextOffsetYValue').textContent = '0px';
     resetAllStyles();
     selectFormat('landscape');
     dropZone.innerHTML = '<p>Glissez une image ici ou cliquez pour sélectionner</p><input type="file" id="imageInput" accept="image/*">';
