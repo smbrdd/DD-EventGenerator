@@ -620,11 +620,15 @@
 
     /* ── Expert-only fields ── */
     .expert-only {
-      display: none;
+      display: none !important;
     }
 
     .mode-expert .expert-only {
-      display: block;
+      display: block !important;
+    }
+
+    .mode-expert .expert-only.style-row {
+      display: flex !important;
     }
 
     /* ── Form wrapper ── */
