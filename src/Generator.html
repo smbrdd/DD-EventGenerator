@@ -202,8 +202,11 @@
     .folder-header .folder-actions { display: flex; gap: .3rem; }
     .folder-header .folder-actions button { background: none; border: none; color: #8b949e; cursor: pointer; padding: 2px; font-size: .85rem; transition: color .15s; }
     .folder-header .folder-actions button:hover { color: #FD4D26; }
-    .folder-select { background: #161b22; border: 1px solid #30363d; color: #8b949e; border-radius: 6px; padding: .25rem .4rem; font-size: .7rem; font-family: inherit; cursor: pointer; max-width: 100px; }
-    .folder-select:focus { border-color: #FD4D26; outline: none; }
+    .event-card[draggable="true"] { cursor: grab; }
+    .event-card.dragging { opacity: .4; }
+    .folder-group.drag-over > .folder-header { border-color: #FD4D26; background: rgba(253,77,38,.1); border-radius: 8px; }
+    .folder-drop-zone { min-height: 4px; border-radius: 6px; transition: min-height .15s, background .15s; }
+    .folder-drop-zone.drag-over { min-height: 40px; background: rgba(253,77,38,.08); border: 2px dashed #FD4D26; }
 
     .btn {
       display: inline-flex;
@@ -853,7 +856,7 @@
     <!-- Dossier -->
     <div class="form-group">
       <label for="folderId">Dossier</label>
-      <select id="folderId" class="folder-select" style="max-width:none;width:100%;padding:.5rem .7rem;font-size:.85rem;">
+      <select id="folderId" style="background:#161b22;border:1px solid #30363d;color:#e6edf3;border-radius:8px;width:100%;padding:.5rem .7rem;font-size:.85rem;font-family:inherit;cursor:pointer;">
         <option value="">— Sans dossier —</option>
       </select>
     </div>
@@ -1305,6 +1308,48 @@
       .moveEventToFolder(eventId, folderId);
   }
 
+  // ── Drag & Drop ──
+  var draggedEventId = null;
+
+  function onDragStart(e, eventId) {
+    draggedEventId = eventId;
+    e.dataTransfer.effectAllowed = 'move';
+    e.target.closest('.event-card').classList.add('dragging');
+  }
+
+  document.addEventListener('dragend', function() {
+    draggedEventId = null;
+    document.querySelectorAll('.event-card.dragging').forEach(function(c) { c.classList.remove('dragging'); });
+    document.querySelectorAll('.folder-group.drag-over').forEach(function(c) { c.classList.remove('drag-over'); });
+    document.querySelectorAll('.folder-drop-zone.drag-over').forEach(function(c) { c.classList.remove('drag-over'); });
+  });
+
+  function onFolderDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    var group = e.target.closest('.folder-group');
+    if (group) group.classList.add('drag-over');
+    var zone = e.target.closest('.folder-drop-zone');
+    if (zone) zone.classList.add('drag-over');
+  }
+
+  function onFolderDragLeave(e) {
+    var group = e.target.closest('.folder-group');
+    if (group && !group.contains(e.relatedTarget)) group.classList.remove('drag-over');
+    var zone = e.target.closest('.folder-drop-zone');
+    if (zone && !zone.contains(e.relatedTarget)) zone.classList.remove('drag-over');
+  }
+
+  function onFolderDrop(e, folderId) {
+    e.preventDefault();
+    document.querySelectorAll('.folder-group.drag-over').forEach(function(c) { c.classList.remove('drag-over'); });
+    document.querySelectorAll('.folder-drop-zone.drag-over').forEach(function(c) { c.classList.remove('drag-over'); });
+    if (draggedEventId) {
+      changeEventFolder(draggedEventId, folderId);
+      draggedEventId = null;
+    }
+  }
+
   // ── Show/hide form ──
   function showForm() {
     document.getElementById('formWrapper').classList.add('visible');
@@ -1498,12 +1543,7 @@
     var srcH = isPortrait ? 1920 : 1080;
     var thumbW = isPortrait ? 34 : 107;
     var scale = thumbW / srcW;
-    // Folder select
-    var folderOpts = '<option value="">—</option>';
-    allFolders.forEach(function(f) {
-      folderOpts += '<option value="' + f.id + '"' + (ev.folderId === f.id ? ' selected' : '') + '>' + escapeHtml(f.name) + '</option>';
-    });
-    return '<div class="event-card" data-id="' + ev.id + '">'
+    return '<div class="event-card" data-id="' + ev.id + '" draggable="true" ondragstart="onDragStart(event,\'' + ev.id + '\')">'
       + '<div class="thumb ' + thumbCls + '">'
       + '<iframe src="' + publicUrl + '" sandbox="allow-scripts allow-same-origin" style="width:' + srcW + 'px;height:' + srcH + 'px;transform:scale(' + scale + ');"></iframe>'
       + '</div>'
@@ -1512,9 +1552,8 @@
       + '<span>' + (ev.eventDate || 'Pas de date') + ' — ' + (ev.progress || 0) + '% — ' + (ev.format === 'portrait' ? '1080x1920' : '1920x1080') + '</span>'
       + '</div>'
       + '<div class="actions">'
-      + '<select class="folder-select" title="Déplacer dans un dossier" onchange="changeEventFolder(\'' + ev.id + '\',this.value)">' + folderOpts + '</select>'
-      + '<button class="btn btn-copy btn-icon" title="Copier URL" onclick="copyUrl(\'' + publicUrl + '\')"><svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg></button>'
-      + '<button class="btn btn-secondary btn-icon" title="Dupliquer" onclick="duplicateEvent(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm-1 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h7v14zm-3-8h-1v2H9v-2H8v-1h1v-2h2v2h1v1z"/></svg></button>'
+      + '<button class="btn btn-copy btn-icon" title="Copier URL" onclick="copyUrl(\'' + publicUrl + '\')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1a2 2 0 0 0 2 2v1.93zm6.9-2.54A1.99 1.99 0 0 0 16 16h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8z"/></svg></button>'
+      + '<button class="btn btn-secondary btn-icon" title="Dupliquer" onclick="duplicateEvent(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg></button>'
       + '<button class="btn btn-secondary btn-icon" title="Éditer" onclick="editEvent(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>'
       + '<button class="btn btn-secondary btn-icon" title="Ouvrir" onclick="window.open(\'' + publicUrl + '\',\'_blank\')"><svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg></button>'
       + '<button class="btn btn-danger btn-icon" title="Supprimer" onclick="confirmDelete(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>'
@@ -1546,7 +1585,7 @@
     // Render folders
     allFolders.forEach(function(folder, idx) {
       var folderEvents = grouped[folder.id] || [];
-      html += '<div class="folder-group">'
+      html += '<div class="folder-group" data-folder="' + folder.id + '" ondragover="onFolderDragOver(event)" ondragleave="onFolderDragLeave(event)" ondrop="onFolderDrop(event,\'' + folder.id + '\')">'
         + '<div class="folder-header">'
         + '<h3>📁 ' + escapeHtml(folder.name) + ' (' + folderEvents.length + ')</h3>'
         + '<div class="folder-actions">'
@@ -1556,17 +1595,20 @@
         + '<button title="Supprimer le dossier" onclick="deleteFolderConfirm(\'' + folder.id + '\')">🗑️</button>'
         + '</div>'
         + '</div>';
+      html += '<div class="folder-drop-zone"></div>';
       folderEvents.forEach(function(ev) { html += buildEventCard(ev); });
-      if (!folderEvents.length) html += '<div style="color:#8b949e;font-size:.8rem;padding:.3rem 0;">Aucun événement dans ce dossier</div>';
+      if (!folderEvents.length) html += '<div class="folder-empty" style="color:#8b949e;font-size:.8rem;padding:.5rem 0;">Glissez un événement ici</div>';
       html += '</div>';
     });
     // Render events without folder
-    if (noFolder.length) {
+    if (noFolder.length || allFolders.length) {
+      html += '<div class="folder-group" data-folder="" ondragover="onFolderDragOver(event)" ondragleave="onFolderDragLeave(event)" ondrop="onFolderDrop(event,\'\')">';
       if (allFolders.length) {
-        html += '<div class="folder-group"><div class="folder-header"><h3>Sans dossier (' + noFolder.length + ')</h3></div>';
+        html += '<div class="folder-header"><h3>Sans dossier (' + noFolder.length + ')</h3></div>';
+        html += '<div class="folder-drop-zone"></div>';
       }
       noFolder.forEach(function(ev) { html += buildEventCard(ev); });
-      if (allFolders.length) html += '</div>';
+      html += '</div>';
     }
     container.innerHTML = html;
   }
