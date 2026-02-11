@@ -428,14 +428,14 @@
 
     // Content vertical offset
     var contentOff = parseInt(ev.contentOffsetY, 10) || 0;
-    if (contentOff < -300 || contentOff > 300) contentOff = 0;
+    if (contentOff < 0 || contentOff > 100) contentOff = 0;
     if (contentOff !== 0) {
       document.querySelector('.content').style.transform = 'translateY(' + contentOff + 'px)';
     }
 
     // Optional text vertical offset
     var optOff = parseInt(ev.optionalTextOffsetY, 10) || 0;
-    if (optOff < -200 || optOff > 200) optOff = 0;
+    if (optOff < 0 || optOff > 100) optOff = 0;
     if (optOff !== 0) {
       document.getElementById('optionalText').style.transform = 'translateY(' + optOff + 'px)';
     }

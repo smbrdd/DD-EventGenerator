@@ -772,14 +772,14 @@
       <div class="form-group">
         <label>Position verticale du contenu</label>
         <div class="slider-wrapper">
-          <input type="range" id="contentOffsetY" min="-300" max="300" value="0">
+          <input type="range" id="contentOffsetY" min="0" max="100" value="0">
           <span class="slider-value" id="contentOffsetYValue">0px</span>
         </div>
       </div>
       <div class="form-group">
         <label>Position du texte optionnel</label>
         <div class="slider-wrapper">
-          <input type="range" id="optionalTextOffsetY" min="-200" max="200" value="0">
+          <input type="range" id="optionalTextOffsetY" min="0" max="100" value="0">
           <span class="slider-value" id="optionalTextOffsetYValue">0px</span>
         </div>
       </div>
@@ -1384,11 +1384,11 @@
         document.getElementById('showSeconds').checked = String(ev.showSeconds) !== 'false';
 
         var coy = parseInt(ev.contentOffsetY, 10) || 0;
-        if (coy < -300 || coy > 300) coy = 0;
+        if (coy < 0 || coy > 100) coy = 0;
         document.getElementById('contentOffsetY').value = coy;
         document.getElementById('contentOffsetYValue').textContent = coy + 'px';
         var otoy = parseInt(ev.optionalTextOffsetY, 10) || 0;
-        if (otoy < -200 || otoy > 200) otoy = 0;
+        if (otoy < 0 || otoy > 100) otoy = 0;
         document.getElementById('optionalTextOffsetY').value = otoy;
         document.getElementById('optionalTextOffsetYValue').textContent = otoy + 'px';
 

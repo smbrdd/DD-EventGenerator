@@ -238,7 +238,7 @@
 <div class="bg" style="<? if (bgUrl) { ?>background-image: url('<?= bgUrl ?>');<?  } else { ?>background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);<?  } ?>"></div>
 <div class="bg-overlay"></div>
 
-<? var coy = parseInt(event.contentOffsetY) || 0; if (coy < -300 || coy > 300) coy = 0; ?>
+<? var coy = parseInt(event.contentOffsetY) || 0; if (coy < 0 || coy > 100) coy = 0; ?>
 <div class="content" id="contentBlock" style="<? if (coy != 0) { ?>transform: translateY(<?= coy ?>px);<? } ?>">
 
   <? if (event.subtitle) { ?>
@@ -268,7 +268,7 @@
   <? } ?>
 
   <? if (event.optionalText) { ?>
-<? var otoy = parseInt(event.optionalTextOffsetY) || 0; if (otoy < -200 || otoy > 200) otoy = 0; ?>
+<? var otoy = parseInt(event.optionalTextOffsetY) || 0; if (otoy < 0 || otoy > 100) otoy = 0; ?>
     <p class="optional-text" id="optionalTextBlock" style="<? if (otoy != 0) { ?>transform: translateY(<?= otoy ?>px);<? } ?>"><?= event.optionalText ?></p>
   <? } ?>
 
