@@ -276,9 +276,9 @@
     <div class="countdown-passed" id="countdownPassed" style="display:none;text-transform:uppercase;">Congratulations, it's achieved!</div>
   <? } ?>
 
-  <? if (parseInt(event.progress) > 0) { ?>
+  <? if (parseInt(event.progress) > 0 || String(event.autoProgress) === 'true') { ?>
     <div class="progress-section">
-      <p class="progress-label">Avancement du projet</p>
+      <p class="progress-label"><?= event.progressLabel || 'PROJECT PROGRESS' ?></p>
       <div class="progress-bar-track">
         <div class="progress-bar-fill" id="progressBar"></div>
       </div>
@@ -342,6 +342,29 @@
   // ── Progress bar animation ──
   (function() {
     var progress = parseInt('<?= event.progress ?>', 10) || 0;
+    var autoProgress = '<?= event.autoProgress ?>' === 'true';
+    if (autoProgress) {
+      var apMode = '<?= event.autoProgressMode ?>' || 'linear';
+      var now = new Date(); now.setHours(0,0,0,0);
+      if (apMode === 'linear') {
+        var start = '<?= event.autoProgressStart ?>' ? new Date('<?= event.autoProgressStart ?>') : null;
+        var end = '<?= event.eventDate ?>' ? new Date('<?= event.eventDate ?>') : null;
+        if (start && end && end > start) {
+          start.setHours(0,0,0,0); end.setHours(0,0,0,0);
+          progress = Math.min(100, Math.max(0, Math.round((now - start) / (end - start) * 100)));
+        }
+      } else if (apMode === 'milestones') {
+        try {
+          var ms = JSON.parse('<?= event.autoProgressMilestones ?>');
+          ms.sort(function(a, b) { return a.date < b.date ? -1 : 1; });
+          progress = 0;
+          for (var i = 0; i < ms.length; i++) {
+            var md = new Date(ms[i].date); md.setHours(0,0,0,0);
+            if (now >= md) progress = ms[i].percent;
+          }
+        } catch(e) {}
+      }
+    }
     var bar = document.getElementById('progressBar');
     var text = document.getElementById('progressText');
     if (!bar) return;

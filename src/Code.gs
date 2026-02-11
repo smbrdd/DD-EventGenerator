@@ -16,7 +16,7 @@
 var CONFIG = {
   SHEET_NAME: 'Events',
   FOLDER_NAME: 'EventGenerator-Images',
-  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY', 'folderId'],
+  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY', 'folderId', 'autoProgress', 'autoProgressMode', 'autoProgressStart', 'autoProgressMilestones'],
   FOLDERS_SHEET: 'Folders',
   FOLDER_COLUMNS: ['id', 'name', 'sortOrder']
 };
@@ -190,7 +190,11 @@ function buildRow_(data, createdAt, updatedAt) {
     data.name || '',
     data.bgPositionX !== undefined && data.bgPositionX !== '' ? data.bgPositionX : 50,
     data.bgPositionY !== undefined && data.bgPositionY !== '' ? data.bgPositionY : 50,
-    data.folderId || ''
+    data.folderId || '',
+    data.autoProgress ? 'true' : 'false',
+    data.autoProgressMode || 'linear',
+    data.autoProgressStart || '',
+    data.autoProgressMilestones || ''
   ];
 }
 
