@@ -453,20 +453,35 @@
       var apMode = ev.autoProgressMode || 'linear';
       var now = new Date(); now.setHours(0,0,0,0);
       if (apMode === 'linear') {
+        var startPct = parseInt(ev.autoProgressStartPct, 10) || 0;
         var start = ev.autoProgressStart ? new Date(ev.autoProgressStart) : null;
         var end = ev.eventDate ? new Date(ev.eventDate) : null;
         if (start && end && end > start) {
           start.setHours(0,0,0,0); end.setHours(0,0,0,0);
-          progress = Math.min(100, Math.max(0, Math.round((now - start) / (end - start) * 100)));
+          if (now <= start) { progress = startPct; }
+          else if (now >= end) { progress = 100; }
+          else { progress = Math.round(startPct + (100 - startPct) * (now - start) / (end - start)); }
         }
       } else if (apMode === 'milestones') {
         try {
           var ms = JSON.parse(ev.autoProgressMilestones || '[]');
           ms.sort(function(a, b) { return a.date < b.date ? -1 : 1; });
           progress = 0;
+          // Interpolation linéaire entre jalons
           for (var mi = 0; mi < ms.length; mi++) {
             var md = new Date(ms[mi].date); md.setHours(0,0,0,0);
-            if (now >= md) progress = ms[mi].percent;
+            if (now >= md) {
+              progress = ms[mi].percent;
+            } else {
+              // Interpoler entre le jalon précédent et celui-ci
+              var prevPct = mi > 0 ? ms[mi - 1].percent : 0;
+              var prevDate = mi > 0 ? new Date(ms[mi - 1].date) : null;
+              if (prevDate) { prevDate.setHours(0,0,0,0); }
+              if (prevDate && md > prevDate) {
+                progress = Math.round(prevPct + (ms[mi].percent - prevPct) * (now - prevDate) / (md - prevDate));
+              }
+              break;
+            }
           }
         } catch(e) {}
       }
