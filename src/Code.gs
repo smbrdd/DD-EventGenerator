@@ -78,6 +78,9 @@ function rowToObject_(row) {
     if (val instanceof Date) {
       val = Utilities.formatDate(val, Session.getScriptTimeZone(), 'yyyy-MM-dd');
     }
+    // Convertir les booléens en string
+    if (val === true) val = 'true';
+    if (val === false) val = 'false';
     obj[col] = (val !== undefined && val !== null && val !== '') ? val : '';
   });
   return obj;

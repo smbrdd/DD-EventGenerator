@@ -327,13 +327,13 @@
       // No uploaded image: gradient overlay is the sole visual BG
     }
 
-    if (ev.eventDate && ev.showTimer !== 'false') {
+    if (ev.eventDate && String(ev.showTimer) !== 'false') {
       document.getElementById('countdown').classList.remove('hidden');
       startCountdown(ev.eventDate);
     }
 
     var progress = parseInt(ev.progress, 10) || 0;
-    if (progress > 0 && ev.showProgress !== 'false') {
+    if (progress > 0 && String(ev.showProgress) !== 'false') {
       document.getElementById('progressSection').classList.remove('hidden');
       setTimeout(function() {
         document.getElementById('progressBar').style.width = progress + '%';

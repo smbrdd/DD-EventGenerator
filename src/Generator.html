@@ -604,8 +604,8 @@
         document.getElementById('progress').value = ev.progress || 0;
         document.getElementById('progressValue').textContent = (ev.progress || 0) + '%';
         document.getElementById('optionalText').value = ev.optionalText;
-        document.getElementById('showTimer').checked = ev.showTimer !== 'false';
-        document.getElementById('showProgress').checked = ev.showProgress !== 'false';
+        document.getElementById('showTimer').checked = String(ev.showTimer) !== 'false';
+        document.getElementById('showProgress').checked = String(ev.showProgress) !== 'false';
         selectFormat(ev.format || 'landscape');
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
