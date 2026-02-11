@@ -786,8 +786,13 @@
     </div>
 
     <div class="form-group">
+      <label for="eventName">Nom de l'événement (admin uniquement)</label>
+      <input type="text" id="eventName" placeholder="Ex: Lancement produit X — pour identifier dans la liste">
+    </div>
+
+    <div class="form-group">
       <label for="title">Titre</label>
-      <textarea rows="2" id="title" placeholder="Nom de l'événement"></textarea>
+      <textarea rows="2" id="title" placeholder="Titre affiché sur la page publique"></textarea>
       <div class="style-row expert-only" data-field="title"></div>
     </div>
 
@@ -1262,11 +1267,12 @@
       html += '<div class="event-card">'
         + '<div class="thumb" style="' + thumbStyle + '"></div>'
         + '<div class="info">'
-        + '<h3>' + escapeHtml(ev.title) + '</h3>'
+        + '<h3>' + escapeHtml(ev.name || ev.title) + '</h3>'
         + '<span>' + (ev.eventDate || 'Pas de date') + ' — ' + (ev.progress || 0) + '% — ' + (ev.format === 'portrait' ? '1080x1920' : '1920x1080') + '</span>'
         + '</div>'
         + '<div class="actions">'
         + '<button class="btn btn-copy btn-small" onclick="copyUrl(\'' + publicUrl + '\')">Copier URL</button>'
+        + '<button class="btn btn-secondary btn-small" onclick="duplicateEvent(\'' + ev.id + '\')">Dupliquer</button>'
         + '<button class="btn btn-secondary btn-small" onclick="editEvent(\'' + ev.id + '\')">Éditer</button>'
         + '<button class="btn btn-danger btn-small" onclick="confirmDelete(\'' + ev.id + '\')">Suppr.</button>'
         + '</div>'
@@ -1314,7 +1320,8 @@
         progressValueStyle: JSON.stringify(getFieldStyle('progressValue')),
         optionalTextStyle: JSON.stringify(getFieldStyle('optionalText')),
         contentOffsetY: parseInt(document.getElementById('contentOffsetY').value, 10),
-        optionalTextOffsetY: parseInt(document.getElementById('optionalTextOffsetY').value, 10)
+        optionalTextOffsetY: parseInt(document.getElementById('optionalTextOffsetY').value, 10),
+        name: document.getElementById('eventName').value.trim()
       };
 
       google.script.run
@@ -1360,6 +1367,7 @@
         if (!ev) { toast('Événement introuvable', true); return; }
         document.getElementById('eventId').value = ev.id;
         document.getElementById('currentImageId').value = ev.backgroundImageId || '';
+        document.getElementById('eventName').value = ev.name || '';
         document.getElementById('title').value = ev.title;
         document.getElementById('subtitle').value = ev.subtitle;
         document.getElementById('eventDate').value = ev.eventDate;
@@ -1424,6 +1432,75 @@
       .getEvent(id);
   }
 
+  // ── Duplicate ──
+  function duplicateEvent(id) {
+    showLoading(true);
+    google.script.run
+      .withSuccessHandler(function(ev) {
+        showLoading(false);
+        if (!ev) { toast('Événement introuvable', true); return; }
+        // Remplir le formulaire comme editEvent mais SANS l'id (= nouvel événement)
+        document.getElementById('eventId').value = '';
+        document.getElementById('currentImageId').value = ev.backgroundImageId || '';
+        document.getElementById('eventName').value = (ev.name || ev.title || '') + ' (copie)';
+        document.getElementById('title').value = ev.title;
+        document.getElementById('subtitle').value = ev.subtitle;
+        document.getElementById('eventDate').value = ev.eventDate;
+        document.getElementById('progress').value = ev.progress || 0;
+        document.getElementById('progressValue').textContent = (ev.progress || 0) + '%';
+        document.getElementById('optionalText').value = ev.optionalText;
+        document.getElementById('showTimer').checked = String(ev.showTimer) !== 'false';
+        document.getElementById('showProgress').checked = String(ev.showProgress) !== 'false';
+        document.getElementById('showGradient').checked = String(ev.showGradient) !== 'false';
+        var gop = ev.gradientOpacity !== undefined && ev.gradientOpacity !== '' ? ev.gradientOpacity : 50;
+        document.getElementById('gradientOpacity').value = gop;
+        document.getElementById('gradientOpacityValue').textContent = gop + '%';
+        var bgb = ev.bgBrightness !== undefined && ev.bgBrightness !== '' ? ev.bgBrightness : 40;
+        document.getElementById('bgBrightness').value = bgb;
+        document.getElementById('bgBrightnessValue').textContent = bgb + '%';
+        document.getElementById('progressLabel').value = ev.progressLabel || '';
+        document.getElementById('preCountdownText').value = ev.preCountdownText || '';
+        document.getElementById('postCountdownText').value = ev.postCountdownText || '';
+        document.getElementById('showDays').checked = String(ev.showDays) !== 'false';
+        document.getElementById('showHours').checked = String(ev.showHours) !== 'false';
+        document.getElementById('showMinutes').checked = String(ev.showMinutes) !== 'false';
+        document.getElementById('showSeconds').checked = String(ev.showSeconds) !== 'false';
+        var coy = parseInt(ev.contentOffsetY, 10) || 0;
+        if (coy < 0 || coy > 100) coy = 0;
+        document.getElementById('contentOffsetY').value = coy;
+        document.getElementById('contentOffsetYValue').textContent = coy + 'px';
+        var otoy = parseInt(ev.optionalTextOffsetY, 10) || 0;
+        if (otoy < 0 || otoy > 100) otoy = 0;
+        document.getElementById('optionalTextOffsetY').value = otoy;
+        document.getElementById('optionalTextOffsetYValue').textContent = otoy + 'px';
+        setFieldStyle('title', safeParse(ev.titleStyle));
+        setFieldStyle('subtitle', safeParse(ev.subtitleStyle));
+        setFieldStyle('preCountdownText', safeParse(ev.preCountdownStyle));
+        setFieldStyle('postCountdownText', safeParse(ev.postCountdownStyle));
+        setFieldStyle('progressLabel', safeParse(ev.progressLabelStyle));
+        setFieldStyle('progressValue', safeParse(ev.progressValueStyle));
+        setFieldStyle('optionalText', safeParse(ev.optionalTextStyle));
+        selectFormat(ev.format || 'landscape');
+        document.getElementById('formTitle').textContent = 'Dupliquer l\'événement';
+
+        if (ev.backgroundImageId) {
+          var imgUrl = 'https://lh3.googleusercontent.com/d/' + ev.backgroundImageId;
+          dropZone.innerHTML = '<img src="' + imgUrl + '" class="preview" alt="Aperçu"><p style="margin-top:.5rem;color:#8b949e;font-size:.8rem;">Image copiée</p>';
+        }
+
+        imageBase64 = null;
+        imageFilename = null;
+        showForm();
+        setMode('expert');
+        document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+      })
+      .withFailureHandler(function(err) {
+        showLoading(false);
+        toast('Erreur: ' + err.message, true);
+      })
+      .getEvent(id);
+  }
+
   // ── Delete ──
   function confirmDelete(id) {
     if (!confirm('Supprimer cet événement ?')) return;
@@ -1446,6 +1523,7 @@
     hidePreview();
     document.getElementById('eventId').value = '';
     document.getElementById('currentImageId').value = '';
+    document.getElementById('eventName').value = '';
     document.getElementById('title').value = '';
     document.getElementById('subtitle').value = '';
     document.getElementById('eventDate').value = '';
