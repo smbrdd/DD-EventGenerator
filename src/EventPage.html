@@ -237,7 +237,7 @@
     }
 
     .countdown-passed {
-      font-size: 1.1rem;
+      font-size: 80px;
       font-weight: 500;
       color: rgba(255,255,255,.7);
       margin-bottom: 2.5rem;
@@ -515,6 +515,20 @@
     applyWeight('.progress-label', '<?= event.progressLabelStyle ?>',  'progressLabel');
     applyWeight('.progress-value', '<?= event.progressValueStyle ?>',  'progressValue');
     applyWeight('.optional-text',  '<?= event.optionalTextStyle ?>',   'optionalText');
+
+    // Apply countdown number & label styles
+    function applyStyleAll(selector, styleJson, defaults) {
+      var s = safeParse(styleJson) || defaults;
+      document.querySelectorAll(selector).forEach(function(el) {
+        if (s.fontSize) el.style.fontSize = s.fontSize + 'px';
+        if (s.opacity !== undefined) el.style.opacity = s.opacity / 100;
+        if (s.color1) el.style.color = s.color1;
+        if (s.fontWeight !== undefined) el.style.fontWeight = s.fontWeight;
+        if (s.uppercase !== undefined) el.style.textTransform = s.uppercase ? 'uppercase' : 'none';
+      });
+    }
+    applyStyleAll('.countdown-item .number', '<?= event.countdownNumberStyle ?>', { fontSize: 60, opacity: 100, color1: '#ffffff', fontWeight: 700 });
+    applyStyleAll('.countdown-item .label',  '<?= event.countdownLabelStyle ?>',  { fontSize: 19, opacity: 100, color1: '#ffffff', fontWeight: 400, uppercase: true });
   })();
 
   // ── FX helpers ──

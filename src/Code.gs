@@ -16,7 +16,7 @@
 var CONFIG = {
   SHEET_NAME: 'Events',
   FOLDER_NAME: 'EventGenerator-Images',
-  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY', 'folderId', 'autoProgress', 'autoProgressMode', 'autoProgressStart', 'autoProgressMilestones', 'autoProgressStartPct', 'fxConfetti', 'fxVignette', 'fxGlow', 'fxRays', 'fxShimmer', 'eventTime', 'fxConfettiSpeed', 'fxConfettiOpacity', 'fxVignetteSpeed', 'fxVignetteOpacity', 'fxGlowSpeed', 'fxGlowOpacity', 'fxRaysSpeed', 'fxRaysOpacity', 'fxShimmerSpeed', 'fxShimmerOpacity'],
+  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY', 'folderId', 'autoProgress', 'autoProgressMode', 'autoProgressStart', 'autoProgressMilestones', 'autoProgressStartPct', 'fxConfetti', 'fxVignette', 'fxGlow', 'fxRays', 'fxShimmer', 'eventTime', 'fxConfettiSpeed', 'fxConfettiOpacity', 'fxVignetteSpeed', 'fxVignetteOpacity', 'fxGlowSpeed', 'fxGlowOpacity', 'fxRaysSpeed', 'fxRaysOpacity', 'fxShimmerSpeed', 'fxShimmerOpacity', 'countdownNumberStyle', 'countdownLabelStyle'],
   FOLDERS_SHEET: 'Folders',
   FOLDER_COLUMNS: ['id', 'name', 'sortOrder']
 };
@@ -226,7 +226,9 @@ function buildRow_(data, createdAt, updatedAt) {
     String(data.fxRaysSpeed !== undefined && data.fxRaysSpeed !== '' ? data.fxRaysSpeed : 50),
     String(data.fxRaysOpacity !== undefined && data.fxRaysOpacity !== '' ? data.fxRaysOpacity : 50),
     String(data.fxShimmerSpeed !== undefined && data.fxShimmerSpeed !== '' ? data.fxShimmerSpeed : 50),
-    String(data.fxShimmerOpacity !== undefined && data.fxShimmerOpacity !== '' ? data.fxShimmerOpacity : 50)
+    String(data.fxShimmerOpacity !== undefined && data.fxShimmerOpacity !== '' ? data.fxShimmerOpacity : 50),
+    data.countdownNumberStyle || '',
+    data.countdownLabelStyle || ''
   ];
 }
 

@@ -949,6 +949,8 @@
               <span>Secondes</span>
             </label>
           </div>
+          <div class="style-row expert-only" data-field="countdownNumber" style="margin-top:.6rem;"></div>
+          <div class="style-row expert-only" data-field="countdownLabel" style="margin-top:.4rem;"></div>
         </div>
       </div>
 
@@ -1054,15 +1056,15 @@
       <div class="form-group">
         <label>Intensité du gradient</label>
         <div class="slider-wrapper">
-          <input type="range" id="gradientOpacity" min="0" max="100" value="50">
-          <span class="slider-value" id="gradientOpacityValue">50%</span>
+          <input type="range" id="gradientOpacity" min="0" max="100" value="60">
+          <span class="slider-value" id="gradientOpacityValue">60%</span>
         </div>
       </div>
       <div class="form-group">
         <label>Luminosité image de fond</label>
         <div class="slider-wrapper">
-          <input type="range" id="bgBrightness" min="0" max="100" value="40">
-          <span class="slider-value" id="bgBrightnessValue">40%</span>
+          <input type="range" id="bgBrightness" min="0" max="100" value="100">
+          <span class="slider-value" id="bgBrightnessValue">100%</span>
         </div>
       </div>
     </div>
@@ -1118,9 +1120,9 @@
     <div class="expert-only fx-settings">
 
       <div class="fx-row">
-        <label class="checkbox-label fx-name"><input type="checkbox" id="fxConfetti" checked><span>Confettis</span></label>
+        <label class="checkbox-label fx-name"><input type="checkbox" id="fxConfetti"><span>Confettis</span></label>
         <div class="fx-sliders">
-          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxConfettiSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxConfettiSpeedVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxConfettiSpeed" min="0" max="100" value="20"><span class="fx-slider-val" id="fxConfettiSpeedVal">20</span></div>
           <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxConfettiOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxConfettiOpacityVal">50</span></div>
         </div>
       </div>
@@ -1128,31 +1130,31 @@
       <div class="fx-row">
         <label class="checkbox-label fx-name"><input type="checkbox" id="fxVignette" checked><span>Vignette orangée</span></label>
         <div class="fx-sliders">
-          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxVignetteSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxVignetteSpeedVal">50</span></div>
-          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxVignetteOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxVignetteOpacityVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxVignetteSpeed" min="0" max="100" value="20"><span class="fx-slider-val" id="fxVignetteSpeedVal">20</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxVignetteOpacity" min="0" max="100" value="40"><span class="fx-slider-val" id="fxVignetteOpacityVal">40</span></div>
         </div>
       </div>
 
       <div class="fx-row">
         <label class="checkbox-label fx-name"><input type="checkbox" id="fxGlow" checked><span>Glow (bloom)</span></label>
         <div class="fx-sliders">
-          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxGlowSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxGlowSpeedVal">50</span></div>
-          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxGlowOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxGlowOpacityVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxGlowSpeed" min="0" max="100" value="20"><span class="fx-slider-val" id="fxGlowSpeedVal">20</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxGlowOpacity" min="0" max="100" value="55"><span class="fx-slider-val" id="fxGlowOpacityVal">55</span></div>
         </div>
       </div>
 
       <div class="fx-row">
         <label class="checkbox-label fx-name"><input type="checkbox" id="fxRays" checked><span>God Rays</span></label>
         <div class="fx-sliders">
-          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxRaysSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxRaysSpeedVal">50</span></div>
-          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxRaysOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxRaysOpacityVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxRaysSpeed" min="0" max="100" value="20"><span class="fx-slider-val" id="fxRaysSpeedVal">20</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxRaysOpacity" min="0" max="100" value="85"><span class="fx-slider-val" id="fxRaysOpacityVal">85</span></div>
         </div>
       </div>
 
       <div class="fx-row">
-        <label class="checkbox-label fx-name"><input type="checkbox" id="fxShimmer" checked><span>Shimmer</span></label>
+        <label class="checkbox-label fx-name"><input type="checkbox" id="fxShimmer"><span>Shimmer</span></label>
         <div class="fx-sliders">
-          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxShimmerSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxShimmerSpeedVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxShimmerSpeed" min="0" max="100" value="20"><span class="fx-slider-val" id="fxShimmerSpeedVal">20</span></div>
           <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxShimmerOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxShimmerOpacityVal">50</span></div>
         </div>
       </div>
@@ -1195,12 +1197,14 @@
   // ── Style defaults (per field) ──
   var STYLE_DEFAULTS = {
     title:             { fontSize: 94, colorType: 'gradient', color1: '#F43D46', color2: '#FD4D26', opacity: 100, uppercase: true, fontWeight: 900 },
-    subtitle:          { fontSize: 27, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true, fontWeight: 400 },
-    preCountdownText:  { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true, fontWeight: 500 },
-    postCountdownText: { fontSize: 21, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 60,  uppercase: true, fontWeight: 500 },
-    progressLabel:     { fontSize: 22, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 70,  uppercase: true, fontWeight: 500 },
-    progressValue:     { fontSize: 42, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 90,  uppercase: false, fontWeight: 700 },
-    optionalText:      { fontSize: 26, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 75,  uppercase: true, fontWeight: 300 }
+    subtitle:          { fontSize: 28, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 100, uppercase: true, fontWeight: 700 },
+    preCountdownText:  { fontSize: 35, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 80,  uppercase: true, fontWeight: 500 },
+    postCountdownText: { fontSize: 32, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 100, uppercase: true, fontWeight: 500 },
+    countdownNumber:   { fontSize: 60, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 100, uppercase: false, fontWeight: 700 },
+    countdownLabel:    { fontSize: 19, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 100, uppercase: true, fontWeight: 400 },
+    progressLabel:     { fontSize: 25, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 100, uppercase: true, fontWeight: 500 },
+    progressValue:     { fontSize: 51, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 90,  uppercase: false, fontWeight: 700 },
+    optionalText:      { fontSize: 28, colorType: 'solid',    color1: '#ffffff', color2: '#ffffff', opacity: 90,  uppercase: true, fontWeight: 500 }
   };
   var STYLE_FIELDS = Object.keys(STYLE_DEFAULTS);
   var PRESET_COLORS = ['#F43D46', '#FD4D26', '#FFFFFF'];
@@ -1874,6 +1878,8 @@
         postCountdownStyle: JSON.stringify(getFieldStyle('postCountdownText')),
         progressLabelStyle: JSON.stringify(getFieldStyle('progressLabel')),
         progressValueStyle: JSON.stringify(getFieldStyle('progressValue')),
+        countdownNumberStyle: JSON.stringify(getFieldStyle('countdownNumber')),
+        countdownLabelStyle: JSON.stringify(getFieldStyle('countdownLabel')),
         optionalTextStyle: JSON.stringify(getFieldStyle('optionalText')),
         contentOffsetY: parseInt(document.getElementById('contentOffsetY').value, 10),
         optionalTextOffsetY: parseInt(document.getElementById('optionalTextOffsetY').value, 10),
@@ -2003,6 +2009,8 @@
         setFieldStyle('subtitle', safeParse(ev.subtitleStyle));
         setFieldStyle('preCountdownText', safeParse(ev.preCountdownStyle));
         setFieldStyle('postCountdownText', safeParse(ev.postCountdownStyle));
+        setFieldStyle('countdownNumber', safeParse(ev.countdownNumberStyle));
+        setFieldStyle('countdownLabel', safeParse(ev.countdownLabelStyle));
         setFieldStyle('progressLabel', safeParse(ev.progressLabelStyle));
         setFieldStyle('progressValue', safeParse(ev.progressValueStyle));
         setFieldStyle('optionalText', safeParse(ev.optionalTextStyle));
@@ -2115,6 +2123,8 @@
         setFieldStyle('subtitle', safeParse(ev.subtitleStyle));
         setFieldStyle('preCountdownText', safeParse(ev.preCountdownStyle));
         setFieldStyle('postCountdownText', safeParse(ev.postCountdownStyle));
+        setFieldStyle('countdownNumber', safeParse(ev.countdownNumberStyle));
+        setFieldStyle('countdownLabel', safeParse(ev.countdownLabelStyle));
         setFieldStyle('progressLabel', safeParse(ev.progressLabelStyle));
         setFieldStyle('progressValue', safeParse(ev.progressValueStyle));
         setFieldStyle('optionalText', safeParse(ev.optionalTextStyle));
@@ -2205,30 +2215,30 @@
     document.getElementById('milestonesList').innerHTML = '';
     toggleAutoProgress();
     toggleAutoProgressMode();
-    document.getElementById('fxConfetti').checked = true;
+    document.getElementById('fxConfetti').checked = false;
     document.getElementById('fxVignette').checked = true;
     document.getElementById('fxGlow').checked = true;
     document.getElementById('fxRays').checked = true;
-    document.getElementById('fxShimmer').checked = true;
-    setFxSlider('fxConfettiSpeed', 50, 50);
+    document.getElementById('fxShimmer').checked = false;
+    setFxSlider('fxConfettiSpeed', 20, 20);
     setFxSlider('fxConfettiOpacity', 50, 50);
-    setFxSlider('fxVignetteSpeed', 50, 50);
-    setFxSlider('fxVignetteOpacity', 50, 50);
-    setFxSlider('fxGlowSpeed', 50, 50);
-    setFxSlider('fxGlowOpacity', 50, 50);
-    setFxSlider('fxRaysSpeed', 50, 50);
-    setFxSlider('fxRaysOpacity', 50, 50);
-    setFxSlider('fxShimmerSpeed', 50, 50);
+    setFxSlider('fxVignetteSpeed', 20, 20);
+    setFxSlider('fxVignetteOpacity', 40, 40);
+    setFxSlider('fxGlowSpeed', 20, 20);
+    setFxSlider('fxGlowOpacity', 55, 55);
+    setFxSlider('fxRaysSpeed', 20, 20);
+    setFxSlider('fxRaysOpacity', 85, 85);
+    setFxSlider('fxShimmerSpeed', 20, 20);
     setFxSlider('fxShimmerOpacity', 50, 50);
     document.getElementById('showTimer').checked = true;
     document.getElementById('showProgress').checked = true;
     toggleTimerFields();
     toggleProgressFields();
     document.getElementById('showGradient').checked = true;
-    document.getElementById('gradientOpacity').value = 50;
-    document.getElementById('gradientOpacityValue').textContent = '50%';
-    document.getElementById('bgBrightness').value = 40;
-    document.getElementById('bgBrightnessValue').textContent = '40%';
+    document.getElementById('gradientOpacity').value = 60;
+    document.getElementById('gradientOpacityValue').textContent = '60%';
+    document.getElementById('bgBrightness').value = 100;
+    document.getElementById('bgBrightnessValue').textContent = '100%';
     document.getElementById('progressLabel').value = '';
     document.getElementById('preCountdownText').value = '';
     document.getElementById('postCountdownText').value = '';
