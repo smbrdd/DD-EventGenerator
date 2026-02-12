@@ -1092,6 +1092,17 @@
       </div>
     </div>
 
+    <!-- Effets visuels à 100% -->
+    <hr class="expert-only" style="border:none;border-top:1px solid #444;margin:1.2rem 0 .8rem;">
+    <label class="expert-only" style="font-size:.85rem;color:#aaa;margin-bottom:.6rem;display:block;">Effets visuels à 100%</label>
+    <div class="expert-only" style="display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;margin-bottom:1.2rem;">
+      <label class="checkbox-label"><input type="checkbox" id="fxConfetti" checked><span>Confettis</span></label>
+      <label class="checkbox-label"><input type="checkbox" id="fxVignette" checked><span>Vignette orangée</span></label>
+      <label class="checkbox-label"><input type="checkbox" id="fxGlow" checked><span>Glow (bloom)</span></label>
+      <label class="checkbox-label"><input type="checkbox" id="fxRays" checked><span>God Rays</span></label>
+      <label class="checkbox-label"><input type="checkbox" id="fxShimmer" checked><span>Shimmer</span></label>
+    </div>
+
     <div class="form-actions">
       <button class="btn btn-primary" onclick="saveEvent()">Enregistrer</button>
       <button class="btn btn-secondary" onclick="resetForm()">Annuler</button>
@@ -1797,7 +1808,12 @@
         autoProgressMode: document.querySelector('input[name="autoProgressMode"]:checked').value,
         autoProgressStart: document.getElementById('autoProgressStart').value,
         autoProgressStartPct: parseInt(document.getElementById('autoProgressStartPct').value, 10) || 0,
-        autoProgressMilestones: JSON.stringify(getMilestones())
+        autoProgressMilestones: JSON.stringify(getMilestones()),
+        fxConfetti: document.getElementById('fxConfetti').checked,
+        fxVignette: document.getElementById('fxVignette').checked,
+        fxGlow: document.getElementById('fxGlow').checked,
+        fxRays: document.getElementById('fxRays').checked,
+        fxShimmer: document.getElementById('fxShimmer').checked
       };
 
       google.script.run
@@ -1915,6 +1931,12 @@
         try { var ms = JSON.parse(ev.autoProgressMilestones || '[]'); ms.forEach(function(m) { addMilestone(m.date, m.percent); }); } catch(e) {}
         toggleAutoProgress();
         toggleAutoProgressMode();
+        // FX checkboxes
+        document.getElementById('fxConfetti').checked = String(ev.fxConfetti) !== 'false';
+        document.getElementById('fxVignette').checked = String(ev.fxVignette) !== 'false';
+        document.getElementById('fxGlow').checked = String(ev.fxGlow) !== 'false';
+        document.getElementById('fxRays').checked = String(ev.fxRays) !== 'false';
+        document.getElementById('fxShimmer').checked = String(ev.fxShimmer) !== 'false';
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
         if (ev.backgroundImageId) {
@@ -2008,6 +2030,11 @@
         try { var ms2 = JSON.parse(ev.autoProgressMilestones || '[]'); ms2.forEach(function(m) { addMilestone(m.date, m.percent); }); } catch(e) {}
         toggleAutoProgress();
         toggleAutoProgressMode();
+        document.getElementById('fxConfetti').checked = String(ev.fxConfetti) !== 'false';
+        document.getElementById('fxVignette').checked = String(ev.fxVignette) !== 'false';
+        document.getElementById('fxGlow').checked = String(ev.fxGlow) !== 'false';
+        document.getElementById('fxRays').checked = String(ev.fxRays) !== 'false';
+        document.getElementById('fxShimmer').checked = String(ev.fxShimmer) !== 'false';
         document.getElementById('formTitle').textContent = 'Dupliquer l\'événement';
 
         if (ev.backgroundImageId) {
@@ -2068,6 +2095,11 @@
     document.getElementById('milestonesList').innerHTML = '';
     toggleAutoProgress();
     toggleAutoProgressMode();
+    document.getElementById('fxConfetti').checked = true;
+    document.getElementById('fxVignette').checked = true;
+    document.getElementById('fxGlow').checked = true;
+    document.getElementById('fxRays').checked = true;
+    document.getElementById('fxShimmer').checked = true;
     document.getElementById('showTimer').checked = true;
     document.getElementById('showProgress').checked = true;
     toggleTimerFields();

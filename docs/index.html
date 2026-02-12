@@ -583,7 +583,7 @@ window.addEventListener('resize', scaleFrame);
         document.getElementById('progressBar').style.width = progress + '%';
         document.getElementById('progressText').textContent = progress + '%';
       }, 300);
-      if (progress >= 100) setTimeout(function() { startAchievementFX(); startConfetti(); }, 500);
+      if (progress >= 100) setTimeout(function() { startAchievementFX(ev); startConfetti(ev); }, 500);
     }
 
     // Optional text
@@ -686,44 +686,61 @@ window.addEventListener('resize', scaleFrame);
   }
 
   // ── Gold confetti for 100% ──
-  function startAchievementFX() {
+  function startAchievementFX(ev) {
     var frame = document.querySelector('.page-frame');
     var bg = frame.querySelector('.bg');
-    // Bloom glow : copie l'image de fond, floutée en mode screen
-    var glow = document.createElement('div');
-    glow.className = 'fx-glow';
-    if (bg) {
-      glow.style.backgroundImage = bg.style.backgroundImage;
-      glow.style.backgroundPosition = bg.style.backgroundPosition;
-      bg.parentNode.insertBefore(glow, bg.nextSibling);
-    } else { frame.insertBefore(glow, frame.firstChild); }
+    var showGlow = String(ev.fxGlow) !== 'false';
+    var showRays = String(ev.fxRays) !== 'false';
+    var showVig  = String(ev.fxVignette) !== 'false';
+    var showShim = String(ev.fxShimmer) !== 'false';
+    // Bloom glow
+    if (showGlow) {
+      var glow = document.createElement('div');
+      glow.className = 'fx-glow';
+      if (bg) {
+        glow.style.backgroundImage = bg.style.backgroundImage;
+        glow.style.backgroundPosition = bg.style.backgroundPosition;
+        bg.parentNode.insertBefore(glow, bg.nextSibling);
+      } else { frame.insertBefore(glow, frame.firstChild); }
+    }
     // God rays
-    var rays = document.createElement('div');
-    rays.className = 'fx-rays';
-    frame.appendChild(rays);
+    var rays = null;
+    if (showRays) {
+      rays = document.createElement('div');
+      rays.className = 'fx-rays';
+      frame.appendChild(rays);
+    }
     // Vignette
-    var vig = document.createElement('div');
-    vig.className = 'fx-vignette';
-    frame.appendChild(vig);
-    // Shimmer (masqué pour l'instant)
-    var shim = document.createElement('div');
-    shim.className = 'fx-shimmer';
-    frame.appendChild(shim);
-    // Fade-in progressif de tous les effets
+    var vig = null;
+    if (showVig) {
+      vig = document.createElement('div');
+      vig.className = 'fx-vignette';
+      frame.appendChild(vig);
+    }
+    // Shimmer
+    if (showShim) {
+      var shim = document.createElement('div');
+      shim.className = 'fx-shimmer';
+      frame.appendChild(shim);
+    }
+    // Fade-in progressif
     setTimeout(function() {
-      rays.classList.add('active');
-      vig.classList.add('active');
+      if (rays) rays.classList.add('active');
+      if (vig) vig.classList.add('active');
     }, 100);
     // Variation aléatoire d'opacité des rays
-    (function flickerRays() {
-      var target = 0.4 + Math.random() * 0.6;
-      rays.style.transition = 'opacity ' + (2 + Math.random() * 4) + 's ease-in-out';
-      rays.style.opacity = target;
-      setTimeout(flickerRays, 3000 + Math.random() * 5000);
-    })();
+    if (rays) {
+      (function flickerRays() {
+        var target = 0.4 + Math.random() * 0.6;
+        rays.style.transition = 'opacity ' + (2 + Math.random() * 4) + 's ease-in-out';
+        rays.style.opacity = target;
+        setTimeout(flickerRays, 3000 + Math.random() * 5000);
+      })();
+    }
   }
 
-  function startConfetti() {
+  function startConfetti(ev) {
+    if (String(ev.fxConfetti) === 'false') return;
     var canvas = document.createElement('canvas');
     canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
     document.body.appendChild(canvas);
