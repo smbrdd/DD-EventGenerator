@@ -524,7 +524,8 @@
   }
   function fxOpacityFactor(val) {
     var v = parseInt(val, 10); if (isNaN(v)) v = 50;
-    return v / 50; // 0 at 0, 1x at 50, 2x at 100
+    if (v <= 50) return v / 50; // 0→1
+    return 1 + (v - 50) * 2 / 50; // 1→3 (boost above default)
   }
 
   // ── Achievement FX for 100% ──
