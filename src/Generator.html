@@ -307,7 +307,9 @@
       width: 220px;
     }
 
-    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator,
+    .form-group input[type="time"]::-webkit-calendar-picker-indicator,
+    .milestone-row input[type="date"]::-webkit-calendar-picker-indicator {
       filter: invert(1);
       cursor: pointer;
     }

@@ -78,7 +78,11 @@ function rowToObject_(row) {
     var val = row[i];
     // Convertir les Date en string (google.script.run ne sérialise pas les Date)
     if (val instanceof Date) {
-      val = Utilities.formatDate(val, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+      if (col === 'eventTime') {
+        val = Utilities.formatDate(val, Session.getScriptTimeZone(), 'HH:mm');
+      } else {
+        val = Utilities.formatDate(val, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+      }
     }
     // Convertir les booléens en string
     if (val === true) val = 'true';
