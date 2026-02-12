@@ -351,6 +351,17 @@
       font-size: .95rem;
     }
 
+    /* FX settings */
+    .fx-settings { display: flex; flex-direction: column; gap: .9rem; margin-bottom: 1.2rem; }
+    .fx-row { display: flex; align-items: center; gap: 1rem; }
+    .fx-name { min-width: 140px; }
+    .fx-sliders { display: flex; gap: 1.2rem; flex: 1; }
+    .fx-slider-group { display: flex; align-items: center; gap: .35rem; }
+    .fx-slider-label { font-size: .75rem; color: #8b949e; min-width: 42px; }
+    .fx-slider-val { font-size: .75rem; color: #8b949e; min-width: 22px; text-align: right; }
+    .fx-settings input[type="range"] { width: 80px; -webkit-appearance: none; height: 5px; background: #30363d; border-radius: 3px; outline: none; }
+    .fx-settings input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: linear-gradient(135deg, #FD4D26, #F43D46); border-radius: 50%; cursor: pointer; }
+
     /* Checkboxes */
     .checkbox-row {
       display: flex;
@@ -729,6 +740,10 @@
       display: flex !important;
     }
 
+    .mode-expert .expert-only.fx-settings {
+      display: flex !important;
+    }
+
     .fields-hidden {
       display: none !important;
     }
@@ -1098,12 +1113,48 @@
     <!-- Effets visuels à 100% -->
     <hr class="expert-only" style="border:none;border-top:1px solid #444;margin:1.2rem 0 .8rem;">
     <label class="expert-only" style="font-size:.85rem;color:#aaa;margin-bottom:.6rem;display:block;">Effets visuels à 100%</label>
-    <div class="expert-only" style="display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;margin-bottom:1.2rem;">
-      <label class="checkbox-label"><input type="checkbox" id="fxConfetti" checked><span>Confettis</span></label>
-      <label class="checkbox-label"><input type="checkbox" id="fxVignette" checked><span>Vignette orangée</span></label>
-      <label class="checkbox-label"><input type="checkbox" id="fxGlow" checked><span>Glow (bloom)</span></label>
-      <label class="checkbox-label"><input type="checkbox" id="fxRays" checked><span>God Rays</span></label>
-      <label class="checkbox-label"><input type="checkbox" id="fxShimmer" checked><span>Shimmer</span></label>
+    <div class="expert-only fx-settings">
+
+      <div class="fx-row">
+        <label class="checkbox-label fx-name"><input type="checkbox" id="fxConfetti" checked><span>Confettis</span></label>
+        <div class="fx-sliders">
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxConfettiSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxConfettiSpeedVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxConfettiOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxConfettiOpacityVal">100</span></div>
+        </div>
+      </div>
+
+      <div class="fx-row">
+        <label class="checkbox-label fx-name"><input type="checkbox" id="fxVignette" checked><span>Vignette orangée</span></label>
+        <div class="fx-sliders">
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxVignetteSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxVignetteSpeedVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxVignetteOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxVignetteOpacityVal">100</span></div>
+        </div>
+      </div>
+
+      <div class="fx-row">
+        <label class="checkbox-label fx-name"><input type="checkbox" id="fxGlow" checked><span>Glow (bloom)</span></label>
+        <div class="fx-sliders">
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxGlowSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxGlowSpeedVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxGlowOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxGlowOpacityVal">100</span></div>
+        </div>
+      </div>
+
+      <div class="fx-row">
+        <label class="checkbox-label fx-name"><input type="checkbox" id="fxRays" checked><span>God Rays</span></label>
+        <div class="fx-sliders">
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxRaysSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxRaysSpeedVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxRaysOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxRaysOpacityVal">100</span></div>
+        </div>
+      </div>
+
+      <div class="fx-row">
+        <label class="checkbox-label fx-name"><input type="checkbox" id="fxShimmer" checked><span>Shimmer</span></label>
+        <div class="fx-sliders">
+          <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxShimmerSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxShimmerSpeedVal">50</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxShimmerOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxShimmerOpacityVal">100</span></div>
+        </div>
+      </div>
+
     </div>
 
     <div class="form-actions">
@@ -1618,6 +1669,21 @@
     document.getElementById('optionalTextOffsetYValue').textContent = (this.value == 0 ? '0' : '-' + this.value) + 'px';
   });
 
+  // ── FX sliders ──
+  function setFxSlider(id, val, def) {
+    var v = (val !== undefined && val !== '' && val !== null) ? parseInt(val, 10) : def;
+    document.getElementById(id).value = v;
+    document.getElementById(id + 'Val').textContent = v;
+  }
+  ['Confetti','Vignette','Glow','Rays','Shimmer'].forEach(function(fx) {
+    ['Speed','Opacity'].forEach(function(prop) {
+      var id = 'fx' + fx + prop;
+      document.getElementById(id).addEventListener('input', function() {
+        document.getElementById(id + 'Val').textContent = this.value;
+      });
+    });
+  });
+
   // ── Drop zone ──
   var dropZone = document.getElementById('dropZone');
   var imageInput = document.getElementById('imageInput');
@@ -1821,7 +1887,17 @@
         fxVignette: document.getElementById('fxVignette').checked,
         fxGlow: document.getElementById('fxGlow').checked,
         fxRays: document.getElementById('fxRays').checked,
-        fxShimmer: document.getElementById('fxShimmer').checked
+        fxShimmer: document.getElementById('fxShimmer').checked,
+        fxConfettiSpeed: parseInt(document.getElementById('fxConfettiSpeed').value, 10),
+        fxConfettiOpacity: parseInt(document.getElementById('fxConfettiOpacity').value, 10),
+        fxVignetteSpeed: parseInt(document.getElementById('fxVignetteSpeed').value, 10),
+        fxVignetteOpacity: parseInt(document.getElementById('fxVignetteOpacity').value, 10),
+        fxGlowSpeed: parseInt(document.getElementById('fxGlowSpeed').value, 10),
+        fxGlowOpacity: parseInt(document.getElementById('fxGlowOpacity').value, 10),
+        fxRaysSpeed: parseInt(document.getElementById('fxRaysSpeed').value, 10),
+        fxRaysOpacity: parseInt(document.getElementById('fxRaysOpacity').value, 10),
+        fxShimmerSpeed: parseInt(document.getElementById('fxShimmerSpeed').value, 10),
+        fxShimmerOpacity: parseInt(document.getElementById('fxShimmerOpacity').value, 10)
       };
 
       google.script.run
@@ -1940,12 +2016,22 @@
         try { var ms = JSON.parse(ev.autoProgressMilestones || '[]'); ms.forEach(function(m) { addMilestone(m.date, m.percent); }); } catch(e) {}
         toggleAutoProgress();
         toggleAutoProgressMode();
-        // FX checkboxes
+        // FX checkboxes + sliders
         document.getElementById('fxConfetti').checked = String(ev.fxConfetti) !== 'false';
         document.getElementById('fxVignette').checked = String(ev.fxVignette) !== 'false';
         document.getElementById('fxGlow').checked = String(ev.fxGlow) !== 'false';
         document.getElementById('fxRays').checked = String(ev.fxRays) !== 'false';
         document.getElementById('fxShimmer').checked = String(ev.fxShimmer) !== 'false';
+        setFxSlider('fxConfettiSpeed', ev.fxConfettiSpeed, 50);
+        setFxSlider('fxConfettiOpacity', ev.fxConfettiOpacity, 100);
+        setFxSlider('fxVignetteSpeed', ev.fxVignetteSpeed, 50);
+        setFxSlider('fxVignetteOpacity', ev.fxVignetteOpacity, 100);
+        setFxSlider('fxGlowSpeed', ev.fxGlowSpeed, 50);
+        setFxSlider('fxGlowOpacity', ev.fxGlowOpacity, 100);
+        setFxSlider('fxRaysSpeed', ev.fxRaysSpeed, 50);
+        setFxSlider('fxRaysOpacity', ev.fxRaysOpacity, 100);
+        setFxSlider('fxShimmerSpeed', ev.fxShimmerSpeed, 50);
+        setFxSlider('fxShimmerOpacity', ev.fxShimmerOpacity, 100);
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
         if (ev.backgroundImageId) {
@@ -2045,6 +2131,16 @@
         document.getElementById('fxGlow').checked = String(ev.fxGlow) !== 'false';
         document.getElementById('fxRays').checked = String(ev.fxRays) !== 'false';
         document.getElementById('fxShimmer').checked = String(ev.fxShimmer) !== 'false';
+        setFxSlider('fxConfettiSpeed', ev.fxConfettiSpeed, 50);
+        setFxSlider('fxConfettiOpacity', ev.fxConfettiOpacity, 100);
+        setFxSlider('fxVignetteSpeed', ev.fxVignetteSpeed, 50);
+        setFxSlider('fxVignetteOpacity', ev.fxVignetteOpacity, 100);
+        setFxSlider('fxGlowSpeed', ev.fxGlowSpeed, 50);
+        setFxSlider('fxGlowOpacity', ev.fxGlowOpacity, 100);
+        setFxSlider('fxRaysSpeed', ev.fxRaysSpeed, 50);
+        setFxSlider('fxRaysOpacity', ev.fxRaysOpacity, 100);
+        setFxSlider('fxShimmerSpeed', ev.fxShimmerSpeed, 50);
+        setFxSlider('fxShimmerOpacity', ev.fxShimmerOpacity, 100);
         document.getElementById('formTitle').textContent = 'Dupliquer l\'événement';
 
         if (ev.backgroundImageId) {
@@ -2111,6 +2207,16 @@
     document.getElementById('fxGlow').checked = true;
     document.getElementById('fxRays').checked = true;
     document.getElementById('fxShimmer').checked = true;
+    setFxSlider('fxConfettiSpeed', 50, 50);
+    setFxSlider('fxConfettiOpacity', 100, 100);
+    setFxSlider('fxVignetteSpeed', 50, 50);
+    setFxSlider('fxVignetteOpacity', 100, 100);
+    setFxSlider('fxGlowSpeed', 50, 50);
+    setFxSlider('fxGlowOpacity', 100, 100);
+    setFxSlider('fxRaysSpeed', 50, 50);
+    setFxSlider('fxRaysOpacity', 100, 100);
+    setFxSlider('fxShimmerSpeed', 50, 50);
+    setFxSlider('fxShimmerOpacity', 100, 100);
     document.getElementById('showTimer').checked = true;
     document.getElementById('showProgress').checked = true;
     toggleTimerFields();

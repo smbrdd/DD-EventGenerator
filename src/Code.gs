@@ -16,7 +16,7 @@
 var CONFIG = {
   SHEET_NAME: 'Events',
   FOLDER_NAME: 'EventGenerator-Images',
-  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY', 'folderId', 'autoProgress', 'autoProgressMode', 'autoProgressStart', 'autoProgressMilestones', 'autoProgressStartPct', 'fxConfetti', 'fxVignette', 'fxGlow', 'fxRays', 'fxShimmer', 'eventTime'],
+  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY', 'folderId', 'autoProgress', 'autoProgressMode', 'autoProgressStart', 'autoProgressMilestones', 'autoProgressStartPct', 'fxConfetti', 'fxVignette', 'fxGlow', 'fxRays', 'fxShimmer', 'eventTime', 'fxConfettiSpeed', 'fxConfettiOpacity', 'fxVignetteSpeed', 'fxVignetteOpacity', 'fxGlowSpeed', 'fxGlowOpacity', 'fxRaysSpeed', 'fxRaysOpacity', 'fxShimmerSpeed', 'fxShimmerOpacity'],
   FOLDERS_SHEET: 'Folders',
   FOLDER_COLUMNS: ['id', 'name', 'sortOrder']
 };
@@ -208,7 +208,17 @@ function buildRow_(data, createdAt, updatedAt) {
     data.fxGlow !== undefined ? data.fxGlow : true,
     data.fxRays !== undefined ? data.fxRays : true,
     data.fxShimmer !== undefined ? data.fxShimmer : true,
-    data.eventTime || '00:00'
+    data.eventTime || '00:00',
+    data.fxConfettiSpeed !== undefined && data.fxConfettiSpeed !== '' ? data.fxConfettiSpeed : 50,
+    data.fxConfettiOpacity !== undefined && data.fxConfettiOpacity !== '' ? data.fxConfettiOpacity : 100,
+    data.fxVignetteSpeed !== undefined && data.fxVignetteSpeed !== '' ? data.fxVignetteSpeed : 50,
+    data.fxVignetteOpacity !== undefined && data.fxVignetteOpacity !== '' ? data.fxVignetteOpacity : 100,
+    data.fxGlowSpeed !== undefined && data.fxGlowSpeed !== '' ? data.fxGlowSpeed : 50,
+    data.fxGlowOpacity !== undefined && data.fxGlowOpacity !== '' ? data.fxGlowOpacity : 100,
+    data.fxRaysSpeed !== undefined && data.fxRaysSpeed !== '' ? data.fxRaysSpeed : 50,
+    data.fxRaysOpacity !== undefined && data.fxRaysOpacity !== '' ? data.fxRaysOpacity : 100,
+    data.fxShimmerSpeed !== undefined && data.fxShimmerSpeed !== '' ? data.fxShimmerSpeed : 50,
+    data.fxShimmerOpacity !== undefined && data.fxShimmerOpacity !== '' ? data.fxShimmerOpacity : 100
   ];
 }
 
