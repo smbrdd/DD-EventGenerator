@@ -1449,9 +1449,16 @@
   }
 
   function toggleTimerFields() {
+    var show = document.getElementById('showTimer').checked;
     var el = document.getElementById('timerFields');
-    if (document.getElementById('showTimer').checked) { el.classList.remove('fields-hidden'); }
-    else { el.classList.add('fields-hidden'); }
+    if (show) { el.classList.remove('fields-hidden'); } else { el.classList.add('fields-hidden'); }
+    // Masque aussi explicitement les champs texte du countdown
+    ['preCountdownText', 'postCountdownText'].forEach(function(id) {
+      var field = document.getElementById(id);
+      if (field && field.closest('.form-group')) {
+        field.closest('.form-group').style.display = show ? '' : 'none';
+      }
+    });
   }
   function toggleProgressFields() {
     var el = document.getElementById('progressFields');
