@@ -1759,7 +1759,8 @@
   }
 
   function buildEventCard(ev) {
-    var publicUrl = getPublicUrl(ev.id) + '&_t=' + Date.now();
+    var cleanUrl = getPublicUrl(ev.id);
+    var thumbUrl = cleanUrl + '&_t=' + Date.now();
     var isPortrait = ev.format === 'portrait';
     var thumbCls = isPortrait ? 'portrait-thumb' : 'landscape-thumb';
     var srcW = isPortrait ? 1080 : 1920;
@@ -1768,17 +1769,17 @@
     var scale = thumbW / srcW;
     return '<div class="event-card" data-id="' + ev.id + '" draggable="true" ondragstart="onDragStart(event,\'' + ev.id + '\')">'
       + '<div class="thumb ' + thumbCls + '">'
-      + '<iframe src="' + publicUrl + '" sandbox="allow-scripts allow-same-origin" style="width:' + srcW + 'px;height:' + srcH + 'px;transform:scale(' + scale + ');"></iframe>'
+      + '<iframe src="' + thumbUrl + '" sandbox="allow-scripts allow-same-origin" style="width:' + srcW + 'px;height:' + srcH + 'px;transform:scale(' + scale + ');"></iframe>'
       + '</div>'
       + '<div class="info">'
       + '<h3>' + escapeHtml(ev.name || ev.title) + '</h3>'
       + '<span>' + (ev.eventDate || 'Pas de date') + ' — ' + (ev.progress || 0) + '% — ' + (ev.format === 'portrait' ? '1080x1920' : '1920x1080') + '</span>'
       + '</div>'
       + '<div class="actions">'
-      + '<button class="btn btn-copy btn-icon" title="Copier URL" onclick="copyUrl(\'' + publicUrl + '\')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1a2 2 0 0 0 2 2v1.93zm6.9-2.54A1.99 1.99 0 0 0 16 16h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8z"/></svg></button>'
+      + '<button class="btn btn-copy btn-icon" title="Copier URL" onclick="copyUrl(\'' + cleanUrl + '\')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1a2 2 0 0 0 2 2v1.93zm6.9-2.54A1.99 1.99 0 0 0 16 16h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8z"/></svg></button>'
       + '<button class="btn btn-secondary btn-icon" title="Dupliquer" onclick="duplicateEvent(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg></button>'
       + '<button class="btn btn-secondary btn-icon" title="Éditer" onclick="editEvent(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>'
-      + '<button class="btn btn-secondary btn-icon" title="Ouvrir" onclick="window.open(\'' + publicUrl + '\',\'_blank\')"><svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg></button>'
+      + '<button class="btn btn-secondary btn-icon" title="Ouvrir" onclick="window.open(\'' + cleanUrl + '\',\'_blank\')"><svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg></button>'
       + '<button class="btn btn-danger btn-icon" title="Supprimer" onclick="confirmDelete(\'' + ev.id + '\')"><svg viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>'
       + '</div>'
       + '</div>';
