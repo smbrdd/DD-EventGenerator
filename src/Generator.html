@@ -729,6 +729,10 @@
       display: flex !important;
     }
 
+    .fields-hidden {
+      display: none !important;
+    }
+
     /* ── Events toggle button ── */
     .events-toggle-btn {
       width: 100%;
@@ -1445,10 +1449,14 @@
   }
 
   function toggleTimerFields() {
-    document.getElementById('timerFields').style.display = document.getElementById('showTimer').checked ? '' : 'none';
+    var el = document.getElementById('timerFields');
+    if (document.getElementById('showTimer').checked) { el.classList.remove('fields-hidden'); }
+    else { el.classList.add('fields-hidden'); }
   }
   function toggleProgressFields() {
-    document.getElementById('progressFields').style.display = document.getElementById('showProgress').checked ? '' : 'none';
+    var el = document.getElementById('progressFields');
+    if (document.getElementById('showProgress').checked) { el.classList.remove('fields-hidden'); }
+    else { el.classList.add('fields-hidden'); }
   }
 
   function toggleAutoProgress() {
