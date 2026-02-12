@@ -689,11 +689,11 @@ window.addEventListener('resize', scaleFrame);
   // ── FX helpers ──
   function fxSpeedFactor(val) {
     var v = parseInt(val, 10); if (isNaN(v)) v = 50;
-    return (150 - v) / 100; // 1.5 at 0, 1.0 at 50, 0.5 at 100
+    return Math.pow(4, (50 - v) / 50); // 4x at 0, 1x at 50, 0.25x at 100
   }
   function fxOpacityFactor(val) {
-    var v = parseInt(val, 10); if (isNaN(v)) v = 100;
-    return v / 100; // 0→1
+    var v = parseInt(val, 10); if (isNaN(v)) v = 50;
+    return v / 50; // 0 at 0, 1x at 50, 2x at 100
   }
 
   // ── Achievement FX for 100% ──

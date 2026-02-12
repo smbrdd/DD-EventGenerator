@@ -1121,7 +1121,7 @@
         <label class="checkbox-label fx-name"><input type="checkbox" id="fxConfetti" checked><span>Confettis</span></label>
         <div class="fx-sliders">
           <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxConfettiSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxConfettiSpeedVal">50</span></div>
-          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxConfettiOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxConfettiOpacityVal">100</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxConfettiOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxConfettiOpacityVal">50</span></div>
         </div>
       </div>
 
@@ -1129,7 +1129,7 @@
         <label class="checkbox-label fx-name"><input type="checkbox" id="fxVignette" checked><span>Vignette orangée</span></label>
         <div class="fx-sliders">
           <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxVignetteSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxVignetteSpeedVal">50</span></div>
-          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxVignetteOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxVignetteOpacityVal">100</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxVignetteOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxVignetteOpacityVal">50</span></div>
         </div>
       </div>
 
@@ -1137,7 +1137,7 @@
         <label class="checkbox-label fx-name"><input type="checkbox" id="fxGlow" checked><span>Glow (bloom)</span></label>
         <div class="fx-sliders">
           <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxGlowSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxGlowSpeedVal">50</span></div>
-          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxGlowOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxGlowOpacityVal">100</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxGlowOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxGlowOpacityVal">50</span></div>
         </div>
       </div>
 
@@ -1145,7 +1145,7 @@
         <label class="checkbox-label fx-name"><input type="checkbox" id="fxRays" checked><span>God Rays</span></label>
         <div class="fx-sliders">
           <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxRaysSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxRaysSpeedVal">50</span></div>
-          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxRaysOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxRaysOpacityVal">100</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxRaysOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxRaysOpacityVal">50</span></div>
         </div>
       </div>
 
@@ -1153,7 +1153,7 @@
         <label class="checkbox-label fx-name"><input type="checkbox" id="fxShimmer" checked><span>Shimmer</span></label>
         <div class="fx-sliders">
           <div class="fx-slider-group"><span class="fx-slider-label">Vitesse</span><input type="range" id="fxShimmerSpeed" min="0" max="100" value="50"><span class="fx-slider-val" id="fxShimmerSpeedVal">50</span></div>
-          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxShimmerOpacity" min="0" max="100" value="100"><span class="fx-slider-val" id="fxShimmerOpacityVal">100</span></div>
+          <div class="fx-slider-group"><span class="fx-slider-label">Opacité</span><input type="range" id="fxShimmerOpacity" min="0" max="100" value="50"><span class="fx-slider-val" id="fxShimmerOpacityVal">50</span></div>
         </div>
       </div>
 
@@ -2025,15 +2025,15 @@
         document.getElementById('fxRays').checked = String(ev.fxRays) !== 'false';
         document.getElementById('fxShimmer').checked = String(ev.fxShimmer) !== 'false';
         setFxSlider('fxConfettiSpeed', ev.fxConfettiSpeed, 50);
-        setFxSlider('fxConfettiOpacity', ev.fxConfettiOpacity, 100);
+        setFxSlider('fxConfettiOpacity', ev.fxConfettiOpacity, 50);
         setFxSlider('fxVignetteSpeed', ev.fxVignetteSpeed, 50);
-        setFxSlider('fxVignetteOpacity', ev.fxVignetteOpacity, 100);
+        setFxSlider('fxVignetteOpacity', ev.fxVignetteOpacity, 50);
         setFxSlider('fxGlowSpeed', ev.fxGlowSpeed, 50);
-        setFxSlider('fxGlowOpacity', ev.fxGlowOpacity, 100);
+        setFxSlider('fxGlowOpacity', ev.fxGlowOpacity, 50);
         setFxSlider('fxRaysSpeed', ev.fxRaysSpeed, 50);
-        setFxSlider('fxRaysOpacity', ev.fxRaysOpacity, 100);
+        setFxSlider('fxRaysOpacity', ev.fxRaysOpacity, 50);
         setFxSlider('fxShimmerSpeed', ev.fxShimmerSpeed, 50);
-        setFxSlider('fxShimmerOpacity', ev.fxShimmerOpacity, 100);
+        setFxSlider('fxShimmerOpacity', ev.fxShimmerOpacity, 50);
         document.getElementById('formTitle').textContent = 'Modifier l\'événement';
 
         if (ev.backgroundImageId) {
@@ -2134,15 +2134,15 @@
         document.getElementById('fxRays').checked = String(ev.fxRays) !== 'false';
         document.getElementById('fxShimmer').checked = String(ev.fxShimmer) !== 'false';
         setFxSlider('fxConfettiSpeed', ev.fxConfettiSpeed, 50);
-        setFxSlider('fxConfettiOpacity', ev.fxConfettiOpacity, 100);
+        setFxSlider('fxConfettiOpacity', ev.fxConfettiOpacity, 50);
         setFxSlider('fxVignetteSpeed', ev.fxVignetteSpeed, 50);
-        setFxSlider('fxVignetteOpacity', ev.fxVignetteOpacity, 100);
+        setFxSlider('fxVignetteOpacity', ev.fxVignetteOpacity, 50);
         setFxSlider('fxGlowSpeed', ev.fxGlowSpeed, 50);
-        setFxSlider('fxGlowOpacity', ev.fxGlowOpacity, 100);
+        setFxSlider('fxGlowOpacity', ev.fxGlowOpacity, 50);
         setFxSlider('fxRaysSpeed', ev.fxRaysSpeed, 50);
-        setFxSlider('fxRaysOpacity', ev.fxRaysOpacity, 100);
+        setFxSlider('fxRaysOpacity', ev.fxRaysOpacity, 50);
         setFxSlider('fxShimmerSpeed', ev.fxShimmerSpeed, 50);
-        setFxSlider('fxShimmerOpacity', ev.fxShimmerOpacity, 100);
+        setFxSlider('fxShimmerOpacity', ev.fxShimmerOpacity, 50);
         document.getElementById('formTitle').textContent = 'Dupliquer l\'événement';
 
         if (ev.backgroundImageId) {
@@ -2210,15 +2210,15 @@
     document.getElementById('fxRays').checked = true;
     document.getElementById('fxShimmer').checked = true;
     setFxSlider('fxConfettiSpeed', 50, 50);
-    setFxSlider('fxConfettiOpacity', 100, 100);
+    setFxSlider('fxConfettiOpacity', 50, 50);
     setFxSlider('fxVignetteSpeed', 50, 50);
-    setFxSlider('fxVignetteOpacity', 100, 100);
+    setFxSlider('fxVignetteOpacity', 50, 50);
     setFxSlider('fxGlowSpeed', 50, 50);
-    setFxSlider('fxGlowOpacity', 100, 100);
+    setFxSlider('fxGlowOpacity', 50, 50);
     setFxSlider('fxRaysSpeed', 50, 50);
-    setFxSlider('fxRaysOpacity', 100, 100);
+    setFxSlider('fxRaysOpacity', 50, 50);
     setFxSlider('fxShimmerSpeed', 50, 50);
-    setFxSlider('fxShimmerOpacity', 100, 100);
+    setFxSlider('fxShimmerOpacity', 50, 50);
     document.getElementById('showTimer').checked = true;
     document.getElementById('showProgress').checked = true;
     toggleTimerFields();

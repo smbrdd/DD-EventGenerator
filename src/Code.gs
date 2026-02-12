@@ -214,15 +214,15 @@ function buildRow_(data, createdAt, updatedAt) {
     data.fxShimmer !== undefined ? data.fxShimmer : true,
     data.eventTime || '00:00',
     data.fxConfettiSpeed !== undefined && data.fxConfettiSpeed !== '' ? data.fxConfettiSpeed : 50,
-    data.fxConfettiOpacity !== undefined && data.fxConfettiOpacity !== '' ? data.fxConfettiOpacity : 100,
+    data.fxConfettiOpacity !== undefined && data.fxConfettiOpacity !== '' ? data.fxConfettiOpacity : 50,
     data.fxVignetteSpeed !== undefined && data.fxVignetteSpeed !== '' ? data.fxVignetteSpeed : 50,
-    data.fxVignetteOpacity !== undefined && data.fxVignetteOpacity !== '' ? data.fxVignetteOpacity : 100,
+    data.fxVignetteOpacity !== undefined && data.fxVignetteOpacity !== '' ? data.fxVignetteOpacity : 50,
     data.fxGlowSpeed !== undefined && data.fxGlowSpeed !== '' ? data.fxGlowSpeed : 50,
-    data.fxGlowOpacity !== undefined && data.fxGlowOpacity !== '' ? data.fxGlowOpacity : 100,
+    data.fxGlowOpacity !== undefined && data.fxGlowOpacity !== '' ? data.fxGlowOpacity : 50,
     data.fxRaysSpeed !== undefined && data.fxRaysSpeed !== '' ? data.fxRaysSpeed : 50,
-    data.fxRaysOpacity !== undefined && data.fxRaysOpacity !== '' ? data.fxRaysOpacity : 100,
+    data.fxRaysOpacity !== undefined && data.fxRaysOpacity !== '' ? data.fxRaysOpacity : 50,
     data.fxShimmerSpeed !== undefined && data.fxShimmerSpeed !== '' ? data.fxShimmerSpeed : 50,
-    data.fxShimmerOpacity !== undefined && data.fxShimmerOpacity !== '' ? data.fxShimmerOpacity : 100
+    data.fxShimmerOpacity !== undefined && data.fxShimmerOpacity !== '' ? data.fxShimmerOpacity : 50
   ];
 }
 
