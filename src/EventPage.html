@@ -10,19 +10,18 @@
 
     body {
       font-family: 'Inter', sans-serif;
+      margin: 0;
       width: 100vw;
       height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
       background: #0a0a0a;
       color: #fff;
+      overflow: hidden;
     }
 
     /* ── Format dimensions ── */
     .page-frame {
-      position: relative;
+      position: absolute;
+      top: 50%; left: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -370,22 +369,16 @@
 
 <script>
   // Scale page-frame to fit viewport
-  (function scaleFrame() {
+  function scaleFrame() {
     var frame = document.querySelector('.page-frame');
     if (!frame) return;
     var isP = frame.classList.contains('portrait');
     var dw = isP ? 1080 : 1920, dh = isP ? 1920 : 1080;
     var s = Math.min(window.innerWidth / dw, window.innerHeight / dh);
-    frame.style.transform = 'scale(' + s + ')';
-  })();
-  window.addEventListener('resize', function() {
-    var frame = document.querySelector('.page-frame');
-    if (!frame) return;
-    var isP = frame.classList.contains('portrait');
-    var dw = isP ? 1080 : 1920, dh = isP ? 1920 : 1080;
-    var s = Math.min(window.innerWidth / dw, window.innerHeight / dh);
-    frame.style.transform = 'scale(' + s + ')';
-  });
+    frame.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+  }
+  scaleFrame();
+  window.addEventListener('resize', scaleFrame);
 
   // ── Countdown ──
   (function() {
