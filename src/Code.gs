@@ -80,8 +80,12 @@ function rowToObject_(row) {
     if (val instanceof Date) {
       if (col === 'eventTime') {
         val = Utilities.formatDate(val, Session.getScriptTimeZone(), 'HH:mm');
-      } else {
+      } else if (col === 'eventDate' || col === 'createdAt' || col === 'updatedAt' || col === 'autoProgressStart') {
         val = Utilities.formatDate(val, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+      } else {
+        // Colonnes numériques que Sheets interprète comme Date (ex: 50 → 1900-02-19)
+        // Reconvertir en numéro de série Sheets (epoch = 31 Dec 1899)
+        val = Math.round((val.getTime() - new Date(1899, 11, 31).getTime()) / 86400000);
       }
     }
     // Convertir les booléens en string
@@ -213,16 +217,16 @@ function buildRow_(data, createdAt, updatedAt) {
     data.fxRays !== undefined ? data.fxRays : true,
     data.fxShimmer !== undefined ? data.fxShimmer : true,
     data.eventTime || '00:00',
-    data.fxConfettiSpeed !== undefined && data.fxConfettiSpeed !== '' ? data.fxConfettiSpeed : 50,
-    data.fxConfettiOpacity !== undefined && data.fxConfettiOpacity !== '' ? data.fxConfettiOpacity : 50,
-    data.fxVignetteSpeed !== undefined && data.fxVignetteSpeed !== '' ? data.fxVignetteSpeed : 50,
-    data.fxVignetteOpacity !== undefined && data.fxVignetteOpacity !== '' ? data.fxVignetteOpacity : 50,
-    data.fxGlowSpeed !== undefined && data.fxGlowSpeed !== '' ? data.fxGlowSpeed : 50,
-    data.fxGlowOpacity !== undefined && data.fxGlowOpacity !== '' ? data.fxGlowOpacity : 50,
-    data.fxRaysSpeed !== undefined && data.fxRaysSpeed !== '' ? data.fxRaysSpeed : 50,
-    data.fxRaysOpacity !== undefined && data.fxRaysOpacity !== '' ? data.fxRaysOpacity : 50,
-    data.fxShimmerSpeed !== undefined && data.fxShimmerSpeed !== '' ? data.fxShimmerSpeed : 50,
-    data.fxShimmerOpacity !== undefined && data.fxShimmerOpacity !== '' ? data.fxShimmerOpacity : 50
+    String(data.fxConfettiSpeed !== undefined && data.fxConfettiSpeed !== '' ? data.fxConfettiSpeed : 50),
+    String(data.fxConfettiOpacity !== undefined && data.fxConfettiOpacity !== '' ? data.fxConfettiOpacity : 50),
+    String(data.fxVignetteSpeed !== undefined && data.fxVignetteSpeed !== '' ? data.fxVignetteSpeed : 50),
+    String(data.fxVignetteOpacity !== undefined && data.fxVignetteOpacity !== '' ? data.fxVignetteOpacity : 50),
+    String(data.fxGlowSpeed !== undefined && data.fxGlowSpeed !== '' ? data.fxGlowSpeed : 50),
+    String(data.fxGlowOpacity !== undefined && data.fxGlowOpacity !== '' ? data.fxGlowOpacity : 50),
+    String(data.fxRaysSpeed !== undefined && data.fxRaysSpeed !== '' ? data.fxRaysSpeed : 50),
+    String(data.fxRaysOpacity !== undefined && data.fxRaysOpacity !== '' ? data.fxRaysOpacity : 50),
+    String(data.fxShimmerSpeed !== undefined && data.fxShimmerSpeed !== '' ? data.fxShimmerSpeed : 50),
+    String(data.fxShimmerOpacity !== undefined && data.fxShimmerOpacity !== '' ? data.fxShimmerOpacity : 50)
   ];
 }
 
