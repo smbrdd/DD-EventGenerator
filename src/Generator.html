@@ -1461,14 +1461,15 @@
 
   function toggleTimerFields() {
     var show = document.getElementById('showTimer').checked;
+    // Masque le conteneur
     var el = document.getElementById('timerFields');
-    if (show) { el.classList.remove('fields-hidden'); } else { el.classList.add('fields-hidden'); }
-    // Masque aussi explicitement les champs texte du countdown
-    ['preCountdownText', 'postCountdownText'].forEach(function(id) {
+    if (el) { el.style.display = show ? '' : 'none'; }
+    // Masque aussi chaque enfant individuellement (sécurité)
+    ['preCountdownText', 'postCountdownText', 'eventDate'].forEach(function(id) {
       var field = document.getElementById(id);
-      if (field && field.closest('.form-group')) {
-        field.closest('.form-group').style.display = show ? '' : 'none';
-      }
+      if (!field) return;
+      var fg = field.closest('.form-group');
+      if (fg) fg.style.display = show ? '' : 'none';
     });
   }
   function toggleProgressFields() {
@@ -1569,6 +1570,8 @@
     document.getElementById('ghPagesUrl').value = GITHUB_PAGES_URL;
     initStyleRows();
     resetAllStyles();
+    toggleTimerFields();
+    toggleProgressFields();
     loadEvents();
   });
 
