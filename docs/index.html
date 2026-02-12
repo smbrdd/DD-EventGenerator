@@ -627,7 +627,7 @@ window.addEventListener('resize', scaleFrame);
   }
 
   function startCountdown(dateStr, timeStr, units) {
-    var t = timeStr || '00:00';
+    var t = (timeStr || '00:00').substring(0, 5);
     var target = new Date(dateStr + 'T' + t + ':00');
     var countdownEl = document.getElementById('countdown');
     var passedEl = document.getElementById('countdownPassed');
