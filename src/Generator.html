@@ -907,8 +907,11 @@
       </div>
 
       <div class="form-group">
-        <label for="eventDate">Date de l'événement</label>
-        <input type="date" id="eventDate">
+        <label for="eventDate">Date et heure de l'événement</label>
+        <div style="display:flex;gap:.6rem;align-items:center;">
+          <input type="date" id="eventDate">
+          <input type="time" id="eventTime" value="00:00" style="background:#161b22;border:1px solid #30363d;color:#e6edf3;border-radius:8px;padding:.5rem .7rem;font-size:.95rem;font-family:inherit;">
+        </div>
         <div style="margin-top:0.5rem;">
           <label style="font-size:.85rem;color:#aaa;margin-bottom:.4rem;display:block;">Unités du compte à rebours à afficher</label>
           <div class="checkbox-row">
@@ -1779,6 +1782,7 @@
         title: title,
         subtitle: document.getElementById('subtitle').value.trim(),
         eventDate: document.getElementById('eventDate').value,
+        eventTime: document.getElementById('eventTime').value || '00:00',
         progress: parseInt(document.getElementById('progress').value, 10),
         optionalText: document.getElementById('optionalText').value.trim(),
         backgroundImageId: bgId || currentImageId || '',
@@ -1872,6 +1876,7 @@
         document.getElementById('title').value = ev.title;
         document.getElementById('subtitle').value = ev.subtitle;
         document.getElementById('eventDate').value = ev.eventDate;
+        document.getElementById('eventTime').value = ev.eventTime || '00:00';
         document.getElementById('progress').value = ev.progress || 0;
         document.getElementById('progressValue').textContent = (ev.progress || 0) + '%';
         document.getElementById('optionalText').value = ev.optionalText;
@@ -1977,6 +1982,7 @@
         document.getElementById('title').value = ev.title;
         document.getElementById('subtitle').value = ev.subtitle;
         document.getElementById('eventDate').value = ev.eventDate;
+        document.getElementById('eventTime').value = ev.eventTime || '00:00';
         document.getElementById('progress').value = ev.progress || 0;
         document.getElementById('progressValue').textContent = (ev.progress || 0) + '%';
         document.getElementById('optionalText').value = ev.optionalText;
@@ -2087,6 +2093,7 @@
     document.getElementById('title').value = '';
     document.getElementById('subtitle').value = '';
     document.getElementById('eventDate').value = '';
+    document.getElementById('eventTime').value = '00:00';
     document.getElementById('progress').value = 0;
     document.getElementById('progressValue').textContent = '0%';
     document.getElementById('optionalText').value = '';

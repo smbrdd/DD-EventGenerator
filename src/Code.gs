@@ -16,7 +16,7 @@
 var CONFIG = {
   SHEET_NAME: 'Events',
   FOLDER_NAME: 'EventGenerator-Images',
-  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY', 'folderId', 'autoProgress', 'autoProgressMode', 'autoProgressStart', 'autoProgressMilestones', 'autoProgressStartPct', 'fxConfetti', 'fxVignette', 'fxGlow', 'fxRays', 'fxShimmer'],
+  COLUMNS: ['id', 'title', 'subtitle', 'eventDate', 'progress', 'optionalText', 'backgroundImageId', 'format', 'showTimer', 'showProgress', 'showGradient', 'gradientOpacity', 'bgBrightness', 'progressLabel', 'preCountdownText', 'postCountdownText', 'showDays', 'showHours', 'showMinutes', 'showSeconds', 'titleStyle', 'subtitleStyle', 'preCountdownStyle', 'postCountdownStyle', 'progressLabelStyle', 'progressValueStyle', 'optionalTextStyle', 'contentOffsetY', 'optionalTextOffsetY', 'createdAt', 'updatedAt', 'name', 'bgPositionX', 'bgPositionY', 'folderId', 'autoProgress', 'autoProgressMode', 'autoProgressStart', 'autoProgressMilestones', 'autoProgressStartPct', 'fxConfetti', 'fxVignette', 'fxGlow', 'fxRays', 'fxShimmer', 'eventTime'],
   FOLDERS_SHEET: 'Folders',
   FOLDER_COLUMNS: ['id', 'name', 'sortOrder']
 };
@@ -207,7 +207,8 @@ function buildRow_(data, createdAt, updatedAt) {
     data.fxVignette !== undefined ? data.fxVignette : true,
     data.fxGlow !== undefined ? data.fxGlow : true,
     data.fxRays !== undefined ? data.fxRays : true,
-    data.fxShimmer !== undefined ? data.fxShimmer : true
+    data.fxShimmer !== undefined ? data.fxShimmer : true,
+    data.eventTime || '00:00'
   ];
 }
 

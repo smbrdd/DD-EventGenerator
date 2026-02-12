@@ -521,7 +521,7 @@ window.addEventListener('resize', scaleFrame);
     // Countdown
     if (ev.eventDate && String(ev.showTimer) !== 'false') {
       document.getElementById('countdown').classList.remove('hidden');
-      startCountdown(ev.eventDate, {
+      startCountdown(ev.eventDate, ev.eventTime, {
         showDays: String(ev.showDays) !== 'false',
         showHours: String(ev.showHours) !== 'false',
         showMinutes: String(ev.showMinutes) !== 'false',
@@ -626,8 +626,9 @@ window.addEventListener('resize', scaleFrame);
     frame.classList.remove('hidden');
   }
 
-  function startCountdown(dateStr, units) {
-    var target = new Date(dateStr + 'T00:00:00');
+  function startCountdown(dateStr, timeStr, units) {
+    var t = timeStr || '00:00';
+    var target = new Date(dateStr + 'T' + t + ':00');
     var countdownEl = document.getElementById('countdown');
     var passedEl = document.getElementById('countdownPassed');
     var daysEl = document.getElementById('days');

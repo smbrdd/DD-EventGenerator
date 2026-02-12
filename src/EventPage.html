@@ -384,8 +384,8 @@
   (function() {
     var dateStr = '<?= event.eventDate ?>';
     if (!dateStr) return;
-
-    var target = new Date(dateStr + 'T00:00:00');
+    var timeStr = '<?= event.eventTime || "00:00" ?>';
+    var target = new Date(dateStr + 'T' + timeStr + ':00');
     var countdownEl = document.getElementById('countdown');
     var passedEl = document.getElementById('countdownPassed');
     var daysEl = document.getElementById('days');
