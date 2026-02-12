@@ -10,36 +10,35 @@
 
     body {
       font-family: 'Roboto', sans-serif;
-      min-height: 100vh;
+      width: 100vw;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       background: #000;
       color: #fff;
+      overflow: hidden;
     }
 
     /* ── Format dimensions ── */
     .page-frame {
       position: relative;
-      width: 100vw;
-      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      transform-origin: center center;
     }
 
     .page-frame.landscape {
-      max-width: 1920px;
-      max-height: 1080px;
-      aspect-ratio: 16 / 9;
+      width: 1920px;
+      height: 1080px;
     }
 
     .page-frame.portrait {
-      max-width: 1080px;
-      max-height: 1920px;
-      aspect-ratio: 9 / 16;
+      width: 1080px;
+      height: 1920px;
     }
 
     /* ── Background layers ── */
@@ -92,7 +91,7 @@
     .portrait .content {
       max-width: 900px;
       padding: 4rem 2rem;
-      margin-top: 6vh;
+      margin-top: 115px;
     }
 
     @keyframes fadeIn {
@@ -181,7 +180,7 @@
 
     /* ── Title (gradient #F43D46 -> #FD4D26) ── */
     .title {
-      font-size: clamp(3.4rem, 10vw, 5.9rem);
+      font-size: 5.9rem;
       font-weight: 900;
       line-height: 1.1;
       margin-bottom: .7rem;
@@ -193,7 +192,7 @@
     }
 
     .portrait .title {
-      font-size: clamp(4rem, 12vw, 7rem);
+      font-size: 7rem;
     }
 
     /* ── Subtitle UNDER title ── */
@@ -400,6 +399,24 @@
 </div>
 
 <script>
+// Scale page-frame to fit viewport
+(function scaleFrame() {
+  var frame = document.querySelector('.page-frame');
+  if (!frame) return;
+  var isP = frame.classList.contains('portrait');
+  var dw = isP ? 1080 : 1920, dh = isP ? 1920 : 1080;
+  var s = Math.min(window.innerWidth / dw, window.innerHeight / dh);
+  frame.style.transform = 'scale(' + s + ')';
+})();
+window.addEventListener('resize', function() {
+  var frame = document.querySelector('.page-frame');
+  if (!frame) return;
+  var isP = frame.classList.contains('portrait');
+  var dw = isP ? 1080 : 1920, dh = isP ? 1920 : 1080;
+  var s = Math.min(window.innerWidth / dw, window.innerHeight / dh);
+  frame.style.transform = 'scale(' + s + ')';
+});
+
 (function() {
   var API_URL = 'https://script.google.com/a/macros/bedrockstreaming.com/s/AKfycbzH0iz7qMGJY_ar5RMuQykJx1d3cASTcfu--BwAMvNIJKYoAR2wndNHLItx1RDTut87/exec';
 
@@ -588,8 +605,8 @@
     if (contentOff < 0 || contentOff > 100) contentOff = 0;
     var isPortrait = frame.classList.contains('portrait');
     if (isPortrait) {
-      // Portrait: slider 0 → margin-top 6vh, slider 100 → margin-top 30vh
-      document.querySelector('.content').style.marginTop = (6 + contentOff * 0.24) + 'vh';
+      // Portrait: slider 0 → 115px, slider 100 → 576px (based on 1920px design height)
+      document.querySelector('.content').style.marginTop = Math.round(115 + contentOff * 4.61) + 'px';
     } else if (contentOff !== 0) {
       document.querySelector('.content').style.transform = 'translateY(' + contentOff + 'px)';
     }

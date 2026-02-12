@@ -10,7 +10,8 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      min-height: 100vh;
+      width: 100vw;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -22,24 +23,21 @@
     /* ── Format dimensions ── */
     .page-frame {
       position: relative;
-      width: 100vw;
-      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      transform-origin: center center;
     }
 
     .page-frame.landscape {
-      max-width: 1920px;
-      max-height: 1080px;
-      aspect-ratio: 16 / 9;
+      width: 1920px;
+      height: 1080px;
     }
 
     .page-frame.portrait {
-      max-width: 1080px;
-      max-height: 1920px;
-      aspect-ratio: 9 / 16;
+      width: 1080px;
+      height: 1920px;
     }
 
     /* ── Background ── */
@@ -83,11 +81,11 @@
     .portrait .content {
       max-width: 900px;
       padding: 4rem 2rem;
-      margin-top: 6vh;
+      margin-top: 115px;
     }
 
     .portrait .title {
-      font-size: clamp(4rem, 12vw, 7rem);
+      font-size: 7rem;
     }
 
     .portrait .subtitle { font-size: 2rem; margin-bottom: 4rem; }
@@ -191,7 +189,7 @@
     }
 
     .title {
-      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-size: 3.5rem;
       font-weight: 800;
       line-height: 1.1;
       margin-bottom: 2rem;
@@ -325,7 +323,7 @@
 <? var coy = parseInt(event.contentOffsetY) || 0; if (coy < 0 || coy > 100) coy = 0; ?>
 <? var isPortrait = (fmt === 'portrait'); ?>
 <? if (isPortrait) { ?>
-<div class="content" id="contentBlock" style="margin-top: <?= (6 + coy * 0.24) ?>vh;">
+<div class="content" id="contentBlock" style="margin-top: <?= Math.round(115 + coy * 4.61) ?>px;">
 <? } else { ?>
 <div class="content" id="contentBlock" style="<? if (coy != 0) { ?>transform: translateY(<?= coy ?>px);<? } ?>">
 <? } ?>
@@ -371,6 +369,24 @@
 </div><!-- .page-frame -->
 
 <script>
+  // Scale page-frame to fit viewport
+  (function scaleFrame() {
+    var frame = document.querySelector('.page-frame');
+    if (!frame) return;
+    var isP = frame.classList.contains('portrait');
+    var dw = isP ? 1080 : 1920, dh = isP ? 1920 : 1080;
+    var s = Math.min(window.innerWidth / dw, window.innerHeight / dh);
+    frame.style.transform = 'scale(' + s + ')';
+  })();
+  window.addEventListener('resize', function() {
+    var frame = document.querySelector('.page-frame');
+    if (!frame) return;
+    var isP = frame.classList.contains('portrait');
+    var dw = isP ? 1080 : 1920, dh = isP ? 1920 : 1080;
+    var s = Math.min(window.innerWidth / dw, window.innerHeight / dh);
+    frame.style.transform = 'scale(' + s + ')';
+  });
+
   // ── Countdown ──
   (function() {
     var dateStr = '<?= event.eventDate ?>';
