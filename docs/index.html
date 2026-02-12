@@ -511,8 +511,8 @@ window.addEventListener('resize', scaleFrame);
       gSupport.style.opacity = gOp / 100;
     }
 
-    // Pre-countdown text
-    if (ev.preCountdownText) {
+    // Pre-countdown text (only if timer is enabled)
+    if (ev.preCountdownText && String(ev.showTimer) !== 'false') {
       var pre = document.getElementById('preCountdownText');
       pre.textContent = ev.preCountdownText;
       pre.classList.remove('hidden');
@@ -529,8 +529,8 @@ window.addEventListener('resize', scaleFrame);
       });
     }
 
-    // Post-countdown text
-    if (ev.postCountdownText) {
+    // Post-countdown text (only if timer is enabled)
+    if (ev.postCountdownText && String(ev.showTimer) !== 'false') {
       var post = document.getElementById('postCountdownText');
       post.textContent = ev.postCountdownText;
       post.classList.remove('hidden');

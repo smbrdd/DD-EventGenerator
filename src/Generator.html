@@ -1544,7 +1544,8 @@
     var iframe = document.getElementById('previewIframe');
     if (previewCurrentUrl) {
       iframe.src = 'about:blank';
-      setTimeout(function() { iframe.src = previewCurrentUrl; }, 100);
+      var bustUrl = previewCurrentUrl.replace(/[&?]_t=\d+/, '') + '&_t=' + Date.now();
+      setTimeout(function() { iframe.src = bustUrl; }, 100);
     }
   }
 
@@ -1687,7 +1688,7 @@
   }
 
   function buildEventCard(ev) {
-    var publicUrl = getPublicUrl(ev.id);
+    var publicUrl = getPublicUrl(ev.id) + '&_t=' + Date.now();
     var isPortrait = ev.format === 'portrait';
     var thumbCls = isPortrait ? 'portrait-thumb' : 'landscape-thumb';
     var srcW = isPortrait ? 1080 : 1920;
