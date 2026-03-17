@@ -26,30 +26,14 @@ var CONFIG = {
 function doGet(e) {
   var action = e && e.parameter && e.parameter.action;
 
-  // ── Proxy image : sert l'image Drive directement pour éviter les restrictions Google ──
-  if (action === 'img') {
-    var fileId = e && e.parameter && e.parameter.id;
-    if (!fileId) return ContentService.createTextOutput('Missing id').setMimeType(ContentService.MimeType.TEXT);
-    try {
-      var file = DriveApp.getFileById(fileId);
-      var blob = file.getBlob();
-      return ContentService.createTextOutput('')
-        .setContent(blob.getDataAsString('ISO-8859-1'))
-        .setMimeType(blob.getContentType());
-    } catch(err) {
-      return ContentService.createTextOutput('Image not found').setMimeType(ContentService.MimeType.TEXT);
-    }
-  }
-
   // ── API JSON publique pour la page hébergée sur GitHub Pages ──
   if (action === 'api') {
     var eventId = e.parameter.id;
     var event = eventId ? getEvent(eventId) : null;
     var payload = event || { error: 'Event not found' };
-    // Servir l'image via le proxy Apps Script (permanent, pas de restriction Drive)
+    // Thumbnail URL : seul format Google Drive fiable et permanent en 2025+
     if (event && event.backgroundImageId) {
-      var baseUrl = ScriptApp.getService().getUrl();
-      payload.backgroundImageUrl = baseUrl + '?action=img&id=' + event.backgroundImageId;
+      payload.backgroundImageUrl = 'https://drive.google.com/thumbnail?id=' + event.backgroundImageId + '&sz=w1920-h1080';
     }
     return ContentService.createTextOutput(JSON.stringify(payload))
       .setMimeType(ContentService.MimeType.JSON);
